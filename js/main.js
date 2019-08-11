@@ -2,23 +2,43 @@
 "use strict";
 
 // initialize game object
-var game = new Phaser.Game(1280, 720, Phaser.AUTO);
+var game = new Phaser.Game(800, 600, Phaser.AUTO);
+
+var controls;
 
 var MainMenu = function(game) {};
 MainMenu.prototype = {
 	preload: function() {
 		console.log('MainMenu: preload');
 		// preload our assets
-		this.game.load.image('player', 'assets/img/player.png');
+		this.game.load.atlas('bkg_titleScreen', 'assets/img/titleScreen.png', 'assets/json/titleScreen.json');
+		this.game.load.image('bkg_intro', 'assets/img/background_intro.png');
+		this.game.load.image('gui_dialogBox', 'assets/img/gui_dialogBox.png');
+		this.game.load.image('gui_journal', 'assets/img/gui_journal.png');
+		//this.game.load.image('spr_player', 'assets/img/player.png');
 	},
 	create: function() {
 		console.log('MainMenu: create');
-		game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN, Phaser.Keyboard.R, Phaser.Keyboard.SPACEBAR ]);
+		this.game.scale.pageAlignHorizontally = true;
+		this.game.scale.pageAlignVertically = true;
+		this.game.scale.refresh();
+
+		game.stage.backgroundColor = "#000000";
+
+		this.game.input.keyboard.addKeyCapture([Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN, Phaser.Keyboard.SPACEBAR, Phaser.Keyboard.ENTER]);
 		
+		controls = game.input.keyboard.createCursorKeys();
+		controls = game.input.keyboard.addKeys({ 'space': Phaser.Keyboard.SPACEBAR, 'enter': Phaser.Keyboard.ENTER });
+
+		this.titleScreen = game.add.sprite(0, 0, 'bkg_titleScreen');
+		this.titleScreen.animations.add('title', Phaser.Animation.generateFrameNames('titleScreen', 1, 20), 10, true);
+		this.titleScreen.animations.play('title');
 	}, 
 	update: function() {
 		// Main Menu logic
-			game.state.start('Play');
+		if (controls.space.isDown || controls.enter.isDown || game.input.activePointer.leftButton.isDown) { //game.input.activePointer.leftButton.isDown
+			this.game.state.start('GameOver');
+		}
 	}
 }
 
@@ -34,8 +54,6 @@ Play.prototype = {
 	},
 	create: function() {
 		console.log('Play: create');
-		game.stage.backgroundColor = "#101543";
-		
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 		
 		this.player = new Player(game, 'player', 0);
@@ -68,7 +86,7 @@ GameOver.prototype = {
 	}, 
 	update: function() {
 		// Game Over logic
-		
+		game.state.start('MainMenu');
 	}
 }
 

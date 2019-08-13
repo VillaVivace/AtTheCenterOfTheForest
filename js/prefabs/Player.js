@@ -1,6 +1,6 @@
-function Player(game, key, frame) {
+function Player(game, key, controls) {
 	// new Sprite(game, x, y, key, frame);
-	this.playerSprite = Phaser.Sprite.call(this, game, 0, 0, key, frame);
+	this.playerSprite = Phaser.Sprite.call(this, game, 0, 0, key, 0);
 	
 	/* --Player properties-- */
 	this.anchor.set(0);
@@ -9,8 +9,7 @@ function Player(game, key, frame) {
 	this.body.gravity.y = 980;
 	
 	/* --Variable Declaration-- */
-	this.eKey = game.input.keyboard.addKey(Phaser.Keyboard.E);
-	this.cursors = game.input.keyboard.createCursorKeys();
+	this.controls = controls;
 	this.state = 'normal';
 }
 
@@ -28,17 +27,17 @@ Player.prototype.update = function() {
 				this.alpha = 1;
 				this.body.moves = true;
 				
-				if (this.cursors.left.isDown) { // Move player left
+				if (this.controls.left.isDown) { // Move player left
 					this.body.velocity.x = -150;
 				}
-				else if (this.cursors.right.isDown) { // Move player right
+				else if (this.controls.right.isDown) { // Move player right
 					this.body.velocity.x = 150;
 				}
-				if (this.cursors.up.justDown) { // If Player is colliding with the ground/platforms, allow them to jump
+				if (this.controls.up.justDown) { // If Player is colliding with the ground/platforms, allow them to jump
 					this.body.velocity.y = -400;
 				}
-				if (this.eKey.justDown) {
-					console.log('E is Pressed');
+				if (this.controls.space.justDown) {
+					console.log('SPACE is Pressed');
 					this.state = 'hidden';
 					this.y -= 8;
 				}
@@ -49,10 +48,10 @@ Player.prototype.update = function() {
 				this.alpha = 0.5;
 				this.body.moves = false;
 				
-				if (this.cursors.left.isDown) { // Move player left
+				if (this.controls.left.isDown) { // Move player left
 					this.x -= 0.75;
 				}
-				else if (this.cursors.right.isDown) { // Move player right
+				else if (this.controls.right.isDown) { // Move player right
 					this.x += 0.75;
 				}
 				if (this.eKey.justDown) {

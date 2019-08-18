@@ -131,6 +131,7 @@ MainMenu.prototype = {
 	create: function() {
 		console.log('MainMenu: create');
 		game.camera.flash(0x000000, 1000);
+		this.game.scale.setGameSize(800, 600);
 		this.titleAudio = game.add.audio('snd_title');
 		this.titleAudio.volume = 0.25;
 		this.titleAudio.fadeIn(2000);
@@ -182,6 +183,7 @@ Stage1.prototype = {
 	create: function() {
 		console.log('Stage0_1: create');
 		game.camera.flash(0x000000, 1000);
+		this.game.scale.setGameSize(1000, 600);
 		this.stageBkg = game.add.sprite(0, 0, 'bkg_intro');
 		game.world.setBounds(0, 0, 1600, 600);
 

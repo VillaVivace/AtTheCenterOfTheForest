@@ -5,14 +5,15 @@ function PlayerAlt(game, x, y, key, controls) {
 	/* --Variable Declaration-- */
 	this.controls = controls;
 	this.state = 'normal';
-	this.direction = 1;
-	this.speed = 2;
+	this.direction = 1.5;
+	this.speed = 2.5;
 	
 	/* --Player properties-- */
 	this.anchor.set(0.5, 0.5);
 	this.scale.setTo(this.direction, this.direction);
-	this.animations.add('idle', ['player_still']);
-	this.animations.add('hide', ['player_crouch']);
+	this.animations.add('walk', Phaser.Animation.generateFrameNames('walk', 1, 8), 8, true);
+	this.animations.add('idle', ['still']);
+	//this.animations.add('hide', ['crouch']);
 }
 
 PlayerAlt.prototype = Object.create(Phaser.Sprite.prototype);
@@ -28,13 +29,13 @@ PlayerAlt.prototype.update = function() {
 			this.alpha = 1;
 			this.scale.x = this.direction;
 			if (controls.left.isDown) { // Move player left
-				this.animations.play('idle');
-				this.direction = -1;
+				this.animations.play('walk');
+				this.direction = -1.5;
 				this.x -= this.speed;
 			}
 			else if (controls.right.isDown) { // Move player right
-				this.animations.play('idle');
-				this.direction = 1;
+				this.animations.play('walk');
+				this.direction = 1.5;
 				this.x += this.speed;
 			}
 			else {
@@ -47,9 +48,9 @@ PlayerAlt.prototype.update = function() {
 			break;
 
 			case 'hidden':
-				this.animations.play('hide');
-				this.alpha = 0.75;
-				if (controls.enter.upDuration(50)) {
+				this.animations.play('idle');
+				this.alpha = 0.5;
+				if (controls.space.upDuration(50)) {
 					this.state = 'normal';
 				}
 			break;

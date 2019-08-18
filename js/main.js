@@ -62,7 +62,7 @@ Logo.prototype = {
 	preload: function() {
 		console.log('Logo: preload');
 		/* --Backgrounds-- */
-		this.game.load.atlas('bkg_titleScreen', 'assets/img/titleScreen.png', 'assets/json/titleScreen.json');
+		this.game.load.atlas('bkg_titleScreen', 'assets/img/titleScreen2.png', 'assets/json/titleScreen2.json');
 		this.game.load.image('bkg_intro', 'assets/img/background_intro.png');
 		this.game.load.image('bkg_levelShort', 'assets/img/background_levelShort.png');
 		this.game.load.image('bkg_levelLong', 'assets/img/background_levelLong.png');
@@ -71,6 +71,7 @@ Logo.prototype = {
 		this.game.load.image('gui_journal', 'assets/img/gui_journal.png');
 		this.game.load.image('gui_border', 'assets/img/gui_border.png');
 		this.game.load.image('gui_filter', 'assets/img/gui_filter.png');
+		this.game.load.atlas('gui_icons', 'assets/img/gui_icons.png', 'assets/json/gui_icons.json');
 		/* --Player and NPCs-- */
 		this.game.load.atlas('spr_player', 'assets/img/player.png', 'assets/json/player.json');
 		/* --Objects-- */
@@ -134,9 +135,15 @@ MainMenu.prototype = {
 		this.titleAudio.volume = 0.25;
 		this.titleAudio.fadeIn(2000);
 
+		// Add in title image
 		this.titleScreen = game.add.sprite(0, 0, 'bkg_titleScreen'); //The title screen is animated
-		this.titleScreen.animations.add('title', Phaser.Animation.generateFrameNames('titleScreen', 1, 20), 10, true);
+		this.titleScreen.animations.add('title', Phaser.Animation.generateFrameNames('titleScreen', 0, 19), 10, true);
 		this.titleScreen.animations.play('title');
+		// Add in load/play buttons
+		this.playButton = game.add.button(350, 450, 'gui_icons', goToStage1, this, 
+							'playHover', 'play', 'playHover');
+		this.loadButton = game.add.button(550, 450, 'gui_icons', goToStage1, this, 
+							'loadHover', 'load', 'loadHover');					
 
 		var goToStage1 = function() {
 			game.state.start('Stage1');

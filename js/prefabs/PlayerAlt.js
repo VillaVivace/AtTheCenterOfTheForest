@@ -11,9 +11,9 @@ function PlayerAlt(game, x, y, key, controls) {
 	/* --Player properties-- */
 	this.anchor.set(0.5, 0.5);
 	this.scale.setTo(this.direction, this.direction);
-	this.animations.add('walk', Phaser.Animation.generateFrameNames('walk', 1, 8), 8, true);
+	this.animations.add('walk', Phaser.Animation.generateFrameNames('walk', 0, 7), 8, true);
 	this.animations.add('idle', ['still']);
-	//this.animations.add('hide', ['crouch']);
+	this.animations.add('hide', ['crouch']);
 }
 
 PlayerAlt.prototype = Object.create(Phaser.Sprite.prototype);
@@ -48,7 +48,7 @@ PlayerAlt.prototype.update = function() {
 			break;
 
 			case 'hidden':
-				this.animations.play('idle');
+				this.animations.play('hide');
 				this.alpha = 0.5;
 				if (controls.space.upDuration(50)) {
 					this.state = 'normal';

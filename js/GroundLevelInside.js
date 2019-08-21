@@ -28,7 +28,7 @@ GroundLevelInside.prototype = {
 		/* --Objects & Furniture-- */
 		this.table1 = game.add.sprite(330, 355, 'obj_table');
 
-		this.player = new PlayerAlt(game, 150, game.world.height - 200, 'spr_player', controls);
+		this.player = new Player(game, 150, game.world.height - 200, 'spr_player', controls);
 		this.game.add.existing(this.player);
 		
 		/* --GUI & Effects-- */
@@ -64,25 +64,8 @@ GroundLevelInside.prototype = {
 		this.journalTimer = game.time.create(false);
     	this.journalTimer.add(500, this.showJournal, this, true); 
 
-		/* --Camera-- */
-		game.camera.follow(this.player, '', 0.25, 0.25);
-		game.camera.deadzone = new Phaser.Rectangle(400, 0, 0, 600);
-		/* --Footsteps-- */
-		var footstep = function() {
-			var randStep = Math.random();
-			var stepSound;
-			if ((controls.left.isDown || controls.right.isDown) && this.player.getState() == 'normal') {
-				if (randStep < 0.5) {
-					stepSound = game.add.audio('snd_footstep1');
-				} else {
-					stepSound = game.add.audio('snd_footstep2');
-				}
-				stepSound.play('', 0, 0.5, false, false);
-			}
-		}
-		this.stepTimer = game.time.create(false);
-    	this.stepTimer.loop(1000, footstep, this);
-		this.stepTimer.start();
+		
+		
 	},
 	update: function() {
 		// Run the 'Play' state's game loop
@@ -92,12 +75,12 @@ GroundLevelInside.prototype = {
 		this.border.y = game.camera.y;
 		this.filter.x = game.camera.x - 8;
 		this.filter.y = game.camera.y;
-		this.journal.x = game.camera.x + 450;
-		this.journal.y = game.camera.y + 100;
-		this.dialogBox.x = game.camera.x + 200;
-		this.dialogBox.y = game.camera.y + (game.world.height - 200);
-		this.text.x = game.camera.x + 232;
-		this.text.y = game.camera.y + (game.world.height - 150);
+		this.dialogBox.x = game.camera.x + (game.camera.width/2 - this.dialogBox.width/2);
+		this.dialogBox.y = game.camera.y + (game.world.height - this.dialogBox.height);
+		this.journal.x = game.camera.x + (game.camera.width/2 - this.journal.width/2);
+		this.journal.y = this.dialogBox.y - this.journal.height;
+		this.text.x = this.dialogBox.x + 32
+		this.text.y = this.dialogBox.y + 32
 		
 		/* --Cutscenes-- */
 		if (this.cutsceneTriggered == false && this.player.x > 600) {
@@ -112,7 +95,7 @@ GroundLevelInside.prototype = {
 		}
 		if ((this.player.x > 330 && this.player.x < 490) && this.helpText == false) {
 			this.helpText = true;
-			game.add.text(this.player.x + 32, this.player.y + 64, '[Hold SPACE to hide]', { font: "16px Times New Roman", fill: "#000000"});
+			game.add.text(this.player.x, this.player.y + 128, '[Hold SPACE to hide]', { font: "16px Times New Roman", fill: "#000000"});
 		}
 		
 	}

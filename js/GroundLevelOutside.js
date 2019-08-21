@@ -1,14 +1,18 @@
 var GroundLevelOutside = function(game) { //Intro Cutscene
 	this.player;
+
 	this.border;
 	this.filter;
 	this.journal;
 	this.dialogBox;
-	this.cutsceneTriggered = false;
 	this.text;
 	this.showJournal;
+	this.cutsceneTriggered = false;
+
 	this.timer;
 	this.stepTimer;
+
+	this.door;
 };
 GroundLevelOutside.prototype = {
 	preload: function() {
@@ -25,9 +29,11 @@ GroundLevelOutside.prototype = {
 		game.sound.stopAll();
 
 		/* --Objects-- */
-		this.game.add.sprite(1300, 0, 'obj_door');
+		this.door = this.game.add.sprite(1300, 0, 'obj_door');
+		game.physics.enable(this.door);
+		this.door.body.setSize(50, 600, 100);
 
-		this.player = new PlayerAlt(game, 64, game.world.height - 200, 'spr_player', controls);
+		this.player = new Player(game, 64, game.world.height - 200, 'spr_player', controls);
 		this.game.add.existing(this.player);
 		
 		/* --GUI & Effects-- */
@@ -64,25 +70,7 @@ GroundLevelOutside.prototype = {
 		this.journalTimer = game.time.create(false);
     	this.journalTimer.add(1000, this.showJournal, this, true); 
 
-		/* --Camera-- */
-		game.camera.follow(this.player, '', 0.25, 0.25);
-		game.camera.deadzone = new Phaser.Rectangle(400, 0, 0, 600);
-		/* --Footsteps-- */
-		var footstep = function() {
-			var randStep = Math.random();
-			var stepSound;
-			if ((controls.left.isDown || controls.right.isDown) && this.player.getState() == 'normal') {
-				if (randStep < 0.5) {
-					stepSound = game.add.audio('snd_footstep1');
-				} else {
-					stepSound = game.add.audio('snd_footstep2');
-				}
-				stepSound.play('', 0, 0.5, false, false);
-			}
-		}
-		this.stepTimer = game.time.create(false);
-    	this.stepTimer.loop(500, footstep, this);
-    	this.stepTimer.start();
+		
 	},
 	update: function() {
 		/* --GUI & Effects Positioning-- */
@@ -90,12 +78,15 @@ GroundLevelOutside.prototype = {
 		this.border.y = game.camera.y;
 		this.filter.x = game.camera.x - 8;
 		this.filter.y = game.camera.y;
-		this.journal.x = game.camera.x + 450;
-		this.journal.y = game.camera.y + 100;
-		this.dialogBox.x = game.camera.x + 200;
-		this.dialogBox.y = game.camera.y + (game.world.height - 200);
-		this.text.x = game.camera.x + 232;
-		this.text.y = game.camera.y + (game.world.height - 150);
+		this.dialogBox.x = game.camera.x + (game.camera.width/2 - this.dialogBox.width/2);
+		this.dialogBox.y = game.camera.y + (game.world.height - this.dialogBox.height);
+		this.journal.x = game.camera.x + (game.camera.width/2 - this.journal.width/2);
+		this.journal.y = this.dialogBox.y - this.journal.height;
+		this.text.x = this.dialogBox.x + 32
+		this.text.y = this.dialogBox.y + 32
+
+		/* --Collisions-- */
+		var touchedDoor = game.physics.arcade.collide(this.player, this.door);
 		
 		/* --Cutscenes-- */
 		if (this.cutsceneTriggered == false && this.player.x > 1000) {
@@ -106,8 +97,8 @@ GroundLevelOutside.prototype = {
 			this.showJournal(false);
 		}
 
-		if (this.player.x >= 1330) { // Area of door
-			game.add.audio('snd_door').play('', 0, 0.0075, false, false);
+		if (touchedDoor) { // Area of door
+			game.add.audio('snd_door').play('', 0, 0.1, false, false);
 			game.state.start('GroundLevelInside');
 		}
 	}

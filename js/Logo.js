@@ -32,6 +32,9 @@ Logo.prototype = {
 	create: function() {
 		console.log('Logo: create');
 
+		titleAudio = game.add.audio('snd_title');
+		titleAudio.play('', 0, 0.05, true, true);
+
 		this.eyeLogo = this.game.add.sprite(0, game.world.height/4, 'gui_eyeLogo');
 		this.eyeLogo.x = (game.world.centerX - (this.eyeLogo.width/2));
 		this.eyeLogo.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 5, false);

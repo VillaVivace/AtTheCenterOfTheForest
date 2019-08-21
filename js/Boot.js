@@ -12,6 +12,7 @@ Boot.prototype = {
 	},
 	create: function() {
 		console.log('Boot: create');
+		game.physics.startSystem(Phaser.Physics.ARCADE);
 		this.game.scale.pageAlignHorizontally = true; // Allows the game to be centered on webpage!
 		this.game.scale.pageAlignVertically = true;
 		this.game.scale.refresh();

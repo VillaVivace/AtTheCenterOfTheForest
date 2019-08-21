@@ -1,66 +1,94 @@
-function Player(game, key, controls) {
+function Player(game, x, y, key, controls) {
 	// new Sprite(game, x, y, key, frame);
-	this.playerSprite = Phaser.Sprite.call(this, game, 0, 0, key, 0);
-	
-	/* --Player properties-- */
-	this.anchor.set(0);
-	game.physics.enable(this);
-	this.body.collideWorldBounds = true;
-	this.body.gravity.y = 980;
+	this.playerSprite = Phaser.Sprite.call(this, game, x, y, key, 0);
 	
 	/* --Variable Declaration-- */
 	this.controls = controls;
 	this.state = 'normal';
+	this.direction = 1;
+	this.speed = 200;
+	
+	/* --Player properties-- */
+	game.physics.enable(this);
+	this.body.collideWorldBounds = true;
+	this.body.gravity.y = 0;
+	this.anchor.set(0.5, 0.5);
+	this.scale.setTo(this.direction, this.direction);
+	this.animations.add('walk', Phaser.Animation.generateFrameNames('walk', 0, 7), 8, true);
+	this.animations.add('idle', ['still']);
+	this.animations.add('hide', ['crouch']);
+
+	/* --Footsteps-- */
+	var footstep = function() {
+		var randStep = Math.random();
+		var stepSound;
+		if ((controls.left.isDown || controls.right.isDown) && this.state == 'normal') {
+			if (randStep < 0.5) {
+				stepSound = game.add.audio('snd_footstep1');
+			} else {
+				stepSound = game.add.audio('snd_footstep2');
+			}
+			stepSound.play('', 0, 0.5, false, false);
+		}
+	}
+	this.stepTimer = game.time.create(false);
+	this.stepTimer.loop(500, footstep, this);
+	this.stepTimer.start();
+
+	/* --Camera-- */
+	game.camera.follow(this, '', 0.25, 0.25);
+	game.camera.deadzone = new Phaser.Rectangle(game.camera.width/2, 0, 0, game.world.height);
 }
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 
-Player.prototype.create = function() {
-}
+Player.prototype.create = function() {}
 
 Player.prototype.update = function() {
-	
+		
 		switch(this.state) {
   			case 'normal':
-	    		this.body.velocity.x = 0; // Reset the player's x-velocity to 0 when left/right is not pressed
 				this.alpha = 1;
-				this.body.moves = true;
-				
-				if (this.controls.left.isDown) { // Move player left
-					this.body.velocity.x = -150;
+				this.body.velocity.x = 0;
+				this.scale.x = this.direction;
+				if (controls.left.isDown) { // Move player left
+					this.animations.play('walk');
+					this.direction = -1;
+					this.body.velocity.x = -this.speed;
 				}
-				else if (this.controls.right.isDown) { // Move player right
-					this.body.velocity.x = 150;
+				else if (controls.right.isDown) { // Move player right
+					this.animations.play('walk');
+					this.direction = 1;
+					this.body.velocity.x = this.speed;
 				}
-				if (this.controls.up.justDown) { // If Player is colliding with the ground/platforms, allow them to jump
-					this.body.velocity.y = -400;
+				else {
+					this.animations.play('idle');
 				}
-				if (this.controls.space.justDown) {
-					console.log('SPACE is Pressed');
-					this.state = 'hidden';
-					this.y -= 8;
-				}
-    		break;
-    		
-  			case 'hidden':
-    			this.body.velocity.x = 0; // Reset the player's x-velocity to 0 when left/right is not pressed
+			break;
+			
+			case 'cutscene':
+				this.body.velocity.x = 0;
+				this.animations.play('idle');
+			break;
+
+			case 'hidden':
+				this.body.velocity.x = 0;
+				this.animations.play('hide');
 				this.alpha = 0.5;
-				this.body.moves = false;
-				
-				if (this.controls.left.isDown) { // Move player left
-					this.x -= 0.75;
-				}
-				else if (this.controls.right.isDown) { // Move player right
-					this.x += 0.75;
-				}
-				if (this.eKey.justDown) {
-					console.log('E is Pressed');
+				if (controls.space.upDuration(50)) {
 					this.state = 'normal';
 				}
-    		break;
-    		
+			break;
   			default:
     		
 		}
+}
+
+Player.prototype.changeState = function(state) {
+	this.state = state;
+}
+
+Player.prototype.getState = function() {
+	return this.state;
 }

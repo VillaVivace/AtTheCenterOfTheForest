@@ -14,13 +14,12 @@ MainMenu.prototype = {
 	create: function() {
 		console.log('MainMenu: create');
 		game.camera.flash(0x000000, 1000);
-		this.game.scale.setGameSize(800, 600);
-		this.titleAudio = game.add.audio('snd_title');
-		this.titleAudio.volume = 0.25;
-		this.titleAudio.fadeIn(2000);
+		
+		titleAudio.fadeTo(2000, 0.25);
 
 		// Add in title image
 		this.titleScreen = game.add.sprite(0, 0, 'bkg_titleScreen'); //The title screen is animated
+		this.titleScreen.x = game.world.width/2 - this.titleScreen.width/2
 		this.titleScreen.animations.add('title', Phaser.Animation.generateFrameNames('titleScreen', 0, 19), 10, true);
 		this.titleScreen.animations.play('title');
 		// Add in load/play buttons
@@ -34,7 +33,7 @@ MainMenu.prototype = {
 		};
 		var playUp = function() {
 			this.game.camera.fade(0x000000, 1000);
-			this.titleAudio.fadeOut(1000);
+			titleAudio.fadeOut(1000);
 			this.transitionTimer.start();
 		};
 		this.playButton.onInputUp.add(playUp, this);

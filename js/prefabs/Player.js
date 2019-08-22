@@ -6,10 +6,11 @@ function Player(game, x, y, key, controls) {
 	this.controls = controls;
 	this.state = 'normal';
 	this.direction = 1;
-	this.speed = 200;
+	this.speed = 500;
 	
 	/* --Player properties-- */
 	game.physics.enable(this);
+	this.body.setSize(50, 200, 25);
 	this.body.collideWorldBounds = true;
 	this.body.gravity.y = 0;
 	this.anchor.set(0.5, 0.5);
@@ -49,6 +50,9 @@ Player.prototype.update = function() {
 		
 		switch(this.state) {
   			case 'normal':
+				if (controls.space.isDown) {
+					console.log(this.x);
+				}
 				this.alpha = 1;
 				this.body.velocity.x = 0;
 				this.scale.x = this.direction;
@@ -77,6 +81,7 @@ Player.prototype.update = function() {
 				this.animations.play('hide');
 				this.alpha = 0.5;
 				if (controls.space.upDuration(50)) {
+					this.bringToTop();
 					this.state = 'normal';
 				}
 			break;

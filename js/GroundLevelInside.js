@@ -1,5 +1,8 @@
 var GroundLevelInside = function(game) {
 	this.player;
+	this.slug;
+	this.slugFlipped = false;
+
 	this.border;
 	this.filter;
 	this.journal;
@@ -7,10 +10,13 @@ var GroundLevelInside = function(game) {
 	this.cutsceneTriggered = false;
 	this.text;
 	this.showJournal;
+	this.bounds;
+
 	this.timer;
 	this.stepTimer;
 	this.helpText = false;
-	this.table1;
+
+	this.tables;
 };
 GroundLevelInside.prototype = {
 	preload: function() {
@@ -26,10 +32,27 @@ GroundLevelInside.prototype = {
 		game.add.audio('snd_anxiety').play('', 0, 0.5, true);
 
 		/* --Objects & Furniture-- */
-		this.table1 = game.add.sprite(330, 355, 'obj_table');
+		this.bounds = game.add.group();
+		this.bounds.enableBody = true;
+		this.bounds.alpha = 0;
+		this.bound = this.bounds.create(148, 0, 'obj_bounds');
+		this.bound.body.immovable = true;
+		this.bound = this.bounds.create(2210, 0, 'obj_bounds');
+		this.bound.body.immovable = true;
+		this.tables = game.add.group();
+		this.tables.enableBody = true;
+		this.tables.create(1000, 355, 'obj_table');
+		this.tables.create(1750, 355, 'obj_table');
 
-		this.player = new Player(game, 150, game.world.height - 200, 'spr_player', controls);
+		this.player = new Player(game, 200, game.world.height - 200, 'spr_player', controls);
 		this.game.add.existing(this.player);
+
+		this.slug = game.add.sprite(1300, game.world.height-200, 'spr_slug');
+		game.physics.enable(this.slug);
+		this.slug.anchor.set(0.5, 0.5);
+		this.slug.body.velocity.x = 225;
+		this.slug.animations.add('walk', Phaser.Animation.generateFrameNames('slug', 1, 2), 4, true);
+		this.slug.animations.play('walk');
 		
 		/* --GUI & Effects-- */
 		this.filter = game.add.sprite(0, 0, 'gui_filter');
@@ -71,16 +94,25 @@ GroundLevelInside.prototype = {
 		// Run the 'Play' state's game loop
 		
 		/* --GUI & Effects Positioning-- */
-		this.border.x = game.camera.x - 8; // We want the GUI and FX to align with the camera, not just a world position
+		this.border.x = game.camera.x - 16; // We want the GUI and FX to align with the camera, not just a world position
 		this.border.y = game.camera.y;
-		this.filter.x = game.camera.x - 8;
+		this.filter.x = game.camera.x - 16;
 		this.filter.y = game.camera.y;
 		this.dialogBox.x = game.camera.x + (game.camera.width/2 - this.dialogBox.width/2);
 		this.dialogBox.y = game.camera.y + (game.world.height - this.dialogBox.height);
 		this.journal.x = game.camera.x + (game.camera.width/2 - this.journal.width/2);
 		this.journal.y = this.dialogBox.y - this.journal.height;
-		this.text.x = this.dialogBox.x + 32
-		this.text.y = this.dialogBox.y + 32
+		this.text.x = this.dialogBox.x + 32;
+		this.text.y = this.dialogBox.y + 32;
+		this.border.bringToTop();
+		this.filter.bringToTop();
+		this.dialogBox.bringToTop();
+		this.journal.bringToTop();
+		this.text.bringToTop();
+		/* --Collisions-- */
+		var isTouchingTable = game.physics.arcade.overlap(this.player, this.tables);
+		var slugTouchingTable = game.physics.arcade.overlap(this.slug, this.tables);
+		game.physics.arcade.collide(this.player, this.bounds);
 		
 		/* --Cutscenes-- */
 		if (this.cutsceneTriggered == false && this.player.x > 600) {
@@ -90,14 +122,27 @@ GroundLevelInside.prototype = {
 		if (controls.space.justDown && this.cutsceneTriggered == true) {
 			this.showJournal(false);
 		}
-		if (this.player.x > 330 && this.player.x < 490 && controls.space.isDown) {
+		if (isTouchingTable && controls.space.isDown) {
+			game.world.bringToTop(this.tables);
 			this.player.changeState('hidden');
 		}
-		if ((this.player.x > 330 && this.player.x < 490) && this.helpText == false) {
-			this.helpText = true;
-			game.add.text(this.player.x, this.player.y + 128, '[Hold SPACE to hide]', { font: "16px Times New Roman", fill: "#000000"});
-		}
 		
+		/* --Slug Movement-- */
+		if (this.slug.body.velocity.x > 0) {
+			this.slug.scale.x = -1;
+		} else {
+			this.slug.scale.x = 1;
+		}
+		if ((this.slug.x <= 800 || this.slug.x >= 1950) && this.slugFlipped == false) {
+			this.slugFlipped = true;
+			this.slug.body.velocity.x = -(this.slug.body.velocity.x);
+		}
+		if (this.slug.x >= 1200 && this.slug.x <= 1400) {
+			this.slugFlipped = false;
+		}
+		if (slugTouchingTable) {
+			this.slug.bringToTop();
+		}
 	}
 		
 }

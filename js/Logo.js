@@ -19,9 +19,11 @@ Logo.prototype = {
 		this.game.load.image('gui_border', 'assets/img/gui_border.png');
 		this.game.load.image('gui_filter', 'assets/img/gui_filter.png');
 		this.game.load.atlas('gui_icons', 'assets/img/gui_icons.png', 'assets/json/gui_icons.json');
-		/* --Player and NPCs-- */
+		/* --Player and Monsters-- */
 		this.game.load.atlas('spr_player', 'assets/img/player.png', 'assets/json/player.json');
+		this.game.load.atlas('spr_slug', 'assets/img/slug.png', 'assets/json/slug.json');
 		/* --Objects-- */
+		this.game.load.image('obj_bounds', 'assets/img/obj_bounds.png')
 		this.game.load.image('obj_table', 'assets/img/obj_table.png');
 		this.game.load.image('obj_door', 'assets/img/obj_door.png');
 		/* --SFX-- */
@@ -48,7 +50,7 @@ Logo.prototype = {
 		this.transitionTimer.add(1000, goToMainMenu, this, true); 
 		var style1 = { font: "32px Times New Roman", fill: "#ffffff", boundsAlignH: "center", boundsAlignV: "middle"};
 		var style2 = { font: "16px Times New Roman", fill: "#ffffff", boundsAlignH: "center", boundsAlignV: "middle"};
-		this.logoText = game.add.text(0, 0, "Paper or Plastic", style1);
+		this.logoText = game.add.text(0, 0, "Paper Ghouls", style1);
 		this.logoText.setTextBounds(0, game.world.height/2, game.world.width, 32);
 		this.logoText = game.add.text(0, 0, "-PRESENTS-", style2);
 		this.logoText.setTextBounds(0, game.world.height/2 + 40, game.world.width, 16);

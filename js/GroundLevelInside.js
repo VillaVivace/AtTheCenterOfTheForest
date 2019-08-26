@@ -35,7 +35,7 @@ GroundLevelInside.prototype = {
 		this.bounds = game.add.group();
 		this.bounds.enableBody = true;
 		this.bounds.alpha = 0;
-		this.bound = this.bounds.create(148, 0, 'obj_bounds');
+		this.bound = this.bounds.create(148, 0, 'obj_bounds'); 
 		this.bound.body.immovable = true;
 		this.bound = this.bounds.create(2210, 0, 'obj_bounds');
 		this.bound.body.immovable = true;
@@ -93,27 +93,12 @@ GroundLevelInside.prototype = {
 	update: function() {
 		// Run the 'Play' state's game loop
 		
-		/* --GUI & Effects Positioning-- */
-		this.border.x = game.camera.x - 16; // We want the GUI and FX to align with the camera, not just a world position
-		this.border.y = game.camera.y;
-		this.filter.x = game.camera.x - 16;
-		this.filter.y = game.camera.y;
-		this.dialogBox.x = game.camera.x + (game.camera.width/2 - this.dialogBox.width/2);
-		this.dialogBox.y = game.camera.y + (game.world.height - this.dialogBox.height);
-		this.journal.x = game.camera.x + (game.camera.width/2 - this.journal.width/2);
-		this.journal.y = this.dialogBox.y - this.journal.height;
-		this.text.x = this.dialogBox.x + 32;
-		this.text.y = this.dialogBox.y + 32;
-		this.border.bringToTop();
-		this.filter.bringToTop();
-		this.dialogBox.bringToTop();
-		this.journal.bringToTop();
-		this.text.bringToTop();
 		/* --Collisions-- */
 		var isTouchingTable = game.physics.arcade.overlap(this.player, this.tables);
 		var slugTouchingTable = game.physics.arcade.overlap(this.slug, this.tables);
+		var slugTouchingPlayer = game.physics.arcade.overlap(this.slug, this.player);
 		game.physics.arcade.collide(this.player, this.bounds);
-		
+
 		/* --Cutscenes-- */
 		if (this.cutsceneTriggered == false && this.player.x > 600) {
 			this.player.changeState('cutscene');
@@ -122,11 +107,16 @@ GroundLevelInside.prototype = {
 		if (controls.space.justDown && this.cutsceneTriggered == true) {
 			this.showJournal(false);
 		}
+
+		/* --Interaction-- */
 		if (isTouchingTable && controls.space.isDown) {
 			game.world.bringToTop(this.tables);
 			this.player.changeState('hidden');
 		}
-		
+		if (this.player.getState() == 'normal' && slugTouchingPlayer) {
+			game.state.start('GameOver');
+		}
+
 		/* --Slug Movement-- */
 		if (this.slug.body.velocity.x > 0) {
 			this.slug.scale.x = -1;
@@ -143,6 +133,23 @@ GroundLevelInside.prototype = {
 		if (slugTouchingTable) {
 			this.slug.bringToTop();
 		}
+
+		/* --GUI & Effects Positioning-- */
+		this.border.x = game.camera.x - 16; // We want the GUI and FX to align with the camera, not just a world position
+		this.border.y = game.camera.y;
+		this.filter.x = game.camera.x - 16;
+		this.filter.y = game.camera.y;
+		this.dialogBox.x = game.camera.x + (game.camera.width/2 - this.dialogBox.width/2);
+		this.dialogBox.y = game.camera.y + (game.world.height - this.dialogBox.height);
+		this.journal.x = game.camera.x + (game.camera.width/2 - this.journal.width/2);
+		this.journal.y = this.dialogBox.y - this.journal.height;
+		this.text.x = this.dialogBox.x + 32;
+		this.text.y = this.dialogBox.y + 32;
+		this.border.bringToTop();
+		this.filter.bringToTop();
+		this.dialogBox.bringToTop();
+		this.journal.bringToTop();
+		this.text.bringToTop();		
 	}
 		
 }

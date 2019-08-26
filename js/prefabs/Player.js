@@ -6,7 +6,7 @@ function Player(game, x, y, key, controls) {
 	this.controls = controls;
 	this.state = 'normal';
 	this.direction = 1;
-	this.speed = 500;
+	this.speed = 200;
 	
 	/* --Player properties-- */
 	game.physics.enable(this);

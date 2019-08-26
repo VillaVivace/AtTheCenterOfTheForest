@@ -18,14 +18,14 @@ MainMenu.prototype = {
 		titleAudio.fadeTo(2000, 0.25);
 
 		// Add in title image
-		this.titleScreen = game.add.sprite(0, 0, 'bkg_titleScreen'); //The title screen is animated
-		this.titleScreen.x = game.world.width/2 - this.titleScreen.width/2
+		this.titleScreen = game.add.sprite(game.camera.width/2 - 400, 0, 'bkg_titleScreen'); //The title screen is animated
+		this.titleScreen.anchor.set(0, 0);
 		this.titleScreen.animations.add('title', Phaser.Animation.generateFrameNames('titleScreen', 0, 19), 10, true);
 		this.titleScreen.animations.play('title');
 		// Add in load/play buttons
-		this.playButton = game.add.button(350, 450, 'gui_icons', null, this, 
+		this.playButton = game.add.button(450, 450, 'gui_icons', null, this, 
 							'playHover', 'play', 'playHover');
-		this.loadButton = game.add.button(550, 450, 'gui_icons', null, this, 
+		this.loadButton = game.add.button(650, 450, 'gui_icons', null, this, 
 							'loadHover', 'load', 'loadHover');					
 
 		var goToStage1 = function() {

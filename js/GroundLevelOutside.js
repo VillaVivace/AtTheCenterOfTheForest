@@ -31,7 +31,7 @@ GroundLevelOutside.prototype = {
 		/* --Objects-- */
 		this.door = this.game.add.sprite(1300, 0, 'obj_door');
 		game.physics.enable(this.door);
-		this.door.body.setSize(50, 600, 100);
+		this.door.body.setSize(50, 600, 50);
 
 		this.player = new Player(game, 64, game.world.height - 200, 'spr_player', controls);
 		this.game.add.existing(this.player);

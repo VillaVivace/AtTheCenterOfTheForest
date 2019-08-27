@@ -22,6 +22,11 @@ var Level2 = function(game) {
 	this.chandalier;
 	this.chandalier1;
 	this.door1;
+	this.ddor2;
+	this.kitchendoor;
+	this.exit;
+
+	this.key=false;
 
 };
 Level2.prototype = {
@@ -43,21 +48,27 @@ Level2.prototype = {
 		this.bounds.alpha = 0;
 		this.bound = this.bounds.create(148, 0, 'obj_bounds'); 
 		this.bound.body.immovable = true;
-		this.bound = this.bounds.create(4800, 0, 'obj_bounds');
+		this.bound = this.bounds.create(4600, 0, 'obj_bounds');
 		this.bound.body.immovable = true;
 		
 		this.diningtables = game.add.group();
 		this.diningtables.enableBody = true;
 		this.diningtables.create(1000, 355, 'obj_diningtable');
-		this.diningtables.create(2000, 355, 'obj_diningtable');
+		this.diningtables.create(2700, 355, 'obj_diningtable');
 		
-		this.door1 = game.add.sprite(1500, 0, 'obj_door2');		
+		this.door1 = game.add.sprite(1800, 0, 'obj_door2');		
 		game.physics.enable(this.door1);		
-
-		this.chandalier = game.add.sprite(1000, 0, 'obj_chandalier');
+		this.door2 = game.add.sprite(2200, 0, 'obj_door2');	
+		game.physics.enable(this.door2);				
+		this.kitchendoor = game.add.sprite(3500, 0, 'obj_door');
+		game.physics.enable(this.kitchendoor);
+		this.exit= game.add.sprite(4600, 0, 'obj_door');
+		game.physics.enable(this.exit);
+		
+		this.chandalier = game.add.sprite(1150, 0, 'obj_chandalier');
 		this.chandalier.animations.add('anima', Phaser.Animation.generateFrameNames('chandalier', 0, 2), 6, true);
 		this.chandalier.animations.play('anima');				
-		this.chandalier1 = game.add.sprite(2000, 0, 'obj_chandalier');
+		this.chandalier1 = game.add.sprite(2800, 0, 'obj_chandalier');
 		this.chandalier1.animations.add('anima', Phaser.Animation.generateFrameNames('chandalier', 0, 2), 6, true);
 		this.chandalier1.animations.play('anima');	
 
@@ -118,7 +129,9 @@ Level2.prototype = {
 		var isTouchingTable = game.physics.arcade.overlap(this.player, this.tables);
 		var kitchenTouchingPlayer = game.physics.arcade.overlap(this.kitchen, this.player);
 		var TouchingDoor1 = game.physics.arcade.overlap(this.player, this.door1);
-		var T1=game.physics.arcade.overlap(this.player, this.exit);
+		var TouchingDoor2 = game.physics.arcade.overlap(this.player, this.door1);
+		var TouchingExit = game.physics.arcade.overlap(this.player, this.exit);
+
 		game.physics.arcade.collide(this.player, this.bounds);
 
 		/* --Cutscenes-- */
@@ -139,16 +152,23 @@ Level2.prototype = {
 			this.dialogBox1.alpha = 1;
 		}
 
-		if (this.blinktime%2==0 && kitchenTouchingPlayer) {
+	/*	if (this.blinktime%2==0 && kitchenTouchingPlayer) {
 			game.state.start('GameOver');
-		}
+		}*/
 
 
 	/*	if(TouchingDoor1&&controls.space.isDown){
 			game.state.start('Sub1');
 		}*/
-			
-
+		
+	/*	if(TouchingDoor2&&controls.space.isDown){
+			game.state.start('Sub2');
+		}*/
+	
+	/*	if(TouchingExit&&key==true){
+			game.state.start('Level3');
+		}*/
+		
 		/* --GUI & Effects Positioning-- */
 		this.border.x = game.camera.x - 16; // We want the GUI and FX to align with the camera, not just a world position
 		this.border.y = game.camera.y;

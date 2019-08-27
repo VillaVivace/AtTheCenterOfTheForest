@@ -84,7 +84,7 @@ Level1.prototype = {
 		this.crawler = game.add.sprite(2300, game.world.height-150, 'spr_crawler');
 		game.physics.enable(this.crawler);
 		this.crawler.anchor.set(0.5, 0.5);
-		this.crawler.body.velocity.x = 350;
+		this.crawler.body.velocity.x = -270;
 		this.crawler.animations.add('walk', Phaser.Animation.generateFrameNames('walk', 1, 4), 7, true);
 		this.crawler.animations.play('walk');
 

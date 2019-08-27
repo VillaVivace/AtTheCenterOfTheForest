@@ -24,6 +24,7 @@ Logo.prototype = {
 		this.game.load.atlas('spr_slug', 'assets/img/slug.png', 'assets/json/slug.json');
 		this.game.load.atlas('spr_crawler', 'assets/img/crawler.png', 'assets/json/crawler.json');		
 		this.game.load.atlas('spr_kitchen', 'assets/img/spr_kitchen.png', 'assets/json/kitchen.json');
+		this.game.load.atlas('spr_right', 'assets/img/spr_right.png', 'assets/json/right.json');
 		
 		/* --Objects-- */
 		this.game.load.image('obj_bounds', 'assets/img/obj_bounds.png');
@@ -33,6 +34,7 @@ Logo.prototype = {
 		this.game.load.image('obj_curtains', 'assets/img/obj_curtains.png');
 		this.game.load.image('obj_diningtable', 'assets/img/obj_diningtable.png');
 		this.game.load.atlas('obj_chandalier', 'assets/img/obj_chandalier.png','assets/json/chandalier.json');
+		this.game.load.image('wall', 'assets/img/wall.png');
 
 		/* --SFX-- */
 		this.game.load.audio('snd_footstep1', 'assets/audio/footstep_grass1.mp3');

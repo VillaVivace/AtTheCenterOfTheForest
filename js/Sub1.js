@@ -1,7 +1,7 @@
+var mirror=false;
 var Sub1 = function(game) {
 	this.player;
-	this.mirror=false;
-	
+	//this.mirror=false;
 	this.border;
 	this.filter;
 	this.bounds;
@@ -79,7 +79,7 @@ Sub1.prototype = {
 	},
 	update: function() {
 		// Run the 'Play' state's game loop
-		console.log(this.mirror);
+		console.log(mirror);
 		/* --Collisions-- */
 		var isTouchingTable = game.physics.arcade.overlap(this.player, this.tables);
 		var touchedDoor = game.physics.arcade.overlap(this.player, this.door);
@@ -95,7 +95,7 @@ Sub1.prototype = {
 
 		if(touchMirror&&controls.space.isDown){
 			this.handMirror.alpha=0;
-			this.mirror=true;
+			mirror=true;
 		}
 
 
@@ -107,10 +107,6 @@ Sub1.prototype = {
 		this.border.bringToTop();
 		this.filter.bringToTop();
 
-	},
-	render: function() {
-   	 	game.debug.body(this.handMirror);
-   	 	game.debug.body(this.player);
 	}
 		
 }

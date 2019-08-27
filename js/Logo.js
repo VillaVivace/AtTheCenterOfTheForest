@@ -48,7 +48,7 @@ Level2.prototype = {
 		this.bounds.alpha = 0;
 		this.bound = this.bounds.create(148, 0, 'obj_bounds'); 
 		this.bound.body.immovable = true;
-		this.bound = this.bounds.create(4800, 0, 'obj_bounds');
+		this.bound = this.bounds.create(4600, 0, 'obj_bounds');
 		this.bound.body.immovable = true;
 		
 		this.diningtables = game.add.group();
@@ -62,7 +62,7 @@ Level2.prototype = {
 		game.physics.enable(this.door2);				
 		this.kitchendoor = game.add.sprite(3500, 0, 'obj_door');
 		game.physics.enable(this.kitchendoor);
-		this.exit= game.add.sprite(4800, 0, 'obj_door');
+		this.exit= game.add.sprite(4600, 0, 'obj_door');
 		game.physics.enable(this.exit);
 		
 		this.chandalier = game.add.sprite(1150, 0, 'obj_chandalier');

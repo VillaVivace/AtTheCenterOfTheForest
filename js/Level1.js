@@ -196,7 +196,8 @@ Level1.prototype = {
 			this.crawler.body.velocity.x = 600;
 		}else{
 			this.crawler.body.velocity.x = -600;}
-		}
+		} }
+
 
 		/* --crawler Movement-- */
 		if (this.crawler.body.velocity.x > 0) {
@@ -205,19 +206,15 @@ Level1.prototype = {
 			this.crawler.scale.x = 1;
 		}
 		
-		if (this.crawler.x <= 600) {
-			this.crawler.body.velocity.x = 350;
-		}else if(this.crawler.x >= 4200){
-		this.crawler.body.velocity.x = -350
-		}
-
 		if (crawlerTouchingTable) {
 			this.crawler.bringToTop();
 		}
 		if (crawlerTouchingEye) {
 			this.crawler.bringToTop();
 		}
+		if(this.crawler.body.x<=400||this.crawler.body.x>=4000){
+			this.crawler.body.velocity.x =-(this.crawler.body.velocity.x);
+		}
 	}
   	   	 		
-}
 }

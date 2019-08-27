@@ -44,9 +44,9 @@ Logo.prototype = {
 	},
 	create: function() {
 		console.log('Logo: create');
-		game.sound.stopAll();
-		titleAudio = game.add.audio('snd_title');
-		titleAudio.play('', 0, 0.05, true, true);
+//		game.sound.stopAll();
+//		titleAudio = game.add.audio('snd_title');
+//		titleAudio.play('', 0, 0.05, true, true);
 
 		this.eyeLogo = this.game.add.sprite(0, game.world.height/4, 'gui_eyeLogo');
 		this.eyeLogo.x = (game.world.centerX - (this.eyeLogo.width/2));

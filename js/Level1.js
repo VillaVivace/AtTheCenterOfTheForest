@@ -49,10 +49,10 @@ Level1.prototype = {
 		
 		this.curtains = game.add.group();
 		this.curtains.enableBody = true;
-		this.curtains.create(1000, 0, 'obj_curtains');
-		this.curtains.create(1800, 0, 'obj_curtains');
-		this.curtains.create(2600, 0, 'obj_curtains');
-		this.curtains.create(3400, 0, 'obj_curtains');
+		this.curtains.create(800, 0, 'obj_curtains');
+		this.curtains.create(1600, 0, 'obj_curtains');
+		this.curtains.create(2400, 0, 'obj_curtains');
+		this.curtains.create(3200, 0, 'obj_curtains');
 		this.curtains.create(4000, 0, 'obj_curtains');
 
 		this.door = this.game.add.sprite(4600, 0, 'obj_door');
@@ -61,19 +61,19 @@ Level1.prototype = {
 		//eyes
 		this.eyes = game.add.group();
 		this.eyes.enableBody = true;
-		this.eyeLogo = this.eyes.create(800, 200, 'gui_eyeLogo');	
+		this.eyeLogo = this.eyes.create(420, 200, 'gui_eyeLogo');	
 		this.eyeLogo.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 4, true);
 		this.eyeLogo.animations.play('eye');
-		this.eyeLogo = this.eyes.create(1500, 200, 'gui_eyeLogo');	
+		this.eyeLogo = this.eyes.create(1320, 200, 'gui_eyeLogo');	
 		this.eyeLogo.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 7, true);
 		this.eyeLogo.animations.play('eye');
-		this.eyeLogo = this.eyes.create(2300, 200, 'gui_eyeLogo');	            
+		this.eyeLogo = this.eyes.create(2120, 200, 'gui_eyeLogo');	            
 		this.eyeLogo.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 2, true);
 		this.eyeLogo.animations.play('eye');
-		this.eyeLogo = this.eyes.create(3200, 200, 'gui_eyeLogo');	
+		this.eyeLogo = this.eyes.create(2920, 200, 'gui_eyeLogo');	
 		this.eyeLogo.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 9, true);
 		this.eyeLogo.animations.play('eye');
-		this.eyeLogo = this.eyes.create(3800, 200, 'gui_eyeLogo');	
+		this.eyeLogo = this.eyes.create(3720, 200, 'gui_eyeLogo');	
 		this.eyeLogo.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 6, true);
 		this.eyeLogo.animations.play('eye');
 		

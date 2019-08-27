@@ -12,6 +12,10 @@ MainMenu.prototype = {
 		
 	},
 	create: function() {
+		game.sound.stopAll();
+		titleAudio = game.add.audio('snd_title');
+		titleAudio.play('', 0, 0.05, true, true);
+		
 		console.log('MainMenu: create');
 		game.camera.flash(0x000000, 1000);
 		
@@ -32,7 +36,7 @@ MainMenu.prototype = {
 			game.state.start('GroundLevelOutside');
 		};
 		var goToLoadStage = function() {
-			game.state.start('Level2');
+			game.state.start('Level1');
 		};
 		var playUp = function() {
 			this.game.camera.fade(0x000000, 1000);

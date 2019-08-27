@@ -31,14 +31,25 @@ MainMenu.prototype = {
 		var goToStage1 = function() {
 			game.state.start('GroundLevelOutside');
 		};
+		var goToLoadStage = function() {
+			game.state.start('Level1');
+		};
 		var playUp = function() {
 			this.game.camera.fade(0x000000, 1000);
 			titleAudio.fadeOut(1000);
 			this.transitionTimer.start();
 		};
+		var loadUp = function() {
+			this.game.camera.fade(0x000000, 1000);
+			titleAudio.fadeOut(1000);
+			this.transitionTimer2.start();
+		};
 		this.playButton.onInputUp.add(playUp, this);
 		this.transitionTimer = game.time.create(false);
-    	this.transitionTimer.add(1000, goToStage1, this, true); 
+		this.transitionTimer.add(1000, goToStage1, this, true);
+		this.loadButton.onInputUp.add(loadUp, this);
+		this.transitionTimer2 = game.time.create(false);
+    	this.transitionTimer2.add(1000, goToLoadStage, this, true); 
 	}, 
 	update: function() {
 		// Main Menu logic

@@ -7,6 +7,7 @@ Boot.prototype = {
 		/* --Music-- */
 		this.game.load.audio('snd_title', 'assets/audio/Title Screen.mp3');
 		this.game.load.audio('snd_anxiety', 'assets/audio/Anxiety.mp3');
+		this.game.load.audio('snd_level1', 'assets/audio/Level 1.mp3');
 		/* --UI-- */
 		this.game.load.atlas('gui_eyeLogo', 'assets/img/eyeLogo.png', 'assets/json/eyeLogo.json');
 	},

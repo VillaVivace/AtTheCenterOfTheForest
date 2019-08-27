@@ -215,7 +215,7 @@ Level1.prototype = {
    	 	game.debug.body(this.curtains);
    	 },
    	 
-   	 CreateEyes: function() {
+   	/* CreateEyes: function() {
 		this.eyeLogo= this.game.add.sprite(800, 200, 'gui_eyeLogo');	
 		this.eyeLogo.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 4, true);
 		this.eyeLogo.animations.play('eye');		
@@ -236,7 +236,7 @@ Level1.prototype = {
 		this.eyeLogo4.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 6, true);
 		this.eyeLogo4.animations.play('eye');		
 		game.physics.enable(this.eyeLogo4);
-   	 },
+   	 },*/
    	 
    	 SpeedUp: function(){
 		if(CloseEye==true){

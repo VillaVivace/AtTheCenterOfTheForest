@@ -169,7 +169,7 @@ Level1.prototype = {
 		}
 		
 		if(TouchingExit){
-			game.state.start('Level3');
+			game.state.start('Level2');
 		}
 
 		console.log('Close='+ CloseEye);

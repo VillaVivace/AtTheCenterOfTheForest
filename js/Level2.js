@@ -41,8 +41,6 @@ Level2.prototype = {
 	
 	create: function() {
 		console.log('Level2: create');
-		game.sound.stopAll();
-
 		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelLong');
 		game.world.setBounds(0, 0, 4800, 600);
 
@@ -58,15 +56,16 @@ Level2.prototype = {
 		this.bound.body.immovable = true;
 		
 		//monster 1
-		this.right = game.add.sprite(1500, game.world.height-225, 'spr_right');
+		this.right = game.add.sprite(1500, game.world.height-250, 'spr_right');
 		game.physics.enable(this.right);
-		this.right.anchor.set(0.5, 0.5);	
+		this.right.anchor.set(0.5, 0.5);
+		this.right.body.setSize(150, 300, 50, 50 );	
 
 		//tables
 		this.diningtables = game.add.group();
 		this.diningtables.enableBody = true;
-		this.diningtables.create(1000, 355, 'obj_diningtable');
-		this.diningtables.create(2700, 355, 'obj_diningtable');
+		this.diningtables.create(1000, 325, 'obj_diningtable');
+		this.diningtables.create(2700, 325, 'obj_diningtable');
 		
 		//doors
 		this.door1 = game.add.sprite(2100, 0, 'obj_door2');		
@@ -81,20 +80,21 @@ Level2.prototype = {
 
 		//chandaliers
 		this.chandalier = game.add.sprite(1150, 0, 'obj_chandalier');
-		this.chandalier.animations.add('anima', Phaser.Animation.generateFrameNames('chandalier', 0, 2), 6, true);
+		this.chandalier.animations.add('anima', Phaser.Animation.generateFrameNames('chandalier', 0, 2), 1, true);
 		this.chandalier.animations.play('anima');				
 		this.chandalier1 = game.add.sprite(2800, 0, 'obj_chandalier');
-		this.chandalier1.animations.add('anima', Phaser.Animation.generateFrameNames('chandalier', 0, 2), 6, true);
+		this.chandalier1.animations.add('anima', Phaser.Animation.generateFrameNames('chandalier', 0, 2), 1, true);
 		this.chandalier1.animations.play('anima');	
+		
+		//kitchen monster
+		this.kitchen = game.add.sprite(4300, game.world.height-200, 'spr_kitchen');
+		game.physics.enable(this.kitchen);
+		this.kitchen.anchor.set(0.5, 0.5);
 		
 		//player
 		this.player = new Player(game, 200, game.world.height - 200, 'spr_player', controls);
 		this.game.add.existing(this.player);
 
-		//kitchen monster
-		this.kitchen = game.add.sprite(4300, game.world.height-200, 'spr_kitchen');
-		game.physics.enable(this.kitchen);
-		this.kitchen.anchor.set(0.5, 0.5);
 
 
 		
@@ -117,10 +117,10 @@ Level2.prototype = {
 		this.dialogBox1.alpha = 0;
 
 		this.dialogBox2 = game.add.sprite(2600, game.world.height-200, 'gui_dialogBox');
-		this.dialogBox1.alpha = 0;
+		this.dialogBox2.alpha = 0;
 		
 		this.dialogBox3 = game.add.sprite(4300, game.world.height-200, 'gui_dialogBox');
-		this.dialogBox1.alpha = 0;
+		this.dialogBox3.alpha = 0;
 		
 		this.showJournal = function(show) {
 			if (show == true) {
@@ -159,10 +159,10 @@ Level2.prototype = {
 		game.physics.arcade.collide(this.player, this.bounds);
 
 		/* --Cutscenes-- */
-		/* if (this.cutsceneTriggered == false && this.player.x > 600) {
+		if (this.cutsceneTriggered == false && this.player.x > 600) {
 			this.player.changeState('cutscene');
 			this.journalTimer.start();
-		} */
+		}
 		if (controls.space.justDown && this.cutsceneTriggered == true) {
 			this.showJournal(false);
 		}
@@ -225,11 +225,14 @@ Level2.prototype = {
 		this.dialogBox.bringToTop();
 		this.journal.bringToTop();
 		this.text.bringToTop();			
+	},
 
-
+	render: function() {
+   	 	game.debug.body(this.right);
+   	 	game.debug.body(this.player);
 	}		
 }
-
+		
 	function blink(){
 		this.blinktime++;
 		console.log(this.blinktime);		

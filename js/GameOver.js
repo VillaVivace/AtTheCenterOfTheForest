@@ -12,7 +12,7 @@ GameOver.prototype = {
 	update: function() {
 		// Game Over logic
 		if (controls.space.justDown) {
-			game.state.start('MainMenu');
+			game.state.start('Logo');
 		}
 		
 	}

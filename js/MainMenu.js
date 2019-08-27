@@ -32,7 +32,7 @@ MainMenu.prototype = {
 			game.state.start('GroundLevelOutside');
 		};
 		var goToLoadStage = function() {
-			game.state.start('Level1');
+			game.state.start('Level2');
 		};
 		var playUp = function() {
 			this.game.camera.fade(0x000000, 1000);

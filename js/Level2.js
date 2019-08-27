@@ -159,10 +159,10 @@ Level2.prototype = {
 		game.physics.arcade.collide(this.player, this.bounds);
 
 		/* --Cutscenes-- */
-		if (this.cutsceneTriggered == false && this.player.x > 600) {
+		/* if (this.cutsceneTriggered == false && this.player.x > 600) {
 			this.player.changeState('cutscene');
 			this.journalTimer.start();
-		}
+		} */
 		if (controls.space.justDown && this.cutsceneTriggered == true) {
 			this.showJournal(false);
 		}

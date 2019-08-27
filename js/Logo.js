@@ -43,7 +43,7 @@ Logo.prototype = {
 	},
 	create: function() {
 		console.log('Logo: create');
-
+		game.sound.stopAll();
 		titleAudio = game.add.audio('snd_title');
 		titleAudio.play('', 0, 0.05, true, true);
 

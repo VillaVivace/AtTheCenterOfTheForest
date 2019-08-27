@@ -1,7 +1,6 @@
 var Level1 = function(game) {
 	this.player;
 	this.crawler;
-	this.crawlerFlipped = false;
 	this.eyes;
 	this.eyeLogo;
 
@@ -19,6 +18,7 @@ var Level1 = function(game) {
 	this.helpText = false;
 
 	this.curtains;
+	this.exit;
 };
 
 Level1.prototype = {
@@ -50,6 +50,8 @@ Level1.prototype = {
 		this.curtains.create(2600, 0, 'obj_curtains');
 		this.curtains.create(3400, 0, 'obj_curtains');
 		this.curtains.create(4000, 0, 'obj_curtains');
+		this.exit= game.add.sprite(4600, 0, 'obj_door');
+		game.physics.enable(this.exit);
 		
 		//eyes
 		this.eyeLogo= this.game.add.sprite(800, 200, 'gui_eyeLogo');	
@@ -77,10 +79,10 @@ Level1.prototype = {
 		this.player = new Player(game, 200, game.world.height - 200, 'spr_player', controls);
 		this.game.add.existing(this.player);
 
-		this.crawler = game.add.sprite(1300, game.world.height-150, 'spr_crawler');
+		this.crawler = game.add.sprite(2300, game.world.height-150, 'spr_crawler');
 		game.physics.enable(this.crawler);
 		this.crawler.anchor.set(0.5, 0.5);
-		this.crawler.body.velocity.x = 350;
+		this.crawler.body.velocity.x = -350;
 		this.crawler.animations.add('walk', Phaser.Animation.generateFrameNames('walk', 1, 4), 7, true);
 		this.crawler.animations.play('walk');
 
@@ -148,7 +150,10 @@ Level1.prototype = {
 		var crawlerTouchingEye = game.physics.arcade.overlap(this.crawler, this.eyeLogo)		
 		var Die = game.physics.arcade.overlap(this.player, this.crawler);
 		var CloseEye=false;
+		var TouchingExit = game.physics.arcade.overlap(this.player, this.exit);
 		game.physics.arcade.collide(this.player, this.bounds);
+
+		
 		
 		var t1=game.physics.arcade.overlap(this.player, this.eyeLogo);
 		var t2=game.physics.arcade.overlap(this.player, this.eyeLogo1);
@@ -161,6 +166,10 @@ Level1.prototype = {
 			this.eyeLogo.animations.currentAnim.frame==11||
 			this.eyeLogo.animations.currentAnim.frame==15){
 			 CloseEye = true;
+		}
+		
+		if(TouchingExit){
+			game.state.start('Level3');
 		}
 
 		console.log('Close='+ CloseEye);
@@ -180,13 +189,12 @@ Level1.prototype = {
 		
 		if (t1||t2||t3||t4||t5) {
 			if(CloseEye==true){
-		this.player.bringToTop();}
-		else{
-			this.player.bringToTop();			
+		this.player.bringToTop();
+		}else{
+		this.player.bringToTop();			
 		if(this.crawler.x<this.player.x){
 			this.crawler.body.velocity.x = 600;
 		}else{
-			this.crawlerFlipped == true;
 			this.crawler.body.velocity.x = -600;}
 		}
 
@@ -196,14 +204,13 @@ Level1.prototype = {
 		} else {
 			this.crawler.scale.x = 1;
 		}
+		
+		if (this.crawler.x <= 600) {
+			this.crawler.body.velocity.x = 350;
+		}else if(this.crawler.x >= 4200){
+		this.crawler.body.velocity.x = -350
+		}
 
-	if ((this.crawler.x <= 400 || this.crawler.x >= 4250) && this.crawlerFlipped == false) {
-			this.crawlerFlipped = true;
-			this.crawler.body.velocity.x = -(this.crawler.body.velocity.x);
-		}
-		if (this.crawler.x >= 1200 && this.crawler.x <= 1400) {
-			this.crawlerFlipped = false;
-		}
 		if (crawlerTouchingTable) {
 			this.crawler.bringToTop();
 		}

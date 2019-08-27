@@ -20,6 +20,7 @@ var Level1 = function(game) {
 
 	this.curtains;
 };
+
 Level1.prototype = {
 	preload: function() {
 		// Anything to preload during the Play state
@@ -55,20 +56,20 @@ Level1.prototype = {
 		this.eyeLogo.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 4, true);
 		this.eyeLogo.animations.play('eye');		
 		game.physics.enable(this.eyeLogo);
-		this.eyeLogo1= this.game.add.sprite(1400, 200, 'gui_eyeLogo');	
-		this.eyeLogo1.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 4, true);
+		this.eyeLogo1= this.game.add.sprite(1500, 200, 'gui_eyeLogo');	
+		this.eyeLogo1.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 7, true);
 		this.eyeLogo1.animations.play('eye');		
 		game.physics.enable(this.eyeLogo1);
-		this.eyeLogo2= this.game.add.sprite(2000, 200, 'gui_eyeLogo');	
-		this.eyeLogo2.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 4, true);
+		this.eyeLogo2= this.game.add.sprite(2300, 200, 'gui_eyeLogo');	            
+		this.eyeLogo2.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 2, true);
 		this.eyeLogo2.animations.play('eye');		
 		game.physics.enable(this.eyeLogo2);
-		this.eyeLogo3= this.game.add.sprite(2600, 200, 'gui_eyeLogo');	
-		this.eyeLogo3.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 4, true);
+		this.eyeLogo3= this.game.add.sprite(3200, 200, 'gui_eyeLogo');	
+		this.eyeLogo3.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 9, true);
 		this.eyeLogo3.animations.play('eye');		
 		game.physics.enable(this.eyeLogo3);
-		this.eyeLogo4= this.game.add.sprite(3500, 200, 'gui_eyeLogo');	
-		this.eyeLogo4.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 4, true);
+		this.eyeLogo4= this.game.add.sprite(3800, 200, 'gui_eyeLogo');	
+		this.eyeLogo4.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 6, true);
 		this.eyeLogo4.animations.play('eye');		
 		game.physics.enable(this.eyeLogo4);
 		
@@ -149,11 +150,11 @@ Level1.prototype = {
 		var CloseEye=false;
 		game.physics.arcade.collide(this.player, this.bounds);
 		
-		game.physics.arcade.overlap(this.player, this.eyeLogo, SpeedUp, null);
-		game.physics.arcade.overlap(this.player, this.eyeLogo1, SpeedUp, null);
-		game.physics.arcade.overlap(this.player, this.eyeLogo2, SpeedUp, null);
-		game.physics.arcade.overlap(this.player, this.eyeLogo3, SpeedUp, null);
-		game.physics.arcade.overlap(this.player, this.eyeLogo4, SpeedUp, null);
+		var t1=game.physics.arcade.overlap(this.player, this.eyeLogo);
+		var t2=game.physics.arcade.overlap(this.player, this.eyeLogo1);
+		var t3=game.physics.arcade.overlap(this.player, this.eyeLogo2);
+		var t4=game.physics.arcade.overlap(this.player, this.eyeLogo3);
+		var t5=game.physics.arcade.overlap(this.player, this.eyeLogo4);
 		
 		if(this.eyeLogo.animations.currentAnim.frame==3||
 			this.eyeLogo.animations.currentAnim.frame==7||
@@ -162,7 +163,7 @@ Level1.prototype = {
 			 CloseEye = true;
 		}
 
-		console.log('Close='+CloseEye);
+		console.log('Close='+ CloseEye);
 
 		/* --Cutscenes-- */
 		if (this.cutsceneTriggered == false && this.player.x > 600) {
@@ -177,14 +178,17 @@ Level1.prototype = {
 			this.player.changeState('hidden');
 		}
 		
-	/*	if (TouchingEye && CloseEye==false) {
-		this.player.bringToTop();			
+		if (t1||t2||t3||t4||t5) {
+			if(CloseEye==true){
+		this.player.bringToTop();}
+		else{
+			this.player.bringToTop();			
 		if(this.crawler.x<this.player.x){
 			this.crawler.body.velocity.x = 600;
 		}else{
 			this.crawlerFlipped == true;
 			this.crawler.body.velocity.x = -600;}
-		}*/
+		}
 
 		/* --crawler Movement-- */
 		if (this.crawler.body.velocity.x > 0) {
@@ -206,49 +210,7 @@ Level1.prototype = {
 		if (crawlerTouchingEye) {
 			this.crawler.bringToTop();
 		}
-	},
-
-		render:function() {
-   	 	game.debug.body(this.crawler);
-   	 	game.debug.body(this.eyeLogo);
-   	 	game.debug.body(this.player);
-   	 	game.debug.body(this.curtains);
-   	 },
-   	 
-   	/* CreateEyes: function() {
-		this.eyeLogo= this.game.add.sprite(800, 200, 'gui_eyeLogo');	
-		this.eyeLogo.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 4, true);
-		this.eyeLogo.animations.play('eye');		
-		game.physics.enable(this.eyeLogo);
-		this.eyeLogo1= this.game.add.sprite(1400, 200, 'gui_eyeLogo');	
-		this.eyeLogo1.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 7, true);
-		this.eyeLogo1.animations.play('eye');		
-		game.physics.enable(this.eyeLogo1);
-		this.eyeLogo2= this.game.add.sprite(2000, 200, 'gui_eyeLogo');	
-		this.eyeLogo2.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 2, true);
-		this.eyeLogo2.animations.play('eye');		
-		game.physics.enable(this.eyeLogo2);
-		this.eyeLogo3= this.game.add.sprite(2600, 200, 'gui_eyeLogo');	
-		this.eyeLogo3.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 9, true);
-		this.eyeLogo3.animations.play('eye');		
-		game.physics.enable(this.eyeLogo3);
-		this.eyeLogo4= this.game.add.sprite(3500, 200, 'gui_eyeLogo');	
-		this.eyeLogo4.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 6, true);
-		this.eyeLogo4.animations.play('eye');		
-		game.physics.enable(this.eyeLogo4);
-   	 },*/
-   	 
-   	 SpeedUp: function(){
-		if(CloseEye==true){
-		this.player.bringToTop();}
-		else{
-			this.player.bringToTop();			
-		if(this.crawler.x<this.player.x){
-			this.crawler.body.velocity.x = 600;
-		}else{
-			this.crawlerFlipped == true;
-			this.crawler.body.velocity.x = -600;}}
-		
-   	 }
-		
+	}
+  	   	 		
+}
 }

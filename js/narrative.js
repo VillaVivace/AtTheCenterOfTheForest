@@ -6,5 +6,13 @@ function narrative(line) {
         case "stage2_1":
             return '*NEW JOUNRAL ENTRY* \"I am already regretting my decision to come here.\nJust have to push on...\" [Press SPACE to continue]';
         break;
+        
+        case "L2_2":
+            return 'Am I beautiful?\nYes[up]\nNo[down]';
+        break;
+       
+        case "L2_1":
+            return 'XD';
+        break;
     }
 }

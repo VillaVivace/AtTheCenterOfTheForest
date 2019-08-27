@@ -2,6 +2,7 @@ var Level1 = function(game) {
 	this.player;
 	this.crawler;
 	this.crawlerFlipped = false;
+	this.eyes;
 	this.eyeLogo;
 
 	this.border;
@@ -19,6 +20,7 @@ var Level1 = function(game) {
 
 	this.curtains;
 };
+
 Level1.prototype = {
 	preload: function() {
 		// Anything to preload during the Play state
@@ -28,7 +30,7 @@ Level1.prototype = {
 	create: function() {
 		console.log('Level1: create');
 		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelLong');
-		game.world.setBounds(0, 0, 2400, 600);
+		game.world.setBounds(0, 0, 4800, 600);
 
 		game.add.audio('snd_anxiety').play('', 0, 0.5, true);
 
@@ -38,18 +40,38 @@ Level1.prototype = {
 		this.bounds.alpha = 0;
 		this.bound = this.bounds.create(148, 0, 'obj_bounds');
 		this.bound.body.immovable = true;
-		this.bound = this.bounds.create(2210, 0, 'obj_bounds');
+		this.bound = this.bounds.create(4700, 0, 'obj_bounds');
 		this.bound.body.immovable = true;
 		
 		this.curtains = game.add.group();
 		this.curtains.enableBody = true;
 		this.curtains.create(1000, 0, 'obj_curtains');
-		this.curtains.create(1750, 0, 'obj_curtains');
+		this.curtains.create(1800, 0, 'obj_curtains');
+		this.curtains.create(2600, 0, 'obj_curtains');
+		this.curtains.create(3400, 0, 'obj_curtains');
+		this.curtains.create(4000, 0, 'obj_curtains');
 		
-		this.eyeLogo = this.game.add.sprite(800, 200, 'gui_eyeLogo');	
+		//eyes
+		this.eyeLogo= this.game.add.sprite(800, 200, 'gui_eyeLogo');	
 		this.eyeLogo.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 4, true);
 		this.eyeLogo.animations.play('eye');		
 		game.physics.enable(this.eyeLogo);
+		this.eyeLogo1= this.game.add.sprite(1500, 200, 'gui_eyeLogo');	
+		this.eyeLogo1.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 7, true);
+		this.eyeLogo1.animations.play('eye');		
+		game.physics.enable(this.eyeLogo1);
+		this.eyeLogo2= this.game.add.sprite(2300, 200, 'gui_eyeLogo');	            
+		this.eyeLogo2.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 2, true);
+		this.eyeLogo2.animations.play('eye');		
+		game.physics.enable(this.eyeLogo2);
+		this.eyeLogo3= this.game.add.sprite(3200, 200, 'gui_eyeLogo');	
+		this.eyeLogo3.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 9, true);
+		this.eyeLogo3.animations.play('eye');		
+		game.physics.enable(this.eyeLogo3);
+		this.eyeLogo4= this.game.add.sprite(3800, 200, 'gui_eyeLogo');	
+		this.eyeLogo4.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 6, true);
+		this.eyeLogo4.animations.play('eye');		
+		game.physics.enable(this.eyeLogo4);
 		
 		//player
 		this.player = new Player(game, 200, game.world.height - 200, 'spr_player', controls);
@@ -58,8 +80,8 @@ Level1.prototype = {
 		this.crawler = game.add.sprite(1300, game.world.height-150, 'spr_crawler');
 		game.physics.enable(this.crawler);
 		this.crawler.anchor.set(0.5, 0.5);
-		this.crawler.body.velocity.x = 225;
-		this.crawler.animations.add('walk', Phaser.Animation.generateFrameNames('walk', 1, 4), 4, true);
+		this.crawler.body.velocity.x = 350;
+		this.crawler.animations.add('walk', Phaser.Animation.generateFrameNames('walk', 1, 4), 7, true);
 		this.crawler.animations.play('walk');
 
 
@@ -123,19 +145,25 @@ Level1.prototype = {
 		/* --Collisions-- */
 		var isTouchingTable = game.physics.arcade.overlap(this.player, this.curtains);
 		var crawlerTouchingTable = game.physics.arcade.overlap(this.crawler, this.curtains);
-		var crawlerTouchingEye = game.physics.arcade.overlap(this.crawler, this.eyeLogo);
-		var TouchingEye = game.physics.arcade.overlap(this.player, this.eyeLogo);
+		var crawlerTouchingEye = game.physics.arcade.overlap(this.crawler, this.eyeLogo)		
 		var Die = game.physics.arcade.overlap(this.player, this.crawler);
 		var CloseEye=false;
 		game.physics.arcade.collide(this.player, this.bounds);
 		
-		/*if(this.eyeLogo.animations.currentAnim.frame=3
-			/*this.eyeLogo.animations.currentAnim.frame=7||
-			this.eyeLogo.animations.currentAnim.frame=11
-			this.eyeLogo.animations.currentAnim.frame=15){
-			 CloseEye == true;
+		var t1=game.physics.arcade.overlap(this.player, this.eyeLogo);
+		var t2=game.physics.arcade.overlap(this.player, this.eyeLogo1);
+		var t3=game.physics.arcade.overlap(this.player, this.eyeLogo2);
+		var t4=game.physics.arcade.overlap(this.player, this.eyeLogo3);
+		var t5=game.physics.arcade.overlap(this.player, this.eyeLogo4);
+		
+		if(this.eyeLogo.animations.currentAnim.frame==3||
+			this.eyeLogo.animations.currentAnim.frame==7||
+			this.eyeLogo.animations.currentAnim.frame==11||
+			this.eyeLogo.animations.currentAnim.frame==15){
+			 CloseEye = true;
 		}
-		console.log('Close='+CloseEye);*/
+
+		console.log('Close='+ CloseEye);
 
 		/* --Cutscenes-- */
 		if (this.cutsceneTriggered == false && this.player.x > 600) {
@@ -150,12 +178,16 @@ Level1.prototype = {
 			this.player.changeState('hidden');
 		}
 		
-		if (TouchingEye&&CloseEye==false) {
-		this.player.bringToTop();			
-		if(this.crawler.x<this.player.x){this.crawler.body.velocity.x = 400;}
+		if (t1||t2||t3||t4||t5) {
+			if(CloseEye==true){
+		this.player.bringToTop();}
 		else{
+			this.player.bringToTop();			
+		if(this.crawler.x<this.player.x){
+			this.crawler.body.velocity.x = 600;
+		}else{
 			this.crawlerFlipped == true;
-			this.crawler.body.velocity.x = -400;}
+			this.crawler.body.velocity.x = -600;}
 		}
 
 		/* --crawler Movement-- */
@@ -164,7 +196,8 @@ Level1.prototype = {
 		} else {
 			this.crawler.scale.x = 1;
 		}
-		if ((this.crawler.x <= 600 || this.crawler.x >= 1950) && this.crawlerFlipped == false) {
+
+	if ((this.crawler.x <= 400 || this.crawler.x >= 4250) && this.crawlerFlipped == false) {
 			this.crawlerFlipped = true;
 			this.crawler.body.velocity.x = -(this.crawler.body.velocity.x);
 		}
@@ -177,12 +210,7 @@ Level1.prototype = {
 		if (crawlerTouchingEye) {
 			this.crawler.bringToTop();
 		}
-	},
-
-		render:function() {
-   	 	game.debug.body(this.crawler);
-   	 	game.debug.body(this.eyeLogo);
-   	 	game.debug.body(this.player);
-   	 }
-		
+	}
+  	   	 		
+}
 }

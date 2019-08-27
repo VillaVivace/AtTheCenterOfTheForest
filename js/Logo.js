@@ -22,12 +22,18 @@ Logo.prototype = {
 		/* --Player and Monsters-- */
 		this.game.load.atlas('spr_player', 'assets/img/player.png', 'assets/json/player.json');
 		this.game.load.atlas('spr_slug', 'assets/img/slug.png', 'assets/json/slug.json');
-		this.game.load.atlas('spr_crawler', 'assets/img/crawler.png', 'assets/json/crawler.json');
+		this.game.load.atlas('spr_crawler', 'assets/img/crawler.png', 'assets/json/crawler.json');		
+		this.game.load.atlas('spr_kitchen', 'assets/img/spr_kitchen.png', 'assets/json/kitchen.json');
+		
 		/* --Objects-- */
-		this.game.load.image('obj_bounds', 'assets/img/obj_bounds.png')
+		this.game.load.image('obj_bounds', 'assets/img/obj_bounds.png');
 		this.game.load.image('obj_table', 'assets/img/obj_table.png');
 		this.game.load.image('obj_door', 'assets/img/obj_door.png');
+		this.game.load.image('obj_door2', 'assets/img/obj_door2.png');
 		this.game.load.image('obj_curtains', 'assets/img/obj_curtains.png');
+		this.game.load.image('obj_diningtable', 'assets/img/obj_diningtable.png');
+		this.game.load.atlas('obj_chandalier', 'assets/img/obj_chandalier.png','assets/json/chandalier.json');
+
 		/* --SFX-- */
 		this.game.load.audio('snd_footstep1', 'assets/audio/footstep_grass1.mp3');
 		this.game.load.audio('snd_footstep2', 'assets/audio/footstep_grass2.mp3');

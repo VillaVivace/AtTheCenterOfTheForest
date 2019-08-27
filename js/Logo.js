@@ -25,6 +25,7 @@ Logo.prototype = {
 		this.game.load.atlas('spr_crawler', 'assets/img/crawler.png', 'assets/json/crawler.json');		
 		this.game.load.atlas('spr_kitchen', 'assets/img/spr_kitchen.png', 'assets/json/kitchen.json');
 		this.game.load.atlas('spr_right', 'assets/img/spr_right.png', 'assets/json/right.json');
+		this.game.load.atlas('spr_left', 'assets/img/spr_left.png', 'assets/json/left.json');
 		
 		/* --Objects-- */
 		this.game.load.image('obj_bounds', 'assets/img/obj_bounds.png');

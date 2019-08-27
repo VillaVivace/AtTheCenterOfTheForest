@@ -50,9 +50,9 @@ Player.prototype.update = function() {
 		
 		switch(this.state) {
   			case 'normal':
-				if (controls.space.isDown) {
-					console.log(this.x);
-				}
+				// if (controls.space.isDown) {
+				// 	console.log(this.x);
+				// }
 				this.alpha = 1;
 				this.body.velocity.x = 0;
 				this.scale.x = this.direction;
@@ -69,6 +69,11 @@ Player.prototype.update = function() {
 				else {
 					this.animations.play('idle');
 				}
+				/* if (controls.shift.isDown) {
+					this.speed = 800;
+				} else {
+					this.speed = 200;
+				} */
 			break;
 			
 			case 'cutscene':

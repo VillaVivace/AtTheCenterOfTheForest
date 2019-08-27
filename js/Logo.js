@@ -13,6 +13,7 @@ Logo.prototype = {
 		this.game.load.image('bkg_intro', 'assets/img/background_intro.png');
 		this.game.load.image('bkg_levelShort', 'assets/img/background_levelShort.png');
 		this.game.load.image('bkg_levelLong', 'assets/img/background_levelLong.png');
+		this.game.load.image('bkg_stairs', 'assets/img/stairs.png');
 		/* --GUI-- */
 		this.game.load.image('gui_dialogBox', 'assets/img/gui_dialogBox.png');
 		this.game.load.image('gui_journal', 'assets/img/gui_journal.png');
@@ -41,6 +42,7 @@ Logo.prototype = {
 		this.game.load.audio('snd_footstep1', 'assets/audio/footstep_grass1.mp3');
 		this.game.load.audio('snd_footstep2', 'assets/audio/footstep_grass2.mp3');
 		this.game.load.audio('snd_door', 'assets/audio/door_open.mp3');
+		this.game.load.audio('snd_pageTurn', 'assets/audio/pageTurn.mp3');
 	},
 	create: function() {
 		console.log('Logo: create');

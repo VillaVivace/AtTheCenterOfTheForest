@@ -36,7 +36,7 @@ MainMenu.prototype = {
 			game.state.start('GroundLevelOutside');
 		};
 		var goToLoadStage = function() {
-			game.state.start('Level1');
+			game.state.start('GroundLevelInside');
 		};
 		var playUp = function() {
 			this.game.camera.fade(0x000000, 1000);

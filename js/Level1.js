@@ -31,11 +31,9 @@ Level1.prototype = {
 	},
 	create: function() {
 		console.log('Level1: create');
-		game.sound.stopAll();
-
 		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelLong');
 		game.world.setBounds(0, 0, 4800, 600);
-
+		game.sound.stopAll();
 		game.add.audio('snd_level1').play('', 0, 0.5, true);
 
 		/* --Objects & Furniture-- */
@@ -131,7 +129,7 @@ Level1.prototype = {
 		var isTouchingCurtains = game.physics.arcade.overlap(this.player, this.curtains);
 		var crawlerTouchingCurtains = game.physics.arcade.overlap(this.crawler, this.curtains);
 		var crawlerTouchingEye = game.physics.arcade.overlap(this.crawler, this.eyeLogo)		
-		var Die = game.physics.arcade.overlap(this.player, this.crawler);
+		var playerTouchingCrawler = game.physics.arcade.overlap(this.player, this.crawler);
 		var playerTouchingEye = game.physics.arcade.overlap(this.player, this.eyes, callMonster, null, this);
 		game.physics.arcade.collide(this.player, this.bounds);
 		
@@ -142,10 +140,14 @@ Level1.prototype = {
 		} */
 		
 		if (touchedDoor) {
+			game.sound.stopAll();
 			game.add.audio('snd_door').play('', 0, 0.05, false, false);
-			game.state.start('Level2');
+			game.state.start('Stairs2');
 		}
 
+		if (playerTouchingCrawler && this.player.getState() == 'normal') {
+			game.state.start('GameOver');
+		}
 		if (controls.space.justDown && this.cutsceneTriggered == true) {
 			this.showJournal(false);
 		}

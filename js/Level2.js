@@ -43,6 +43,7 @@ Level2.prototype = {
 		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelShort');
 		game.world.setBounds(0, 0, 2400, 600);
 
+		game.sound.stopAll();
 		game.add.audio('snd_anxiety').play('', 0, 0.5, true);
 		
 		/* --Objects & Furniture-- */

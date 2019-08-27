@@ -29,7 +29,6 @@ Sub1.prototype = {
 		console.log('Sub1: create');
 		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelShort');
 		game.world.setBounds(0, 0, 2400, 600);
-		game.add.audio('snd_anxiety').play('', 0, 0.5, true);
 
 		/* --Objects & Furniture-- */
 		//bounds
@@ -94,10 +93,11 @@ Sub1.prototype = {
 		}
 
 		if(touchMirror&&controls.space.isDown){
-			this.handMirror.alpha=0;
 			mirror=true;
 		}
-
+		if (mirror == true) {
+			this.handMirror.alpha=0;
+		}
 
 		/* --GUI & Effects Positioning-- */
 		this.border.x = game.camera.x - 16; // We want the GUI and FX to align with the camera, not just a world position

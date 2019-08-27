@@ -63,35 +63,6 @@ GroundLevelInside.prototype = {
 		this.border = game.add.sprite(0, 0, 'gui_border');
 		this.border.scale.setTo(1, 1);
 		game.world.bringToTop(this.border);
-		this.journal = game.add.sprite(0, 0, 'gui_journal');
-		this.journal.scale.setTo(0.75, 0.75);
-		this.journal.alpha = 0;
-		this.dialogBox = game.add.sprite(0, 0, 'gui_dialogBox');
-		this.dialogBox.alpha = 0;
-		var textStyle = { font: "16px Times New Roman", fill: "#ffffff"}
-		this.text = this.game.add.text(0, 0, narrative("stage2_1"), textStyle);
-		this.text.alpha = 0;
-
-		this.showJournal = function(show) {
-			if (show == true) {
-				this.cutsceneTriggered = true;
-				this.dialogBox.alpha = 1;
-				this.journal.alpha = 1;
-				this.text.alpha = 1;
-			}
-			else {
-				this.player.changeState('normal');
-				this.dialogBox.alpha = 0;
-				this.journal.alpha = 0;
-				this.text.alpha = 0;
-			}
-		};
-
-		this.journalTimer = game.time.create(false);
-    	this.journalTimer.add(500, this.showJournal, this, true); 
-
-		
-		
 	},
 	update: function() {
 		// Run the 'Play' state's game loop
@@ -103,15 +74,6 @@ GroundLevelInside.prototype = {
 		var touchedDoor = game.physics.arcade.collide(this.player, this.door);
 		game.physics.arcade.collide(this.player, this.bounds);
 
-		/* --Cutscenes-- */
-		if (this.cutsceneTriggered == false && this.player.x > 600) {
-			this.player.changeState('cutscene');
-			this.journalTimer.start();
-		}
-		if (controls.space.justDown && this.cutsceneTriggered == true) {
-			this.showJournal(false);
-		}
-
 		/* --Interaction-- */
 		if (isTouchingTable && controls.space.isDown) {
 			game.world.bringToTop(this.tables);
@@ -121,8 +83,9 @@ GroundLevelInside.prototype = {
 			game.state.start('GameOver');
 		}
 		if (touchedDoor) {
+			game.sound.stopAll();
 			game.add.audio('snd_door').play('', 0, 0.05, false, false);
-			game.state.start('Level1');
+			game.state.start('Stairs1');
 		}
 
 		/* --Slug Movement-- */
@@ -147,17 +110,8 @@ GroundLevelInside.prototype = {
 		this.border.y = game.camera.y;
 		this.filter.x = game.camera.x - 16;
 		this.filter.y = game.camera.y;
-		this.dialogBox.x = game.camera.x + (game.camera.width/2 - this.dialogBox.width/2);
-		this.dialogBox.y = game.camera.y + (game.world.height - this.dialogBox.height);
-		this.journal.x = game.camera.x + (game.camera.width/2 - this.journal.width/2);
-		this.journal.y = this.dialogBox.y - this.journal.height;
-		this.text.x = this.dialogBox.x + 32;
-		this.text.y = this.dialogBox.y + 32;
 		this.border.bringToTop();
 		this.filter.bringToTop();
-		this.dialogBox.bringToTop();
-		this.journal.bringToTop();
-		this.text.bringToTop();		
 	}
 		
 }

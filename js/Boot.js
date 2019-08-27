@@ -5,7 +5,7 @@ Boot.prototype = {
 	preload: function() {
 		console.log('Boot: preload');
 		/* --Music-- */
-		this.game.load.audio('snd_title', 'assets/audio/Title Screen.mp3');
+		this.game.load.audio('snd_title', 'assets/audio/Its Over.mp3');
 		this.game.load.audio('snd_anxiety', 'assets/audio/Anxiety.mp3');
 		this.game.load.audio('snd_level1', 'assets/audio/Level 1.mp3');
 		/* --UI-- */
@@ -26,6 +26,7 @@ Boot.prototype = {
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		
 		controls = game.input.keyboard.addKeys({ // Custom Keys for our game
+			'shift': Phaser.Keyboard.SHIFT,
 			'space': Phaser.Keyboard.SPACEBAR,
 			'left': Phaser.Keyboard.LEFT,
 			'right': Phaser.Keyboard.RIGHT,

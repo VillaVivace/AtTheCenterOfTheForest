@@ -10,7 +10,7 @@ function Player(game, x, y, key, controls) {
 	
 	/* --Player properties-- */
 	game.physics.enable(this);
-	this.body.setSize(50, 200, 25);
+	this.body.setSize(50, 200, 50);
 	this.body.collideWorldBounds = true;
 	this.body.gravity.y = 0;
 	this.anchor.set(0.5, 0.5);

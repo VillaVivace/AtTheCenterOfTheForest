@@ -16,6 +16,7 @@ var GroundLevelInside = function(game) {
 	this.stepTimer;
 	this.helpText = false;
 
+	this.door;
 	this.tables;
 };
 GroundLevelInside.prototype = {
@@ -43,6 +44,8 @@ GroundLevelInside.prototype = {
 		this.tables.enableBody = true;
 		this.tables.create(1000, 355, 'obj_table');
 		this.tables.create(1750, 355, 'obj_table');
+		this.door = this.game.add.sprite(2200, 0, 'obj_door');
+		game.physics.enable(this.door);
 
 		this.player = new Player(game, 200, game.world.height - 200, 'spr_player', controls);
 		this.game.add.existing(this.player);
@@ -50,7 +53,7 @@ GroundLevelInside.prototype = {
 		this.slug = game.add.sprite(1300, game.world.height-200, 'spr_slug');
 		game.physics.enable(this.slug);
 		this.slug.anchor.set(0.5, 0.5);
-		this.slug.body.velocity.x = 225;
+		this.slug.body.velocity.x = 205;
 		this.slug.animations.add('walk', Phaser.Animation.generateFrameNames('slug', 1, 2), 4, true);
 		this.slug.animations.play('walk');
 		
@@ -97,6 +100,7 @@ GroundLevelInside.prototype = {
 		var isTouchingTable = game.physics.arcade.overlap(this.player, this.tables);
 		var slugTouchingTable = game.physics.arcade.overlap(this.slug, this.tables);
 		var slugTouchingPlayer = game.physics.arcade.overlap(this.slug, this.player);
+		var touchedDoor = game.physics.arcade.collide(this.player, this.door);
 		game.physics.arcade.collide(this.player, this.bounds);
 
 		/* --Cutscenes-- */
@@ -115,6 +119,10 @@ GroundLevelInside.prototype = {
 		}
 		if (this.player.getState() == 'normal' && slugTouchingPlayer) {
 			game.state.start('GameOver');
+		}
+		if (touchedDoor) {
+			game.add.audio('snd_door').play('', 0, 0.05, false, false);
+			game.state.start('Level1');
 		}
 
 		/* --Slug Movement-- */

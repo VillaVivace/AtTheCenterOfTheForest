@@ -97,8 +97,8 @@ GroundLevelOutside.prototype = {
 			this.showJournal(false);
 		}
 
-		if (touchedDoor) { // Area of door
-			game.add.audio('snd_door').play('', 0, 0.1, false, false);
+		if (touchedDoor) {
+			game.add.audio('snd_door').play('', 0, 0.05, false, false);
 			game.state.start('GroundLevelInside');
 		}
 	}

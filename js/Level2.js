@@ -6,22 +6,16 @@ var Level2 = function(game) {
 
 	this.border;
 	this.filter;
-	this.journal;
-	this.dialogBox;
 	this.dialogBox1;
 	this.dialogBox2;
 	this.dialogBox3;
 	this.cutsceneTriggered = false;
-	this.text;
 	this.text1;
 	this.text2;
 	this.text3;
-	this.showJournal;
 	this.bounds;
+	this.kitchenwall;
 
-	this.timer;
-	this.stepTimer;
-	this.helpText = false;
 	this.blinktime=1;
 
 	this.diningtables;
@@ -32,12 +26,15 @@ var Level2 = function(game) {
 	this.kitchendoor;
 	this.exit;
 
-	this.key=false;
+	this.key1=false;
 	this.mirror=false;
+	this.key2=false;
+	this.key11;
 
 };
 Level2.prototype = {
 	preload: function() {
+	this.game.load.image('key', 'assets/img/gui_key.png');	
 		// Anything to preload during the Play state
 	console.log('Level2: preload');
 	},
@@ -57,7 +54,8 @@ Level2.prototype = {
 		this.bound.body.immovable = true;
 		this.bound = this.bounds.create(2400, 0, 'obj_bounds');
 		this.bound.body.immovable = true;
-		
+		this.bound = this.bounds.create(1650, 0, 'obj_bounds');
+		this.bound.body.immovable = true;				
 		//monster 1
 		this.right = game.add.sprite(1180, game.world.height-250, 'spr_right');
 		game.physics.enable(this.right);
@@ -75,15 +73,24 @@ Level2.prototype = {
 		this.diningtables.enableBody = true;
 		this.diningtables.create(650, 325, 'obj_diningtable');
 
+		//keys
+		this.key11 = game.add.sprite(1300, 400, 'key');
+		this.key11.alpha = 0;
+
 		
 		//doors
-		this.door1 = game.add.sprite(1800, 0, 'obj_door2');		
+		this.door1 = game.add.sprite(1400, 0, 'obj_door2');		
 		game.physics.enable(this.door1);				
+		this.door2 = game.add.sprite(1800, 0, 'obj_door2');		
+		game.physics.enable(this.door2);
 		this.exit= game.add.sprite(2200, 0, 'obj_door');
 		game.physics.enable(this.exit);
 		
 		//kitchen wall
-		this.kitchenwall = game.add.sprite(1500, 0, 'wall');	
+		this.kitchenwall = game.add.sprite(1650, 0, 'wall');
+		this.kitchenwall.enableBody = true;
+
+	
 
 		//chandaliers
 		this.chandalier = game.add.sprite(825, 0, 'obj_chandalier');
@@ -92,16 +99,13 @@ Level2.prototype = {
 
 		
 		//kitchen monster
-		this.kitchen = game.add.sprite(1700, game.world.height-200, 'spr_kitchen');
+		this.kitchen = game.add.sprite(2150, game.world.height-200, 'spr_kitchen');
 		game.physics.enable(this.kitchen);
 		this.kitchen.anchor.set(0.5, 0.5);
 		
 		//player
 		this.player = new Player(game, 200, game.world.height - 200, 'spr_player', controls);
 		this.game.add.existing(this.player);
-
-
-
 		
 		/* --GUI & Effects-- */
 		this.filter = game.add.sprite(0, 0, 'gui_filter');
@@ -109,14 +113,6 @@ Level2.prototype = {
 		this.border = game.add.sprite(0, 0, 'gui_border');
 		this.border.scale.setTo(1, 1);
 		game.world.bringToTop(this.border);
-		this.journal = game.add.sprite(0, 0, 'gui_journal');
-		this.journal.scale.setTo(0.75, 0.75);
-		this.journal.alpha = 0;
-		this.dialogBox = game.add.sprite(0, 0, 'gui_dialogBox');
-		this.dialogBox.alpha = 0;
-		var textStyle = { font: "16px Times New Roman", fill: "#ffffff"}
-		this.text = this.game.add.text(0, 0, narrative("stage2_1"), textStyle);
-		this.text.alpha = 0;
 
 		var textStyle1= { font: "32px Times New Roman", fill: "#ffffff"}
 		this.dialogBox1 = game.add.sprite(400, game.world.height-200, 'gui_dialogBox');
@@ -134,24 +130,6 @@ Level2.prototype = {
 		this.dialogBox3 = game.add.sprite(1500, game.world.height-200, 'gui_dialogBox');
 		this.dialogBox3.scale.setTo(0.5, 1);
 		this.dialogBox3.alpha = 0;
-		
-		this.showJournal = function(show) {
-			if (show == true) {
-				this.cutsceneTriggered = true;
-				this.dialogBox.alpha = 1;
-				this.journal.alpha = 1;
-				this.text.alpha = 1;
-			}
-			else {
-				this.player.changeState('normal');
-				this.dialogBox.alpha = 0;
-				this.journal.alpha = 0;
-				this.text.alpha = 0;
-			}
-		};
-		
-		this.journalTimer = game.time.create(false);
-    	this.journalTimer.add(500, this.showJournal, this, true); 
 
     	game.time.events.loop(3000, blink, this);
 		
@@ -166,19 +144,11 @@ Level2.prototype = {
 		var rightTouch = game.physics.arcade.overlap(this.right, this.player);
 		var leftTouch = game.physics.arcade.overlap(this.left, this.player);
 		var TouchingDoor1 = game.physics.arcade.overlap(this.player, this.door1);
-		var TouchingDoor2 = game.physics.arcade.overlap(this.player, this.door1);
+		var TouchingDoor2 = game.physics.arcade.overlap(this.player, this.door2);
 		var TouchingExit = game.physics.arcade.overlap(this.player, this.exit);
 
 		game.physics.arcade.collide(this.player, this.bounds);
 
-		/* --Cutscenes-- */
-		if (this.cutsceneTriggered == false && this.player.x > 600) {
-			this.player.changeState('cutscene');
-			this.journalTimer.start();
-		}
-		if (controls.space.justDown && this.cutsceneTriggered == true) {
-			this.showJournal(false);
-		}
 
 		/* --Interaction-- */
 		if(this.blinktime%2!==0){ 
@@ -197,18 +167,28 @@ Level2.prototype = {
 			}
 		
 		if(this.dialogBox2.alpha == 1){
-			if(controls.up.isDown||controls.down.isDown){
+			if(this.mirror=false){
+				if(controls.up.isDown||controls.down.isDown){
 				game.state.start('GameOver');
+			}
+		}else if(this.mirror=true){
+			if(controls.space.isDown){
+			this.key1.alpha=1;
+			this.key1=true;
+				}
 			}
 		}
 
-		
+		if(this.key1==true){
+		this.bound.body.immovable = false;
+		}
+
 		if (this.blinktime%2==0){
 		 if(kitchenTouchingPlayer||rightTouch||leftTouch) {
 			//game.state.start('GameOver');
 		} }
 
-		if(TouchingDoor1&&controls.space.justDown){
+		if(TouchingDoor1&&controls.space.isDown){
 			game.state.start('Sub1');
 		}
 		
@@ -216,9 +196,10 @@ Level2.prototype = {
 			game.state.start('Sub2');
 		}
 	
-		if(TouchingExit&&key==true){
+		if(TouchingExit&&key2==true){
 			game.state.start('Level3');
 		}
+		
 		
 		if(this.blinktime%2==0){
 		this.kitchen.frame = 1;
@@ -240,18 +221,8 @@ Level2.prototype = {
 		this.border.y = game.camera.y;
 		this.filter.x = game.camera.x - 16;
 		this.filter.y = game.camera.y;
-		this.dialogBox.x = game.camera.x + (game.camera.width/2 - this.dialogBox.width/2);
-		this.dialogBox.y = game.camera.y + (game.world.height - this.dialogBox.height);
-		this.journal.x = game.camera.x + (game.camera.width/2 - this.journal.width/2);
-		this.journal.y = this.dialogBox.y - this.journal.height;
-		this.text.x = this.dialogBox.x + 32;
-		this.text.y = this.dialogBox.y + 32;
 		this.border.bringToTop();
-		this.filter.bringToTop();
-		this.dialogBox.bringToTop();
-		this.journal.bringToTop();
-		this.text.bringToTop();
-		this.text1.bringToTop();				
+		this.filter.bringToTop();			
 	},
 
 	render: function() {

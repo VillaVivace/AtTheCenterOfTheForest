@@ -28,7 +28,9 @@ Boot.prototype = {
 		controls = game.input.keyboard.addKeys({ // Custom Keys for our game
 			'space': Phaser.Keyboard.SPACEBAR,
 			'left': Phaser.Keyboard.LEFT,
-			'right': Phaser.Keyboard.RIGHT
+			'right': Phaser.Keyboard.RIGHT,
+			'up': Phaser.Keyboard.UP,
+			'down': Phaser.Keyboard.DOWN,
 		});
 
 		var goToLogo = function() {

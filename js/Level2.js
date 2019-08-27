@@ -27,14 +27,13 @@ var Level2 = function(game) {
 	this.exit;
 
 	this.key1=false;
-	this.mirror=false;
 	this.key2=false;
 	this.key11;
 
 };
 Level2.prototype = {
 	preload: function() {
-	this.game.load.image('key', 'assets/img/gui_key.png');	
+	this.game.load.image('key', 'assets/img/keyIcon.png');	
 		// Anything to preload during the Play state
 	console.log('Level2: preload');
 	},
@@ -74,7 +73,8 @@ Level2.prototype = {
 		this.diningtables.create(650, 325, 'obj_diningtable');
 
 		//keys
-		this.key11 = game.add.sprite(1300, 400, 'key');
+		this.key11 = game.add.sprite(1000, 355, 'key');
+		game.physics.enable(this.key11);
 		this.key11.alpha = 0;
 
 		
@@ -146,7 +146,7 @@ Level2.prototype = {
 		var TouchingDoor1 = game.physics.arcade.overlap(this.player, this.door1);
 		var TouchingDoor2 = game.physics.arcade.overlap(this.player, this.door2);
 		var TouchingExit = game.physics.arcade.overlap(this.player, this.exit);
-
+		var TouchingKey1 = game.physics.arcade.overlap(this.player, this.key11);
 		game.physics.arcade.collide(this.player, this.bounds);
 
 
@@ -164,22 +164,27 @@ Level2.prototype = {
 		if(kitchenTouchingPlayer&& controls.space.isDown){
 			this.dialogBox3.alpha = 1;	
 				}
-			}
+		}
 		
 		if(this.dialogBox2.alpha == 1){
-			if(this.mirror=false){
+			if(mirror==false){
 				if(controls.up.isDown||controls.down.isDown){
 				game.state.start('GameOver');
 			}
-		}else if(this.mirror=true){
-			if(controls.space.isDown){
-			this.key1.alpha=1;
-			this.key1=true;
-				}
-			}
+		}else if(mirror==true){
+				if(controls.up.isDown){
+				this.key1=true
+				this.key11.alpha = 1;
+			}}
 		}
+		
+		if(this.key11.alpha == 1){
+			if(controls.space.isDown){
+				this.key11.alpha = 0;
+			}
+		}			
 
-		if(this.key1==true){
+		if(this.key1==true && mirror==true){
 		this.bound.body.immovable = false;
 		}
 
@@ -223,13 +228,7 @@ Level2.prototype = {
 		this.filter.y = game.camera.y;
 		this.border.bringToTop();
 		this.filter.bringToTop();			
-	},
-
-	render: function() {
-   	 	game.debug.body(this.right);
-   	 	game.debug.body(this.left);
-   	 	game.debug.body(this.player);
-	}		
+	}	
 }
 		
 	function blink(){

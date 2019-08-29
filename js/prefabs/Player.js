@@ -8,15 +8,15 @@ function Player(game, x, y, key, controls) {
 	this.direction = 1;
 	this.speed = 250;
 	/* --Item UI-- */
-	this.mirror = game.add.sprite(32, 32, 'icon_handMirror');
+	this.mirror = game.add.sprite(32, 32, 'atlas', 'handMirrorIcon');
 	this.mirror.alpha = 0;
-	this.heart = game.add.sprite(32, 32, 'icon_heart');
+	this.heart = game.add.sprite(32, 32, 'atlas', 'hearIcon');
 	this.heart.alpha = 0;
-	this.mandrake = game.add.sprite(32, 32, 'icon_mandrake');
+	this.mandrake = game.add.sprite(32, 32, 'atlas', 'mandrakeIcon');
 	this.mandrake.alpha = 0;
-	this.eyeballs = game.add.sprite(32, 32, 'icon_jar');
+	this.eyeballs = game.add.sprite(32, 32, 'atlas', 'jarIcon');
 	this.eyeballs.alpha = 0;
-	this.doorKey = game.add.sprite(32, 32, 'icon_key');
+	this.doorKey = game.add.sprite(32, 32, 'atlas', 'keyIcon');
 	this.doorKey.alpha = 0;
 	
 	/* --Player properties-- */

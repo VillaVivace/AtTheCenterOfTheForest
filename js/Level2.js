@@ -54,21 +54,14 @@ Level2.prototype = {
 		this.playerY = playerY;
 		this.songIsPlaying = songPlaying;
 	},
-
-	preload: function() {
-	this.game.load.image('key', 'assets/img/keyIcon.png');	
-		// Anything to preload during the Play state
-	console.log('Level2: preload');
-	},
 	
 	create: function() {
-		console.log('Level2: create');
+		game.world.setBounds(0, 0, 4800, 600);
 		localStorage.setItem('level', 'Level2');
 
 		game.camera.flash(0x000000, 1500);
 
-		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelLong');
-		game.world.setBounds(0, 0, 4800, 600);
+		this.stageBkg = game.add.sprite(0, 0, 'atlas', 'background_levelLong');
 
 		if (this.songIsPlaying == null) {
 			this.songIsPlaying = false;
@@ -82,15 +75,15 @@ Level2.prototype = {
 		this.bounds = game.add.group();
 		this.bounds.enableBody = true;
 		this.bounds.alpha = 0;
-		this.bound = this.bounds.create(100, 0, 'obj_bounds'); 
+		this.bound = this.bounds.create(100, 0, 'atlas', 'obj_bounds'); 
 		this.bound.body.immovable = true;
-		this.bound = this.bounds.create(4650, 0, 'obj_bounds');
+		this.bound = this.bounds.create(4650, 0, 'atlas', 'obj_bounds');
 		this.bound.body.immovable = true;
-		this.kitchenBound = this.bounds.create(2600, 0, 'obj_bounds');
+		this.kitchenBound = this.bounds.create(2600, 0, 'atlas', 'obj_bounds');
 		this.kitchenBound.body.immovable = true;				
 		
 		//left monster
-		this.leftMonster = game.add.sprite(1300, game.world.height-250, 'spr_left');
+		this.leftMonster = game.add.sprite(1300, game.world.height-250, 'atlas', 'spr_left');
 		game.physics.enable(this.leftMonster);
 		this.leftMonster.anchor.set(0.5, 0.5);
 		this.leftMonster.body.setSize(150, 300, 0, 50 );
@@ -99,8 +92,8 @@ Level2.prototype = {
 		//tables
 		this.tables = game.add.group();
 		this.tables.enableBody = true;
-		this.tables.create(400, 355, 'obj_table');
-		this.table = this.tables.create(1350, 325, 'obj_diningtable');
+		this.tables.create(400, 355, 'atlas', 'obj_table');
+		this.table = this.tables.create(1350, 325, 'atlas', 'obj_diningtable');
 		this.table.body.setSize(400, 200, 50);
 
 		//right monster
@@ -113,17 +106,17 @@ Level2.prototype = {
 		//bookcase
 		this.bookcases = game.add.group();
 		this.bookcases.enableBody = true;
-		this.bookcases.create(700, 150, 'obj_bookcase');
+		this.bookcases.create(700, 150, 'atlas', 'obj_bookcase');
 		
 		//doors
-		this.door = game.add.sprite(200, 0, 'obj_door');		
+		this.door = game.add.sprite(200, 0, 'atlas', 'obj_door');		
 		game.physics.enable(this.door);	
 		this.door.scale.x = -1;
-		this.door1 = game.add.sprite(2200, 0, 'obj_door2');		
+		this.door1 = game.add.sprite(2200, 0, 'atlas', 'obj_door2');		
 		game.physics.enable(this.door1);				
-		this.door2 = game.add.sprite(3600, 0, 'obj_door2');		
+		this.door2 = game.add.sprite(3600, 0, 'atlas', 'obj_door2');		
 		game.physics.enable(this.door2);
-		this.exit= game.add.sprite(4600, 0, 'obj_door');
+		this.exit= game.add.sprite(4600, 0, 'atlas', 'obj_door');
 		game.physics.enable(this.exit);
 
 		//chandaliers
@@ -132,7 +125,7 @@ Level2.prototype = {
 		this.chandalier.animations.play('anima');				
 
 		//kitchen counter
-		this.counter = game.add.sprite(2800, 365, 'obj_counter');
+		this.counter = game.add.sprite(2800, 365, 'atlas', 'counter');
 
 		//kitchen monster
 		this.kitchenMonster = game.add.sprite(3350, game.world.height-225, 'spr_kitchen');
@@ -141,12 +134,7 @@ Level2.prototype = {
 		this.kitchenMonster.frame = 1;
 
 		//kitchen shelf
-		this.kitchenShelf = game.add.sprite(3900, 150, 'obj_shelf');
-
-		//keys
-		this.key11 = game.add.sprite(1000, 355, 'key');
-		game.physics.enable(this.key11);
-		this.key11.alpha = 0;
+		this.kitchenShelf = game.add.sprite(3900, 150, 'atlas', 'obj_shelf');
 		
 		//player
 		if (this.playerX == null && this.player == null) {
@@ -157,15 +145,15 @@ Level2.prototype = {
 		this.game.add.existing(this.player);
 
 		//kitchen wall
-		this.kitchenwall = game.add.sprite(2600, 0, 'wall');
+		this.kitchenwall = game.add.sprite(2600, 0, 'atlas', 'wall');
 		this.kitchenwall.enableBody = true;
 		
 		/* --GUI & Effects-- */
-		this.filter = game.add.sprite(0, 0, 'gui_filter');
+		this.filter = game.add.sprite(0, 0, 'atlas', 'gui_filter');
 		this.filter.scale.setTo(1, 1);
-		this.border = game.add.sprite(0, 0, 'gui_border');
+		this.border = game.add.sprite(0, 0, 'atlas', 'gui_border');
 		this.border.scale.setTo(1, 1);
-		this.dialogBox = game.add.sprite(0, 0, 'gui_dialogBox');
+		this.dialogBox = game.add.sprite(0, 0, 'atlas', 'gui_dialogBox');
 		this.dialogBox.alpha = 0;
 		var textStyle = {font: 'Handlee', fontSize: '18px', fill: '#ffffff' }
 		this.text = this.game.add.text(0, 0, '', textStyle);

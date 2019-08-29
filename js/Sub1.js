@@ -25,20 +25,12 @@ var Sub1 = function(game) {
 };
 
 Sub1.prototype = {
-	preload: function() {
-		// Anything to preload during the Play state
-		console.log('Sub1: preload');
-		this.game.load.image('handMirror', 'assets/img/handMirrorIcon.png');
-		this.game.load.image('gui_handMirror', 'assets/img/gui_handMirror.png');
-		this.game.load.image('crates', 'assets/img/obj_crates.png');
-		this.game.load.image('bookcase', 'assets/img/obj_bookcase.png');
-	},
 	create: function() {
 		console.log('Sub1: create');
 
 		game.camera.flash(0x000000, 1000);
 
-		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelShort');
+		this.stageBkg = game.add.sprite(0, 0, 'atlas', 'background_levelShort');
 		game.world.setBounds(0, 0, 2400, 600);
 
 		/* --Objects & Furniture-- */
@@ -46,30 +38,30 @@ Sub1.prototype = {
 		this.bounds = game.add.group();
 		this.bounds.enableBody = true;
 		this.bounds.alpha = 0;
-		this.bound = this.bounds.create(118, 0, 'obj_bounds'); 
+		this.bound = this.bounds.create(118, 0, 'atlas', 'obj_bounds'); 
 		this.bound.body.immovable = true;
-		this.bound = this.bounds.create(2210, 0, 'obj_bounds');
+		this.bound = this.bounds.create(2210, 0, 'atlas', 'obj_bounds');
 		this.bound.body.immovable = true;
 		
 		//tables
 		this.tables = game.add.group();
 		this.tables.enableBody = true;
-		this.tables.create(500, 355, 'obj_table');
+		this.tables.create(500, 355, 'atlas', 'obj_table');
 		
 		//bookcase
 		this.bookcase = game.add.group();
 		this.bookcase.enableBody = true;
-		this.bookcase1 = this.bookcase.create(900, 150, 'obj_bookcase');
-		this.bookcase2 = this.bookcase.create(1200, 150, 'obj_bookcase');
-		this.bookcase3 = this.bookcase.create(1500, 150, 'obj_bookcase');
+		this.bookcase1 = this.bookcase.create(900, 150, 'atlas', 'obj_bookcase');
+		this.bookcase2 = this.bookcase.create(1200, 150, 'atlas', 'obj_bookcase');
+		this.bookcase3 = this.bookcase.create(1500, 150, 'atlas', 'obj_bookcase');
 		
 		//crates
 		this.crates = game.add.group();
 		this.crates.enableBody = true;
-		this.crates.create(1800, 240, 'obj_crates');
+		this.crates.create(1800, 240, 'atlas', 'obj_crates');
 
 		//door
-		this.door = game.add.sprite(200, 0, 'obj_door');		
+		this.door = game.add.sprite(200, 0, 'atlas', 'obj_door');		
 		game.physics.enable(this.door);	
 		this.door.scale.x = -1;
 
@@ -79,16 +71,16 @@ Sub1.prototype = {
 
 		
 		/* --GUI & Effects-- */
-		this.filter = game.add.sprite(0, 0, 'gui_filter');
+		this.filter = game.add.sprite(0, 0, 'atlas', 'gui_filter');
 		this.filter.scale.setTo(1, 1);
-		this.border = game.add.sprite(0, 0, 'gui_border');
+		this.border = game.add.sprite(0, 0, 'atlas', 'gui_border');
 		this.border.scale.setTo(1, 1);
-		this.dialogBox = game.add.sprite(0, 0, 'gui_dialogBox');
+		this.dialogBox = game.add.sprite(0, 0, 'atlas', 'gui_dialogBox');
 		this.dialogBox.alpha = 0;
 		var textStyle = {font: 'Handlee', fontSize: '18px', fill: '#ffffff' }
 		this.text = this.game.add.text(0, 0, '', textStyle);
 		this.text.alpha = 0;
-		this.mirrorUI = game.add.sprite(0, 0, 'gui_handMirror');
+		this.mirrorUI = game.add.sprite(0, 0, 'atlas', 'gui_handMirror');
 		this.mirrorUI.scale.setTo(0.75, 0.75);
 		this.mirrorUI.alpha = 0;
 

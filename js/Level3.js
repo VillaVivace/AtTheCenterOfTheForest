@@ -24,7 +24,7 @@ Level3.prototype = {
 		game.camera.flash(0x000000, 1000);
 
 
-		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelLong');
+		this.stageBkg = game.add.sprite(0, 0, 'atlas', 'background_levelLong');
 	
 		// Reflection is inbetween the 2 backgrounds
 		this.reflection = new Player(game, 350, game.world.height - 250, 'spr_playerMonster', controls);
@@ -33,10 +33,10 @@ Level3.prototype = {
 		this.stageBkg1 = game.add.sprite(0, 0, 'bkg_mirrors');
 
 		//Doors
-		this.door = game.add.sprite(200, 0, 'obj_door');		
+		this.door = game.add.sprite(200, 0, 'atlas', 'obj_door');		
 		game.physics.enable(this.door);	
 		this.door.scale.x = -1;
-		this.door = this.game.add.sprite(4600, 0, 'obj_door');
+		this.door = this.game.add.sprite(4600, 0, 'atlas', 'obj_door');
 		game.physics.enable(this.door);
 		this.door.body.immovable = true;
 
@@ -48,16 +48,16 @@ Level3.prototype = {
 		this.bounds = game.add.group();
 		this.bounds.enableBody = true;
 		this.bounds.alpha = 0;
-		this.bound = this.bounds.create(148, 0, 'obj_bounds');
+		this.bound = this.bounds.create(148, 0, 'atlas', 'obj_bounds');
 		this.bound.body.immovable = true;
-		this.bound = this.bounds.create(4650, 0, 'obj_bounds');
+		this.bound = this.bounds.create(4650, 0, 'atlas', 'obj_bounds');
 		this.bound.body.immovable = true;
 		this.reflectionbounds = game.add.group();
 		this.reflectionbounds.enableBody = true;
 		this.reflectionbounds.alpha = 0;
-		this.bound = this.reflectionbounds.create(198, 0, 'obj_bounds');
+		this.bound = this.reflectionbounds.create(198, 0, 'atlas', 'obj_bounds');
 		this.bound.body.immovable = true;
-		this.bound = this.reflectionbounds.create(4700, 0, 'obj_bounds');
+		this.bound = this.reflectionbounds.create(4700, 0, 'atlas', 'obj_bounds');
 		this.bound.body.immovable = true;
 
 

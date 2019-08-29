@@ -100,6 +100,7 @@ var credits = function(game){
 credits.prototype = {
 	create: function(){
 		game.world.setBounds(0, 0, 800, 600);
+		game.camera.flash(0x000000, 1000);
 		game.stage.backgroundColor = '#000000';
 
 		var style1 = { font: "32px Nothing You Could Do", fill: "#ffffff", boundsAlignH: "center", boundsAlignV: "middle"};

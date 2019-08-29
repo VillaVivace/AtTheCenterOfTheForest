@@ -10,6 +10,8 @@ GameOver.prototype = {
 
 		this.gameOver = game.add.sprite(game.camera.width/2 - 400, 0, 'bkg_gameOver');
 		this.gameOver.anchor.set(0, 0);
+
+		this.spaceButton = game.add.sprite(400, 480, 'gui_icons', 'space');
 	}, 
 	update: function() {
 		// Game Over logic

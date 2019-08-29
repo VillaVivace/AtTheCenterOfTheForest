@@ -13,18 +13,21 @@ Boot.prototype = {
 	},
 	create: function() {
 		console.log('Boot: create');
+		//physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		this.game.scale.pageAlignHorizontally = true; // Allows the game to be centered on webpage!
-		this.game.scale.pageAlignVertically = true;
-		this.game.scale.refresh();
-		this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-
-		this.game.stage.backgroundColor = "#000000";
-
-		this.game.input.keyboard.addKeyCapture([Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN, Phaser.Keyboard.SPACEBAR, Phaser.Keyboard.ENTER]);
-	
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		
+		// Allows the game to be centered on webpage!
+		this.game.scale.pageAlignHorizontally = true; 
+		this.game.scale.pageAlignVertically = true;
+		this.game.scale.refresh();
+		this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;		
+		
+		//background
+		this.game.stage.backgroundColor = "#000000";
+		
+		//Keyboard input
+		this.game.input.keyboard.addKeyCapture([Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN, Phaser.Keyboard.SPACEBAR, Phaser.Keyboard.ENTER]);			
 		controls = game.input.keyboard.addKeys({ // Custom Keys for our game
 			'shift': Phaser.Keyboard.SHIFT,
 			'space': Phaser.Keyboard.SPACEBAR,
@@ -39,6 +42,8 @@ Boot.prototype = {
 		var goToLogo = function() {
 			game.state.start('Logo');
 		};
+		
+		//background music
 		this.audioDecode = game.add.audio('snd_title');
 		this.audioDecode.onDecoded.add(goToLogo, this);
 	},

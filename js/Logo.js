@@ -40,8 +40,7 @@ Logo.prototype = {
 		this.game.load.atlas('spr_crawler', 'assets/img/crawler.png', 'assets/json/crawler.json');		
 		this.game.load.atlas('spr_kitchen', 'assets/img/spr_kitchen.png', 'assets/json/kitchen.json');
 		this.game.load.atlas('spr_right', 'assets/img/spr_right.png', 'assets/json/right.json');
-		this.game.load.atlas('spr_left', 'assets/img/spr_left.png', 'assets/json/left.json');
-		
+		this.game.load.atlas('spr_left', 'assets/img/spr_left.png', 'assets/json/left.json');		
 		/* --Objects-- */
 		this.game.load.image('obj_bounds', 'assets/img/obj_bounds.png');
 		this.game.load.image('obj_table', 'assets/img/obj_table.png');
@@ -56,7 +55,6 @@ Logo.prototype = {
 		this.game.load.atlas('obj_chandalier', 'assets/img/obj_chandalier.png','assets/json/chandalier.json');
 		this.game.load.image('obj_counter', 'assets/img/counter.png');
 		this.game.load.image('wall', 'assets/img/wall.png');
-
 		/* --SFX-- */
 		this.game.load.audio('snd_footstep1', 'assets/audio/footstep_grass1.mp3');
 		this.game.load.audio('snd_footstep2', 'assets/audio/footstep_grass2.mp3');
@@ -72,7 +70,8 @@ Logo.prototype = {
 	},
 	create: function() {
 		console.log('Logo: create');
-
+		
+		//add eyeLogo and animation
 		this.eyeLogo = this.game.add.sprite(0, game.world.height/4, 'gui_eyeLogo');
 		this.eyeLogo.x = (game.world.centerX - (this.eyeLogo.width/2));
 		this.eyeLogo.animations.add('eye', Phaser.Animation.generateFrameNames('frame_', 0, 18), 5, false);
@@ -81,9 +80,12 @@ Logo.prototype = {
 		var goToMainMenu = function() {
 			game.state.start('MainMenu');
 		};
-
+		
+		//timer
 		this.transitionTimer = game.time.create(false);
 		this.transitionTimer.add(1000, goToMainMenu, this, true); 
+		
+		//Logo text
 		var style1 = { font: "32px Nothing You Could Do", fill: "#ffffff", boundsAlignH: "center", boundsAlignV: "middle"};
 		var style2 = { font: "16px Nothing You Could Do", fill: "#ffffff", boundsAlignH: "center", boundsAlignV: "middle"};
 		this.logoText = game.add.text(0, 0, "Paper Ghouls", style1);
@@ -92,11 +94,15 @@ Logo.prototype = {
 		this.logoText.setTextBounds(0, game.world.height/2 + 40, game.world.width, 16);
 	},
 	update: function() {
+		
+		//scene automatically fade after some time
 		if (this.eyeAnim.isFinished && this.animFinished == false) {
 			this.animFinished = true;
 			this.game.camera.fade(0x000000, 1000);
 			this.transitionTimer.start();
 		} 
+		
+		//press space = skip animation
 		if (controls.space.justDown && this.animFinished == false) {
 			this.animFinished = true;
 			this.game.camera.fade(0x000000, 1000);

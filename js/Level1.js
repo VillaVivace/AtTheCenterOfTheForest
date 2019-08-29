@@ -208,10 +208,7 @@ Level1.prototype = {
 
 /* --Helper Functions-- */
 function callMonster(player, eye) {
-	if(eye.animations.currentAnim.frame==0||
-	eye.animations.currentAnim.frame==15||
-	eye.animations.currentAnim.frame==16||
-	eye.animations.currentAnim.frame==17) {
+	if(eye.animations.currentAnim._frameIndex <= 4 || eye.animations.currentAnim._frameIndex >= 16) {
 		eyeIsClosed = true;
 	} else {
 		eyeIsClosed = false;

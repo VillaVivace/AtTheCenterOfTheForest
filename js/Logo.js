@@ -14,7 +14,7 @@ Logo.prototype = {
 		this.game.load.image('bkg_levelShort', 'assets/img/background_levelShort.png');
 		this.game.load.image('bkg_levelLong', 'assets/img/background_levelLong.png');
 		this.game.load.image('bkg_mirrors', 'assets/img/mirrors.png');
-		this.game.load.image('bkg_mirrorsScary', 'assets/img/mirrorsScary.png');
+		this.game.load.image('bkg_mirrorsScary', 'assets/img/mirrorScary.png');
 		this.game.load.image('bkg_stairs', 'assets/img/stairs.png');
 		/* --GUI-- */
 		this.game.load.image('gui_dialogBox', 'assets/img/gui_dialogBox.png');
@@ -38,9 +38,9 @@ Logo.prototype = {
 		this.game.load.atlas('spr_playerMonster', 'assets/img/playerMonster.png', 'assets/json/player.json');
 		this.game.load.atlas('spr_slug', 'assets/img/slug.png', 'assets/json/slug.json');
 		this.game.load.atlas('spr_crawler', 'assets/img/crawler.png', 'assets/json/crawler.json');		
-		this.game.load.atlas('spr_kitchen', 'assets/img/spr_kitchen.png', 'assets/json/kitchen.json');
-		this.game.load.atlas('spr_right', 'assets/img/spr_right.png', 'assets/json/right.json');
-		this.game.load.atlas('spr_left', 'assets/img/spr_left.png', 'assets/json/left.json');		
+		this.game.load.image('spr_kitchen', 'assets/img/spr_kitchen.png');
+		this.game.load.image('spr_right', 'assets/img/spr_right.png');
+		this.game.load.image('spr_left', 'assets/img/spr_left.png');		
 		/* --Objects-- */
 		this.game.load.image('obj_bounds', 'assets/img/obj_bounds.png');
 		this.game.load.image('obj_table', 'assets/img/obj_table.png');

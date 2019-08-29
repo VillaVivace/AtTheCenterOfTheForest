@@ -118,7 +118,7 @@ Sub2.prototype = {
 					this.conversationState = narrative('shelf1_' + this.line);
 					this.text.text = this.conversationState;
 				}
-				if (this.conversationState == narrative('shelf1_4Choice1')) {
+				else if (this.conversationState == narrative('shelf1_4Choice1')) {
 					this.player.changeEyeballsAlpha(1);
 					playerHasEyeballs = true;
 					this.eyeballsUI.alpha = 0;
@@ -138,7 +138,7 @@ Sub2.prototype = {
 						this.conversationState = narrative('shelf2_' + this.line);
 						this.text.text = this.conversationState;
 					}
-					if (this.conversationState == narrative('shelf2_4Choice1')) {
+					else if (this.conversationState == narrative('shelf2_4Choice1')) {
 						this.player.changeMandrakeAlpha(1);
 						playerHasMandrake = true;
 						this.mandrakeUI.alpha = 0;
@@ -157,7 +157,7 @@ Sub2.prototype = {
 					this.conversationState = narrative('crates1_' + this.line);
 					this.text.text = this.conversationState;
 				}
-				if (this.conversationState == narrative('crates1_4Choice1')) {
+				else if (this.conversationState == narrative('crates1_4Choice1')) {
 					this.player.changeHeartAlpha(1);
 					playerHasHeart = true;
 					this.heartUI.alpha = 0;
@@ -229,18 +229,17 @@ Sub2.prototype = {
 			}
 		}
 
-		if (playerHasEyeballs || playerHasMandrake || playerHasHeart) {
-			playerHasIngredient = true;
-		}
-
 		if (playerHasEyeballs) {
+			playerHasIngredient = true;
 			this.player.changeEyeballsAlpha(1);
 		}
 		if (playerHasMandrake) {
-			this.player.changeEyeballsAlpha(1);
+			playerHasIngredient = true;
+			this.player.changeMandrakeAlpha(1);
 		}
 		if (playerHasHeart) {
-			this.player.changeEyeballsAlpha(1);
+			playerHasIngredient = true;
+			this.player.changeHeartAlpha(1);
 		}
 
 		/* --Interaction-- */

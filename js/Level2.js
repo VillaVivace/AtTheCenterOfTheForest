@@ -100,7 +100,8 @@ Level2.prototype = {
 		this.tables = game.add.group();
 		this.tables.enableBody = true;
 		this.tables.create(400, 355, 'obj_table');
-		this.tables.create(1350, 325, 'obj_diningtable');
+		this.table = this.tables.create(1350, 325, 'obj_diningtable');
+		this.table.body.setSize(400, 200, 50);
 
 		//right monster
 		this.rightMonster = game.add.sprite(1880, game.world.height-250, 'spr_right');
@@ -302,12 +303,14 @@ Level2.prototype = {
 		var TouchingDoor2 = game.physics.arcade.overlap(this.player, this.door2);
 		var TouchingExit = game.physics.arcade.overlap(this.player, this.exit);
 		var touchedKitchenWall = game.physics.arcade.collide(this.player, this.kitchenBound);
+		var isTouchingTable = game.physics.arcade.overlap(this.player, this.tables);
 		game.physics.arcade.collide(this.player, this.bounds);
 
 
 		/* --Dialog Interactions-- */
 		if (this.conversationState == 'END') {
 			this.line = 1;
+			hasMirrorFlag = false;
 			this.dialogBox.alpha = 0;
 			this.text.alpha = 0;
 			this.player.changeState('normal');
@@ -333,6 +336,11 @@ Level2.prototype = {
 				this.text.text = this.conversationState;
 			}
 		}
+
+		if(controls.space.isDown && isTouchingTable){
+			game.world.bringToTop(this.tables);
+			this.player.changeState('hidden');
+		}
 				
 		if (playerHasMirror) {
 			this.player.changeMirrorAlpha(1);
@@ -343,15 +351,15 @@ Level2.prototype = {
 			this.player.changeEyeballsAlpha(1);
 		}
 		if (playerHasMandrake) {
-			this.player.changeEyeballsAlpha(1);
+			this.player.changeMandrakeAlpha(1);
 		}
 		if (playerHasHeart) {
-			this.player.changeEyeballsAlpha(1);
+			this.player.changeHeartAlpha(1);
 		}
 		if (playerHasIngredient == false) {
 			this.player.changeEyeballsAlpha(0);
 			this.player.changeMandrakeAlpha(0);
-			this.player.changeEyeballsAlpha(0);
+			this.player.changeHeartAlpha(0);
 		}
 
 
@@ -375,6 +383,7 @@ Level2.prototype = {
 		}	
 		if (playerHasKey2 == false) {
 			if(controls.space.justDown && TouchingDoor2){
+				game.add.audio('snd_door').play('', 0, 0.05, false, false);
 				game.state.start('Sub2');
 			}
 		}
@@ -387,6 +396,8 @@ Level2.prototype = {
 			}
 		}
 
+		this.player.bringToTop();
+		this.kitchenwall.bringToTop();
 		/* --GUI & Effects Positioning-- */
 		this.border.x = game.camera.x - 16; // We want the GUI and FX to align with the camera, not just a world position
 		this.border.y = game.camera.y;

@@ -2,16 +2,16 @@ function narrative(line) {
     switch(line) {
         /* --Journal Entries-- */
             case "intro":
-                return '*NEW JOURNAL ENTRY* \n\"I\'ve been looking everywhere for this tower and I\'ve finally arrived. \nI can\'t believe I made it. Only time will tell what awaits me. \nI better keep my visit documented in this book.\" \n[Press SPACE to continue]';
+                return '*NEW JOURNAL ENTRY* \n\"Holy crap, the tower up ahead is huge!!\nI can\'t believe I finally made it <3. Only time will tell what awaits me. \nThis is just the beginning of a fascinating journey.\" \n[Press SPACE to continue]';
             break;
             case "stairs1":
-                return '*NEW JOURNAL ENTRY* \n\"I am already regretting my decision to come here.\nJust have to push on...\" ';
+                return '*NEW JOURNAL ENTRY* \n\"Okay... first of all, WHAT THE HELL WAS THAT THING!?\nIt was a lrge, fleshy, bloody, slug-looking thing!\nI am already regretting my decision to come here.\nI just have to push on... Plus, I don\'t wanna go back to that creature.\" ';
             break;
             case "stairs2":
-                return '*NEW JOURNAL ENTRY* \n\"I don\'t want to be here anymore... I can\'t even fight back.\nAll I\'m doing is hiding. \nI mean, that\'s usually how it goes for me anyways.\"';
+                return '*NEW JOURNAL ENTRY* \n\"I don\'t want to be here anymore... My body is refusing to fight back.\nAll I\'m doing is hiding. \nI mean, I guess that\'s what I usually do anyways.\nMaybe I should try a new approach...\"';
             break;
             case "stairs3":
-                return '*NEW JOURNAL ENTRY* \n\"Bottom Text\"';
+                return '*NEW JOURNAL ENTRY* \n\"Huh, I faced my problems head-on this time, instead of running and hiding.\nThat felt good, even though it was horrific as all hell.\nI wonder what\'s up ahead.\"';
             break;
         /* --Level 2 Monster Dialogue-- */
         /* --No Legs-- */

@@ -1,5 +1,5 @@
 
-var Stairs2 = function(game) {
+var Stairs3 = function(game) {
 	this.stairs;
 	
 	this.border;
@@ -10,12 +10,12 @@ var Stairs2 = function(game) {
 	this.showJournal;
 	this.cutsceneTriggered;
 };
-Stairs2.prototype = {
+Stairs3.prototype = {
 	preload: function() {
-		console.log('Stairs2: preload');		
+		console.log('Stairs3: preload');		
 	},
 	create: function() {
-		console.log('Stairs2: create');
+		console.log('Stairs3: create');
 
 		this.cutsceneTriggered = false;
 
@@ -36,7 +36,7 @@ Stairs2.prototype = {
 		this.dialogBox.alpha = 0;
 
 		var textStyle = {font: 'Handlee', fontSize: '18px', fill: '#ffffff' }
-		this.text = this.game.add.text(0, 0, narrative("stairs2"), textStyle);
+		this.text = this.game.add.text(0, 0, narrative("stairs3"), textStyle);
 		this.text.alpha = 0;
 
 		this.showJournal = function(show) {
@@ -57,7 +57,7 @@ Stairs2.prototype = {
 		};
 		var toNextLevel = function() {
 			game.sound.stopAll();
-			game.state.start('Level2');
+			game.state.start('Level3');
 		};
 		var footstepSound = function() {
 			var randStep = Math.random();
@@ -81,7 +81,7 @@ Stairs2.prototype = {
 		this.transitionTimer.add(2000, toNextLevel, this);
 
 		this.stairsTimer = game.time.create(false);
-		this.stairsTimer.loop(1000, footstep, this);
+		this.stairsTimer.loop(750, footstep, this);
 
 		this.journalTimer.start();
 		this.stairsTimer.start();

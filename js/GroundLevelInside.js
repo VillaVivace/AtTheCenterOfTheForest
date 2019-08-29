@@ -56,7 +56,7 @@ GroundLevelInside.prototype = {
 		this.slug = game.add.sprite(1300, game.world.height-200, 'spr_slug');
 		game.physics.enable(this.slug);
 		this.slug.anchor.set(0.5, 0.5);
-		this.slug.body.velocity.x = 205;
+		this.slug.body.velocity.x = 260;
 		this.slug.animations.add('walk', Phaser.Animation.generateFrameNames('slug', 1, 2), 4, true);
 		this.slug.animations.play('walk');
 		

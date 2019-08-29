@@ -102,25 +102,6 @@ Level1.prototype = {
 		var textStyle = { font: "16px Times New Roman", fill: "#ffffff"}
 		this.text = this.game.add.text(0, 0, narrative("stage2_1"), textStyle);
 		this.text.alpha = 0;
-
-		this.showJournal = function(show) {
-			if (show == true) {
-				this.cutsceneTriggered = true;
-				this.dialogBox.alpha = 1;
-				this.journal.alpha = 1;
-				this.text.alpha = 1;
-			}
-			else {
-				this.player.changeState('normal');
-				this.dialogBox.alpha = 0;
-				this.journal.alpha = 0;
-				this.text.alpha = 0;
-			}
-		};
-
-		this.journalTimer = game.time.create(false);
-    	this.journalTimer.add(500, this.showJournal, this, true); 
-
 		
 		
 	},
@@ -144,10 +125,12 @@ Level1.prototype = {
 		if (playerTouchingCrawler && this.player.getState() == 'normal') {
 			game.state.start('GameOver');
 		}
-		if (controls.space.justDown && this.cutsceneTriggered == true) {
-			this.showJournal(false);
+		if (isTouchingCurtains && controls.space.isDown) {
+			game.world.bringToTop(this.curtains);
+			this.player.changeState('hidden');
 		}
 
+		/* --Crawler Interactions and Movement-- */
 		if (!playerTouchingEye) {
 			this.warningTriggered = false;
 			eyeIsClosed = true;
@@ -175,19 +158,12 @@ Level1.prototype = {
 			}
 		} else {
 			if (this.crawler.body.velocity.x == 600) {
-				this.crawler.body.velocity.x = 300;
+				this.crawler.body.velocity.x = 350;
 			}
 			else if(this.crawler.body.velocity.x == -600) {
-				this.crawler.body.velocity.x = -300;
+				this.crawler.body.velocity.x = -350;
 			}
 		}
-
-		if (isTouchingCurtains && controls.space.isDown) {
-			game.world.bringToTop(this.curtains);
-			this.player.changeState('hidden');
-		}
-
-		/* --Crawler Movement-- */
 		if (this.crawler.body.velocity.x > 0) {
 			this.crawler.scale.x = -1;
 		} else {

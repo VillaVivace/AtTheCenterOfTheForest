@@ -13,6 +13,8 @@ Logo.prototype = {
 		this.game.load.image('bkg_intro', 'assets/img/background_intro.png');
 		this.game.load.image('bkg_levelShort', 'assets/img/background_levelShort.png');
 		this.game.load.image('bkg_levelLong', 'assets/img/background_levelLong.png');
+		this.game.load.image('bkg_mirrors', 'assets/img/mirrors.png');
+		this.game.load.image('bkg_mirrorsScary', 'assets/img/mirrorsScary.png');
 		this.game.load.image('bkg_stairs', 'assets/img/stairs.png');
 		/* --GUI-- */
 		this.game.load.image('gui_dialogBox', 'assets/img/gui_dialogBox.png');

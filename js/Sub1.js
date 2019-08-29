@@ -1,7 +1,7 @@
 var mirror=false;
+
 var Sub1 = function(game) {
 	this.player;
-	//this.mirror=false;
 	this.border;
 	this.filter;
 	this.bounds;
@@ -10,20 +10,18 @@ var Sub1 = function(game) {
 	this.tables;
 
 	this.handMirror;
-	this.heart;
-	this.jar;
-	this.mandrake;
-
+	this.bookcase;
+	this.crates;
 };
+
 Sub1.prototype = {
 	preload: function() {
 		// Anything to preload during the Play state
 		console.log('Sub1: preload');
 		this.game.load.image('handMirror', 'assets/img/handMirrorIcon.png');
-		this.game.load.image('heart', 'assets/img/heartIcon.png');
-		this.game.load.image('jar', 'assets/img/jarIcon.png');
-		this.game.load.image('mandrake', 'assets/img/mandrakeIcon.png');
-	
+		this.game.load.image('gui_handMirror', 'assets/img/gui_handMirror.png');
+		this.game.load.image('crates', 'assets/img/obj_crates.png');
+		this.game.load.image('bookcase', 'assets/img/obj_bookcase.png');
 	},
 	create: function() {
 		console.log('Sub1: create');
@@ -43,26 +41,30 @@ Sub1.prototype = {
 		//tables
 		this.tables = game.add.group();
 		this.tables.enableBody = true;
-		this.tables.create(600, 355, 'obj_table');
-		this.tables.create(800, 355, 'obj_table');
-		this.tables.create(1000, 355, 'obj_table');
-		this.tables.create(1200, 355, 'obj_table');
+		this.tables.create(500, 355, 'obj_table');
+		
+		//bookcase
+		this.bookcase = game.add.group();
+		this.bookcase.enableBody = true;
+		this.bookcase.create(900, 150, 'obj_bookcase');
+		this.bookcase.create(1200, 150, 'obj_bookcase');
+		this.bookcase.create(1500, 150, 'obj_bookcase');
+		
+		//crates
+		this.crates = game.add.group();
+		this.crates.enableBody = true;
+		this.crates.create(1800, 240, 'obj_crates');
+
 		//door
-		this.door = game.add.sprite(1600, 0, 'obj_door2');		
+		this.door = game.add.sprite(200, 0, 'obj_door');		
 		game.physics.enable(this.door);	
+		this.door.scale.x = -1;
 		
 		//Items
-		this.handMirror = game.add.sprite(600, 340, 'handMirror');		
-		game.physics.enable(this.handMirror);
-		this.heart = game.add.sprite(800, 340, 'heart');		
-		game.physics.enable(this.heart);
-		this.jar = game.add.sprite(1000, 340, 'jar');		
-		game.physics.enable(this.jar);
-		this.mandrake = game.add.sprite(1200, 340, 'mandrake');		
-		game.physics.enable(this.mandrake);		
+
 		
 		//player
-		this.player = new Player(game, 200, game.world.height - 200, 'spr_player', controls);
+		this.player = new Player(game, 250, game.world.height - 200, 'spr_player', controls);
 		this.game.add.existing(this.player);
 
 		
@@ -78,7 +80,6 @@ Sub1.prototype = {
 	},
 	update: function() {
 		// Run the 'Play' state's game loop
-		console.log(mirror);
 		/* --Collisions-- */
 		var isTouchingTable = game.physics.arcade.overlap(this.player, this.tables);
 		var touchedDoor = game.physics.arcade.overlap(this.player, this.door);
@@ -87,16 +88,15 @@ Sub1.prototype = {
 
 
 		/* --Interaction-- */
-		if (touchedDoor&&controls.space.isDown) {
+		if (touchedDoor) {
+			game.sound.stopAll();
 			game.add.audio('snd_door').play('', 0, 0.05, false, false);
 			game.state.start('Level2');
 		}
-
-		if(touchMirror&&controls.space.isDown){
-			mirror=true;
-		}
-		if (mirror == true) {
-			this.handMirror.alpha=0;
+		
+		if(isTouchingTable && controls.space.isDown){
+			game.world.bringToTop(this.tables);
+			this.player.changeState('hidden');
 		}
 
 		/* --GUI & Effects Positioning-- */

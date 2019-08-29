@@ -85,7 +85,7 @@ Level2.prototype = {
 		this.kitchenBound.body.immovable = true;				
 		
 		//left monster
-		this.leftMonster = game.add.sprite(1300, game.world.height-250, 'atlas', 'spr_left');
+		this.leftMonster = game.add.sprite(1300, game.world.height-250, 'spr_left');
 		game.physics.enable(this.leftMonster);
 		this.leftMonster.anchor.set(0.5, 0.5);
 		this.leftMonster.body.setSize(150, 300, 0, 50 );

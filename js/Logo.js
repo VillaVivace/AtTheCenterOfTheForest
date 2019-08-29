@@ -39,9 +39,9 @@ Logo.prototype = {
 		this.game.load.atlas('spr_playerMonster', 'assets/img/playerMonster.png', 'assets/json/player.json');
 		this.game.load.atlas('spr_slug', 'assets/img/slug.png', 'assets/json/slug.json');
 		this.game.load.atlas('spr_crawler', 'assets/img/crawler.png', 'assets/json/crawler.json');		
-		//this.game.load.image('spr_kitchen', 'assets/img/spr_kitchen.png');
-		//this.game.load.image('spr_right', 'assets/img/spr_right.png');
-		//this.game.load.image('spr_left', 'assets/img/spr_left.png');		
+		this.game.load.image('spr_kitchen', 'assets/img/spr_kitchen.png');
+		this.game.load.image('spr_right', 'assets/img/spr_right.png');
+		this.game.load.image('spr_left', 'assets/img/spr_left.png');		
 		/* --Objects-- */
 		//this.game.load.image('obj_bounds', 'assets/img/obj_bounds.png');
 		//this.game.load.image('obj_table', 'assets/img/obj_table.png');

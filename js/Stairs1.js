@@ -8,7 +8,7 @@ var Stairs1 = function(game) {
 	this.dialogBox;
 	this.text;
 	this.showJournal;
-	this.cutsceneTriggered = false;
+	this.cutsceneTriggered;
 };
 Stairs1.prototype = {
 	preload: function() {
@@ -16,6 +16,9 @@ Stairs1.prototype = {
 	},
 	create: function() {
 		console.log('Stairs1: create');
+
+		this.cutsceneTriggered = false;
+
 		game.camera.flash(0x000000, 1000);
 
 		this.stairs = this.game.add.sprite(0, -800, 'bkg_stairs');

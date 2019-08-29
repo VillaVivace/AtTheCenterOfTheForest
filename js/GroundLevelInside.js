@@ -7,17 +7,15 @@ var GroundLevelInside = function(game) {
 	this.filter;
 	this.journal;
 	this.dialogBox;
-	this.cutsceneTriggered = false;
 	this.text;
 	this.showJournal;
 	this.bounds;
 
 	this.timer;
 	this.stepTimer;
-	this.helpText = false;
 
 	this.door;
-	this.tables;
+	this.hidingSpots;
 };
 GroundLevelInside.prototype = {
 	preload: function() {
@@ -33,6 +31,7 @@ GroundLevelInside.prototype = {
 		game.world.setBounds(0, 0, 2400, 600);
 
 		game.add.audio('snd_anxiety').play('', 0, 0.5, true);
+		game.add.audio('snd_slimy').play('', 0, 0.05, true);
 
 		/* --Objects & Furniture-- */
 		this.bounds = game.add.group();
@@ -42,10 +41,12 @@ GroundLevelInside.prototype = {
 		this.bound.body.immovable = true;
 		this.bound = this.bounds.create(2250, 0, 'obj_bounds');
 		this.bound.body.immovable = true;
-		this.tables = game.add.group();
-		this.tables.enableBody = true;
-		this.tables.create(1000, 355, 'obj_table');
-		this.tables.create(1750, 355, 'obj_table');
+		this.hidingSpots = game.add.group();
+		this.hidingSpots.enableBody = true;
+		this.hidingSpots.create(500, 355, 'obj_table');
+		this.hidingSpots.create(800, 0, 'obj_curtains');
+		this.diningTable = this.hidingSpots.create(1300, 265, 'obj_diningTableEmpty');
+		this.diningTable.body.setSize(260, 250, 220);
 		this.door = this.game.add.sprite(2200, 0, 'obj_door');
 		game.physics.enable(this.door);
 
@@ -70,15 +71,15 @@ GroundLevelInside.prototype = {
 		// Run the 'Play' state's game loop
 		
 		/* --Collisions-- */
-		var isTouchingTable = game.physics.arcade.overlap(this.player, this.tables);
-		var slugTouchingTable = game.physics.arcade.overlap(this.slug, this.tables);
+		var isTouchingHidingSpots = game.physics.arcade.overlap(this.player, this.hidingSpots);
+		var slugTouchingHidingSpots = game.physics.arcade.overlap(this.slug, this.hidingSpots);
 		var slugTouchingPlayer = game.physics.arcade.overlap(this.slug, this.player);
 		var touchedDoor = game.physics.arcade.overlap(this.player, this.door);
 		game.physics.arcade.collide(this.player, this.bounds);
 
 		/* --Interaction-- */
-		if (isTouchingTable && controls.space.isDown) {
-			game.world.bringToTop(this.tables);
+		if (isTouchingHidingSpots && controls.space.isDown) {
+			game.world.bringToTop(this.hidingSpots);
 			this.player.changeState('hidden');
 		}
 		if (this.player.getState() == 'normal' && slugTouchingPlayer) {
@@ -96,14 +97,14 @@ GroundLevelInside.prototype = {
 		} else {
 			this.slug.scale.x = 1;
 		}
-		if ((this.slug.x <= 800 || this.slug.x >= 1950) && this.slugFlipped == false) {
+		if ((this.slug.x <= 450 || this.slug.x >= 1950) && this.slugFlipped == false) {
 			this.slugFlipped = true;
 			this.slug.body.velocity.x = -(this.slug.body.velocity.x);
 		}
 		if (this.slug.x >= 1200 && this.slug.x <= 1400) {
 			this.slugFlipped = false;
 		}
-		if (slugTouchingTable) {
+		if (slugTouchingHidingSpots) {
 			this.slug.bringToTop();
 		}
 
@@ -114,6 +115,5 @@ GroundLevelInside.prototype = {
 		this.filter.y = game.camera.y;
 		this.border.bringToTop();
 		this.filter.bringToTop();
-	}
-		
+	}		
 }

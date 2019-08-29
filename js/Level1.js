@@ -10,14 +10,13 @@ var Level1 = function(game) {
 	this.filter;
 	this.journal;
 	this.dialogBox;
-	this.cutsceneTriggered = false;
 	this.text;
 	this.showJournal;
 	this.bounds;
+	this.warningTriggered = false;
 
 	this.timer;
 	this.stepTimer;
-	this.helpText = false;
 
 	this.curtains;
 	this.door;
@@ -44,7 +43,7 @@ Level1.prototype = {
 		this.bounds.alpha = 0;
 		this.bound = this.bounds.create(148, 0, 'obj_bounds');
 		this.bound.body.immovable = true;
-		this.bound = this.bounds.create(4700, 0, 'obj_bounds');
+		this.bound = this.bounds.create(4650, 0, 'obj_bounds');
 		this.bound.body.immovable = true;
 		
 		this.curtains = game.add.group();
@@ -57,6 +56,7 @@ Level1.prototype = {
 
 		this.door = this.game.add.sprite(4600, 0, 'obj_door');
 		game.physics.enable(this.door);
+		this.door.body.immovable = true;
 		
 		//eyes
 		this.eyes = game.add.group();
@@ -127,21 +127,15 @@ Level1.prototype = {
 	update: function() {
 		
 		/* --Collisions-- */
-		var touchedDoor = game.physics.arcade.collide(this.player, this.door);
+		var touchedDoor = game.physics.arcade.overlap(this.player, this.door);
 		var isTouchingCurtains = game.physics.arcade.overlap(this.player, this.curtains);
 		var crawlerTouchingCurtains = game.physics.arcade.overlap(this.crawler, this.curtains);
 		var crawlerTouchingEye = game.physics.arcade.overlap(this.crawler, this.eyeLogo)		
 		var playerTouchingCrawler = game.physics.arcade.overlap(this.player, this.crawler);
 		var playerTouchingEye = game.physics.arcade.overlap(this.player, this.eyes, callMonster, null, this);
 		game.physics.arcade.collide(this.player, this.bounds);
-		
-		/* --Cutscenes-- */
-		/* if (this.cutsceneTriggered == false && this.player.x > 600) {
-			this.player.changeState('cutscene');
-			this.journalTimer.start();
-		} */
-		
-		if (touchedDoor) {
+
+		if (touchedDoor && controls.space.justDown) {
 			game.sound.stopAll();
 			game.add.audio('snd_door').play('', 0, 0.05, false, false);
 			game.state.start('Stairs2');
@@ -155,10 +149,23 @@ Level1.prototype = {
 		}
 
 		if (!playerTouchingEye) {
+			this.warningTriggered = false;
 			eyeIsClosed = true;
 		}
 
 		if (eyeIsClosed == false) {
+			if (this.warningTriggered == false) {
+				this.warningTriggered = true;
+				var rand = Math.random();
+				var warningSound;
+				if (rand < 0.5) {
+					warningSound = game.add.audio('snd_screech1');
+				} else {
+					warningSound = game.add.audio('snd_screech2');
+				}
+				warningSound.play('', 0, 0.25, false, false);
+				
+			}
 			if ((this.crawler.x < this.player.x) && this.player.getState() == 'normal') {
 				this.crawler.body.velocity.x = 600;
 			}
@@ -179,12 +186,8 @@ Level1.prototype = {
 			game.world.bringToTop(this.curtains);
 			this.player.changeState('hidden');
 		}
-		
-				
-		
-		
 
-		/* --crawler Movement-- */
+		/* --Crawler Movement-- */
 		if (this.crawler.body.velocity.x > 0) {
 			this.crawler.scale.x = -1;
 		} else {
@@ -210,26 +213,17 @@ Level1.prototype = {
 		this.border.y = game.camera.y;
 		this.filter.x = game.camera.x - 16;
 		this.filter.y = game.camera.y;
-		this.dialogBox.x = game.camera.x + (game.camera.width/2 - this.dialogBox.width/2);
-		this.dialogBox.y = game.camera.y + (game.world.height - this.dialogBox.height);
-		this.journal.x = game.camera.x + (game.camera.width/2 - this.journal.width/2);
-		this.journal.y = this.dialogBox.y - this.journal.height;
-		this.text.x = this.dialogBox.x + 32;
-		this.text.y = this.dialogBox.y + 32;
 		this.border.bringToTop();
 		this.filter.bringToTop();
-		this.dialogBox.bringToTop();
-		this.journal.bringToTop();
-		this.text.bringToTop();
 	}  	 		
 }
 
 /* --Helper Functions-- */
 function callMonster(player, eye) {
-	if(eye.animations.currentAnim.frame==15||
+	if(eye.animations.currentAnim.frame==0||
+	eye.animations.currentAnim.frame==15||
 	eye.animations.currentAnim.frame==16||
-	eye.animations.currentAnim.frame==17||
-	eye.animations.currentAnim.frame==0) {
+	eye.animations.currentAnim.frame==17) {
 		eyeIsClosed = true;
 	} else {
 		eyeIsClosed = false;

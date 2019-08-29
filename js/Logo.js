@@ -19,7 +19,18 @@ Logo.prototype = {
 		this.game.load.image('gui_journal', 'assets/img/gui_journal.png');
 		this.game.load.image('gui_border', 'assets/img/gui_border.png');
 		this.game.load.image('gui_filter', 'assets/img/gui_filter.png');
+		this.game.load.image('gui_jar', 'assets/img/gui_jar.png');
+		this.game.load.image('gui_key', 'assets/img/gui_key.png');
+		this.game.load.image('gui_mandrake', 'assets/img/gui_mandrake.png');
+		this.game.load.image('gui_handMirror', 'assets/img/gui_handMirror.png');
+		this.game.load.image('gui_heart', 'assets/img/gui_heart.png');
 		this.game.load.atlas('gui_icons', 'assets/img/gui_icons.png', 'assets/json/gui_icons.json');
+		/* --Icons-- */
+		this.game.load.image('icon_jar', 'assets/img/jarIcon.png');
+		this.game.load.image('icon_key', 'assets/img/keyIcon.png');
+		this.game.load.image('icon_mandrake', 'assets/img/mandrakeIcon.png');
+		this.game.load.image('icon_handMirror', 'assets/img/handMirrorIcon.png');
+		this.game.load.image('icon_heart', 'assets/img/heartIcon.png');
 		/* --Player and Monsters-- */
 		this.game.load.atlas('spr_player', 'assets/img/player.png', 'assets/json/player.json');
 		this.game.load.atlas('spr_slug', 'assets/img/slug.png', 'assets/json/slug.json');
@@ -35,6 +46,10 @@ Logo.prototype = {
 		this.game.load.image('obj_door2', 'assets/img/obj_door2.png');
 		this.game.load.image('obj_curtains', 'assets/img/obj_curtains.png');
 		this.game.load.image('obj_diningtable', 'assets/img/obj_diningtable.png');
+		this.game.load.image('obj_bookcase', 'assets/img/obj_bookcase.png');
+		this.game.load.image('obj_crates', 'assets/img/obj_crates.png');
+		this.game.load.image('obj_shelf', 'assets/img/obj_shelf.png');
+		this.game.load.image('obj_diningTableEmpty', 'assets/img/obj_diningTableEmpty.png');
 		this.game.load.atlas('obj_chandalier', 'assets/img/obj_chandalier.png','assets/json/chandalier.json');
 		this.game.load.image('wall', 'assets/img/wall.png');
 

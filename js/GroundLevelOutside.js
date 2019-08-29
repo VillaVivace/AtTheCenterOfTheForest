@@ -8,9 +8,9 @@ var GroundLevelOutside = function(game) { //Intro Cutscene
 	this.text;
 	this.showJournal;
 	this.bounds;
-	this.cutsceneTriggered = false;
-	this.gameStart = true;
-	this.touchedDoorOnce = false;
+	this.cutsceneTriggered;
+	this.gameStart;
+	this.touchedDoorOnce;
 
 	this.timer;
 	this.stepTimer;
@@ -24,6 +24,11 @@ GroundLevelOutside.prototype = {
 	},
 	create: function() {
 		console.log('GroundLevelOutside: create');
+
+		this.cutsceneTriggered = false;
+		this.gameStart = true;
+		this.touchedDoorOnce = false;
+
 		game.camera.flash(0x000000, 1000);
 		this.game.scale.setGameSize(1000, 600);
 		this.stageBkg = game.add.sprite(0, 0, 'bkg_intro');

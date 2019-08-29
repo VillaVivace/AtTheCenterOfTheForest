@@ -32,6 +32,8 @@ var Level2 = function(game) {
 	this.bounds;
 	this.kitchenBound;
 	this.kitchenwall;
+	this.spaceButton;
+	this.touchedMonsterOnce = false;
 
 	this.tables;
 	this.chandalier;
@@ -170,6 +172,22 @@ Level2.prototype = {
 		var textStyle = {font: 'Handlee', fontSize: '18px', fill: '#ffffff' }
 		this.text = this.game.add.text(0, 0, '', textStyle);
 		this.text.alpha = 0;
+		this.spaceButton = game.add.sprite(this.player.centerX, this.player.y - 128, 'gui_icons', 'space');
+		this.spaceButton.anchor.set(0.5, 0.5);
+		this.spaceButton.alpha = 0;
+
+		this.showActionUI = function(show) {
+			if (show == true) {
+				game.add.tween(this.spaceButton).to( { alpha: 0.75 }, 1000, Phaser.Easing.Sinusoidal.In, true);
+				this.actionUITimer.start();
+			}
+			else {
+				game.add.tween(this.spaceButton).to( { alpha: 0 }, 1000, Phaser.Easing.Sinusoidal.In, true);
+			}
+		};
+
+		this.actionUITimer = game.time.create(false);
+		this.actionUITimer.add(2000, this.showActionUI, this, false);
 		
 		this.conversationState = 'END';
 		this.line = 1;
@@ -306,6 +324,11 @@ Level2.prototype = {
 		var isTouchingTable = game.physics.arcade.overlap(this.player, this.tables);
 		game.physics.arcade.collide(this.player, this.bounds);
 
+
+		if (this.playerTouchingLeftMonster && this.touchedMonsterOnce == false) {
+			this.touchedMonsterOnce = true;
+			this.showActionUI(true);
+		}
 
 		/* --Dialog Interactions-- */
 		if (this.conversationState == 'END') {

@@ -7,6 +7,17 @@ function Player(game, x, y, key, controls) {
 	this.state = 'normal';
 	this.direction = 1;
 	this.speed = 250;
+	/* --Item UI-- */
+	this.mirror = game.add.sprite(32, 32, 'icon_handMirror');
+	this.mirror.alpha = 0;
+	this.heart = game.add.sprite(32, 32, 'icon_heart');
+	this.heart.alpha = 0;
+	this.mandrake = game.add.sprite(32, 32, 'icon_mandrake');
+	this.mandrake.alpha = 0;
+	this.eyeballs = game.add.sprite(32, 32, 'icon_jar');
+	this.eyeballs.alpha = 0;
+	this.doorKey = game.add.sprite(32, 32, 'icon_key');
+	this.doorKey.alpha = 0;
 	
 	/* --Player properties-- */
 	game.physics.enable(this);
@@ -93,6 +104,17 @@ Player.prototype.update = function() {
   			default:
     		
 		}
+	/* --ITEM UI-- */
+	this.mirror.x = game.camera.x + 32;
+	this.heart.x = game.camera.x + 32;
+	this.mandrake.x = game.camera.x + 32;
+	this.eyeballs.x = game.camera.x + 32;
+	this.doorKey.x = game.camera.x + 32;
+	this.mirror.bringToTop();
+	this.heart.bringToTop();
+	this.mandrake.bringToTop();
+	this.eyeballs.bringToTop();
+	this.doorKey.bringToTop();
 }
 
 Player.prototype.changeState = function(state) {
@@ -101,4 +123,35 @@ Player.prototype.changeState = function(state) {
 
 Player.prototype.getState = function() {
 	return this.state;
+}
+
+Player.prototype.changeMirrorAlpha = function(alpha) {
+	this.mirror.alpha = alpha;
+}
+Player.prototype.changeHeartAlpha = function(alpha) {
+	this.heart.alpha = alpha;
+}
+Player.prototype.changeMandrakeAlpha = function(alpha) {
+	this.mandrake.alpha = alpha;
+}
+Player.prototype.changeEyeballsAlpha = function(alpha) {
+	this.eyeballs.alpha = alpha;
+}
+Player.prototype.changeDoorKeyAlpha = function(alpha) {
+	this.doorKey.alpha = alpha;
+}
+Player.prototype.getMirrorAlpha = function() {
+	return this.mirror.alpha
+}
+Player.prototype.getHeartAlpha = function() {
+	return this.heart.alpha
+}
+Player.prototype.getMandrakeAlpha = function() {
+	return this.mandrake.alpha
+}
+Player.prototype.getEyeballsAlpha = function() {
+	return this.eyeballs.alpha
+}
+Player.prototype.getDoorKeyAlpha = function() {
+	return this.doorKey.alpha
 }

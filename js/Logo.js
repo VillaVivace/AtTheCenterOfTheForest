@@ -33,6 +33,7 @@ Logo.prototype = {
 		this.game.load.image('icon_heart', 'assets/img/heartIcon.png');
 		/* --Player and Monsters-- */
 		this.game.load.atlas('spr_player', 'assets/img/player.png', 'assets/json/player.json');
+		this.game.load.atlas('spr_playerMonster', 'assets/img/playerMonster.png', 'assets/json/player.json');
 		this.game.load.atlas('spr_slug', 'assets/img/slug.png', 'assets/json/slug.json');
 		this.game.load.atlas('spr_crawler', 'assets/img/crawler.png', 'assets/json/crawler.json');		
 		this.game.load.atlas('spr_kitchen', 'assets/img/spr_kitchen.png', 'assets/json/kitchen.json');
@@ -51,6 +52,7 @@ Logo.prototype = {
 		this.game.load.image('obj_shelf', 'assets/img/obj_shelf.png');
 		this.game.load.image('obj_diningTableEmpty', 'assets/img/obj_diningTableEmpty.png');
 		this.game.load.atlas('obj_chandalier', 'assets/img/obj_chandalier.png','assets/json/chandalier.json');
+		this.game.load.image('obj_counter', 'assets/img/counter.png');
 		this.game.load.image('wall', 'assets/img/wall.png');
 
 		/* --SFX-- */

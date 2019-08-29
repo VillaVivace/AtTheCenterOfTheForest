@@ -4,12 +4,24 @@ var Sub2 = function(game) {
 	this.border;
 	this.filter;
 	this.bounds;
+	this.dialogBox;
+	this.text;
+	this.conversationState;
+	this.line;
+
+	this.heartUI;
+	this.mandrakeUI;
+	this.eyeballsUI;
 
 	this.door;
 	this.tables;
-
-	this.shelf;
+	this.shelf1;
+	this.shelf2;
 	this.crates;
+
+	this.touchedShelf1;
+	this.touchedShelf2;
+	this.touchedCrates;
 
 };
 Sub2.prototype = {
@@ -51,8 +63,8 @@ Sub2.prototype = {
 		//shelf
 		this.shelf = game.add.group();
 		this.shelf.enableBody = true;
-		this.shelf.create(1000, 150, 'shelf');
-		this.shelf.create(1300, 150, 'shelf');
+		this.shelf1 = this.shelf.create(1000, 150, 'shelf');
+		this.shelf2 = this.shelf.create(1300, 150, 'shelf');
 		
 		//crates
 		this.crates = game.add.group();
@@ -77,25 +89,164 @@ Sub2.prototype = {
 		this.filter.scale.setTo(1, 1);
 		this.border = game.add.sprite(0, 0, 'gui_border');
 		this.border.scale.setTo(1, 1);
-		game.world.bringToTop(this.border);
+		this.dialogBox = game.add.sprite(0, 0, 'gui_dialogBox');
+		this.dialogBox.alpha = 0;
+		var textStyle = {font: 'Handlee', fontSize: '18px', fill: '#ffffff' }
+		this.text = this.game.add.text(0, 0, '', textStyle);
+		this.text.alpha = 0;
+
+		this.heartUI = game.add.sprite(0, 0, 'gui_heart');
+		this.heartUI.scale.setTo(0.75, 0.75);
+		this.heartUI.alpha = 0;
+		this.mandrakeUI = game.add.sprite(0, 0, 'gui_mandrake');
+		this.mandrakeUI.scale.setTo(0.75, 0.75);
+		this.mandrakeUI.alpha = 0;
+		this.eyeballsUI = game.add.sprite(0, 0, 'gui_jar');
+		this.eyeballsUI.scale.setTo(0.75, 0.75);
+		this.eyeballsUI.alpha = 0;
 
 		
-		
+		this.conversationState = 'END';
+		this.line = 1;
+		this.conversationManager = function() {
+			if (playerHasIngredient == false) {
+				/* --Shelf 1-- */
+				if (this.touchedShelf1 && this.conversationState == 'END') {
+					this.player.changeState('cutscene');
+					this.dialogBox.alpha = 1;
+					this.text.alpha = 1;
+					this.conversationState = narrative('shelf1_' + this.line);
+					this.text.text = this.conversationState;
+				}
+				if (this.conversationState == narrative('shelf1_4Choice1')) {
+					this.player.changeEyeballsAlpha(1);
+					playerHasEyeballs = true;
+					this.eyeballsUI.alpha = 0;
+					this.conversationState = 'END';
+				}
+				else if (this.touchedShelf1 && this.conversationState != 'END') {
+					this.line = this.line + 1;
+					this.conversationState = narrative('shelf1_' + this.line);
+					this.text.text = this.conversationState;
+				}
+				
+				/* --Shelf 2-- */
+					if (this.touchedShelf2 && this.conversationState == 'END') {
+						this.player.changeState('cutscene');
+						this.dialogBox.alpha = 1;
+						this.text.alpha = 1;
+						this.conversationState = narrative('shelf2_' + this.line);
+						this.text.text = this.conversationState;
+					}
+					if (this.conversationState == narrative('shelf2_4Choice1')) {
+						this.player.changeMandrakeAlpha(1);
+						playerHasMandrake = true;
+						this.mandrakeUI.alpha = 0;
+						this.conversationState = 'END';
+					}
+					else if (this.touchedShelf2 && this.conversationState != 'END') {
+						this.line = this.line + 1;
+						this.conversationState = narrative('shelf2_' + this.line);
+						this.text.text = this.conversationState;
+					}
+				/* --Crates 1-- */
+				if (this.touchedCrates && this.conversationState == 'END') {
+					this.player.changeState('cutscene');
+					this.dialogBox.alpha = 1;
+					this.text.alpha = 1;
+					this.conversationState = narrative('crates1_' + this.line);
+					this.text.text = this.conversationState;
+				}
+				if (this.conversationState == narrative('crates1_4Choice1')) {
+					this.player.changeHeartAlpha(1);
+					playerHasHeart = true;
+					this.heartUI.alpha = 0;
+					this.conversationState = 'END';
+				}
+				else if (this.touchedCrates && this.conversationState != 'END') {
+					this.line = this.line + 1;
+					this.conversationState = narrative('crates1_' + this.line);
+					this.text.text = this.conversationState;
+				}
+			}
+		};
+
+		controls.space.onDown.add(this.conversationManager, this);
+
 	},
 	update: function() {
 		// Run the 'Play' state's game loop
 		/* --Collisions-- */
+		this.touchedShelf1 = game.physics.arcade.overlap(this.player, this.shelf1);
+		this.touchedShelf2 = game.physics.arcade.overlap(this.player, this.shelf2);
+		this.touchedCrates = game.physics.arcade.overlap(this.player, this.crates);
 		var isTouchingTable = game.physics.arcade.overlap(this.player, this.tables);
 		var touchedDoor = game.physics.arcade.overlap(this.player, this.door);
-		var touchMirror = game.physics.arcade.overlap(this.player, this.handMirror);
 		game.physics.arcade.collide(this.player, this.bounds);
 
 
+		/* --Dialog Interactions-- */
+		if (this.conversationState == 'END') {
+			this.line = 1;
+			this.dialogBox.alpha = 0;
+			this.text.alpha = 0;
+			this.player.changeState('normal');
+		}
+		/* --Shelf 1 CHOICES-- */
+		if (this.conversationState == narrative('shelf1_4')) {
+			if (controls.num1.justDown) {
+				this.eyeballsUI.alpha = 1;				
+				this.conversationState = narrative('shelf1_4Choice1');
+				this.text.text = this.conversationState;
+			}
+			if (controls.num2.justDown) {
+				this.conversationState = narrative('shelf1_5');
+				this.text.text = this.conversationState;
+			}
+		}
+		/* --Shelf 2 CHOICES-- */
+		if (this.conversationState == narrative('shelf2_4')) {
+			if (controls.num1.justDown) {
+				this.mandrakeUI.alpha = 1;				
+				this.conversationState = narrative('shelf2_4Choice1');
+				this.text.text = this.conversationState;
+			}
+			if (controls.num2.justDown) {
+				this.conversationState = narrative('shelf2_5');
+				this.text.text = this.conversationState;
+			}
+		}
+		/* --Crate 1 CHOICES-- */
+		if (this.conversationState == narrative('crates1_4')) {
+			if (controls.num1.justDown) {
+				this.heartUI.alpha = 1;				
+				this.conversationState = narrative('crates1_4Choice1');
+				this.text.text = this.conversationState;
+			}
+			if (controls.num2.justDown) {
+				this.conversationState = narrative('crates1_5');
+				this.text.text = this.conversationState;
+			}
+		}
+
+		if (playerHasEyeballs || playerHasMandrake || playerHasHeart) {
+			playerHasIngredient = true;
+		}
+
+		if (playerHasEyeballs) {
+			this.player.changeEyeballsAlpha(1);
+		}
+		if (playerHasMandrake) {
+			this.player.changeEyeballsAlpha(1);
+		}
+		if (playerHasHeart) {
+			this.player.changeEyeballsAlpha(1);
+		}
+
 		/* --Interaction-- */
-		if (touchedDoor) {
-			game.sound.stopAll();
+		if (controls.space.justDown && touchedDoor) {
 			game.add.audio('snd_door').play('', 0, 0.05, false, false);
-			game.state.start('Level2');
+			game.state.start('Level2', true, false, 3700, game.world.height - 200, true);
 		}
 
 		if(isTouchingTable && controls.space.isDown){
@@ -104,12 +255,28 @@ Sub2.prototype = {
 		}
 
 		/* --GUI & Effects Positioning-- */
+		this.player.bringToTop();
 		this.border.x = game.camera.x - 16; // We want the GUI and FX to align with the camera, not just a world position
 		this.border.y = game.camera.y;
 		this.filter.x = game.camera.x - 16;
 		this.filter.y = game.camera.y;
+		this.dialogBox.x = game.camera.x + (game.camera.width/2 - this.dialogBox.width/2);
+		this.dialogBox.y = game.camera.y + (game.world.height - this.dialogBox.height);
+		this.text.x = this.dialogBox.x + 32;
+		this.text.y = this.dialogBox.y + 32;
+		this.heartUI.x = game.camera.x + (game.camera.width/2 - this.heartUI.width/2);
+		this.heartUI.y = this.dialogBox.y - this.heartUI.height;
+		this.mandrakeUI.x = game.camera.x + (game.camera.width/2 - this.mandrakeUI.width/2);
+		this.mandrakeUI.y = this.dialogBox.y - this.mandrakeUI.height;
+		this.eyeballsUI.x = game.camera.x + (game.camera.width/2 - this.eyeballsUI.width/2);
+		this.eyeballsUI.y = this.dialogBox.y - this.eyeballsUI.height;
 		this.border.bringToTop();
 		this.filter.bringToTop();
+		this.dialogBox.bringToTop();
+		this.text.bringToTop();	
+		this.heartUI.bringToTop();
+		this.mandrakeUI.bringToTop();
+		this.eyeballsUI.bringToTop();
 
 	}
 		

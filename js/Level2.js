@@ -1,3 +1,18 @@
+var playerHasMirror = false;
+var hasMirrorFlag = false;
+var bloodrootPleased = false;
+var bloodrootPleasedFlag = false;
+var playerHasIngredient = false
+var hasIngredientFlag = false;
+var doneWithNoLegs = false;
+var doneWithChefArma = false;
+var playerHasKey1 = false;
+var playerHasKey2 = false;
+
+var playerHasEyeballs = false;
+var playerHasMandrake = false;
+var playerHasHeart = false;
+
 var Level2 = function(game) {
 	this.player;
 	this.playerX;
@@ -15,19 +30,17 @@ var Level2 = function(game) {
 	this.conversationState;
 	this.line;
 	this.bounds;
+	this.kitchenBound;
 	this.kitchenwall;
 
-	this.diningtables;
+	this.tables;
 	this.chandalier;
-	this.chandalier1;
+	this.bookcases;
+	this.kitchenShelf;
 	this.door1;
-	this.ddor2;
+	this.door2;
 	this.kitchendoor;
 	this.exit;
-
-	this.key1=false;
-	this.key2=false;
-	this.key11;
 
 	this.playerTouchingKitchenMonster;
 	this.playerTouchingRightMonster;
@@ -54,8 +67,8 @@ Level2.prototype = {
 
 		game.camera.flash(0x000000, 1500);
 
-		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelShort');
-		game.world.setBounds(0, 0, 2400, 600);
+		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelLong');
+		game.world.setBounds(0, 0, 4800, 600);
 
 		if (this.songIsPlaying == null) {
 			this.songIsPlaying = false;
@@ -71,57 +84,68 @@ Level2.prototype = {
 		this.bounds.alpha = 0;
 		this.bound = this.bounds.create(100, 0, 'obj_bounds'); 
 		this.bound.body.immovable = true;
-		this.bound = this.bounds.create(2400, 0, 'obj_bounds');
+		this.bound = this.bounds.create(4650, 0, 'obj_bounds');
 		this.bound.body.immovable = true;
-		this.bound = this.bounds.create(1650, 0, 'obj_bounds');
-		this.bound.body.immovable = true;				
-		//monster 1
-		this.rightMonster = game.add.sprite(1180, game.world.height-250, 'spr_right');
-		game.physics.enable(this.rightMonster);
-		this.rightMonster.anchor.set(0.5, 0.5);
-		this.rightMonster.body.setSize(150, 300, 50, 50 );
-		this.rightMonster.frame = 1;
+		this.kitchenBound = this.bounds.create(2600, 0, 'obj_bounds');
+		this.kitchenBound.body.immovable = true;				
 		
-		//monster 2
-		this.leftMonster = game.add.sprite(600, game.world.height-250, 'spr_left');
+		//left monster
+		this.leftMonster = game.add.sprite(1300, game.world.height-250, 'spr_left');
 		game.physics.enable(this.leftMonster);
 		this.leftMonster.anchor.set(0.5, 0.5);
 		this.leftMonster.body.setSize(150, 300, 0, 50 );
 		this.leftMonster.frame = 1;
 
 		//tables
-		this.diningtables = game.add.group();
-		this.diningtables.enableBody = true;
-		this.diningtables.create(650, 325, 'obj_diningtable');
+		this.tables = game.add.group();
+		this.tables.enableBody = true;
+		this.tables.create(400, 355, 'obj_table');
+		this.tables.create(1350, 325, 'obj_diningtable');
+
+		//right monster
+		this.rightMonster = game.add.sprite(1880, game.world.height-250, 'spr_right');
+		game.physics.enable(this.rightMonster);
+		this.rightMonster.anchor.set(0.5, 0.5);
+		this.rightMonster.body.setSize(150, 300, 50, 50 );
+		this.rightMonster.frame = 1;
+
+		//bookcase
+		this.bookcases = game.add.group();
+		this.bookcases.enableBody = true;
+		this.bookcases.create(700, 150, 'obj_bookcase');
+		
+		//doors
+		this.door = game.add.sprite(200, 0, 'obj_door');		
+		game.physics.enable(this.door);	
+		this.door.scale.x = -1;
+		this.door1 = game.add.sprite(2200, 0, 'obj_door2');		
+		game.physics.enable(this.door1);				
+		this.door2 = game.add.sprite(3600, 0, 'obj_door2');		
+		game.physics.enable(this.door2);
+		this.exit= game.add.sprite(4600, 0, 'obj_door');
+		game.physics.enable(this.exit);
+
+		//chandaliers
+		this.chandalier = game.add.sprite(1475, 0, 'obj_chandalier');
+		this.chandalier.animations.add('anima', Phaser.Animation.generateFrameNames('chandalier', 1, 3), 2, true);
+		this.chandalier.animations.play('anima');				
+
+		//kitchen counter
+		this.counter = game.add.sprite(2800, 365, 'obj_counter');
+
+		//kitchen monster
+		this.kitchenMonster = game.add.sprite(3350, game.world.height-225, 'spr_kitchen');
+		game.physics.enable(this.kitchenMonster);
+		this.kitchenMonster.anchor.set(0.5, 0.5);
+		this.kitchenMonster.frame = 1;
+
+		//kitchen shelf
+		this.kitchenShelf = game.add.sprite(3900, 150, 'obj_shelf');
 
 		//keys
 		this.key11 = game.add.sprite(1000, 355, 'key');
 		game.physics.enable(this.key11);
 		this.key11.alpha = 0;
-
-		
-		//doors
-		this.door1 = game.add.sprite(1400, 0, 'obj_door2');		
-		game.physics.enable(this.door1);				
-		this.door2 = game.add.sprite(1800, 0, 'obj_door2');		
-		game.physics.enable(this.door2);
-		this.exit= game.add.sprite(2200, 0, 'obj_door');
-		game.physics.enable(this.exit);
-		
-		//kitchen wall
-		this.kitchenwall = game.add.sprite(1650, 0, 'wall');
-		this.kitchenwall.enableBody = true;
-
-		//chandaliers
-		this.chandalier = game.add.sprite(825, 0, 'obj_chandalier');
-		this.chandalier.animations.add('anima', Phaser.Animation.generateFrameNames('chandalier', 1, 3), 2, true);
-		this.chandalier.animations.play('anima');				
-
-		
-		//kitchen monster
-		this.kitchenMonster = game.add.sprite(2150, game.world.height-200, 'spr_kitchen');
-		game.physics.enable(this.kitchenMonster);
-		this.kitchenMonster.anchor.set(0.5, 0.5);
 		
 		//player
 		if (this.playerX == null && this.player == null) {
@@ -130,6 +154,10 @@ Level2.prototype = {
 		}
 		this.player = new Player(game, this.playerX, this.playerY, 'spr_player', controls);
 		this.game.add.existing(this.player);
+
+		//kitchen wall
+		this.kitchenwall = game.add.sprite(2600, 0, 'wall');
+		this.kitchenwall.enableBody = true;
 		
 		/* --GUI & Effects-- */
 		this.filter = game.add.sprite(0, 0, 'gui_filter');
@@ -145,37 +173,111 @@ Level2.prototype = {
 		this.conversationState = 'END';
 		this.line = 1;
 		this.conversationManager = function() {
-			/* --LEFT MONSTER-- */
-			if (this.playerTouchingLeftMonster && this.conversationState == 'END') {
-				this.player.changeState('cutscene');
-				this.dialogBox.alpha = 1;
-				this.text.alpha = 1;
-				this.conversationState = narrative('leftMonster' + this.line);
-				this.text.text = this.conversationState;
+			/* --LEFT MONSTER (No Legs)-- */
+			if (doneWithNoLegs == false) {
+				if (bloodrootPleased == true) {
+					if (bloodrootPleasedFlag == false) {
+						bloodrootPleasedFlag = true;
+						this.line = 7;
+					}
+					
+					if (this.playerTouchingLeftMonster && this.conversationState == 'END') {
+						this.player.changeState('cutscene');
+						this.dialogBox.alpha = 1;
+						this.text.alpha = 1;
+						this.conversationState = narrative('leftMonster' + this.line);
+						this.text.text = this.conversationState;
+					}
+					else if (this.conversationState == narrative('leftMonster9')) {
+						this.player.changeDoorKeyAlpha(1);
+						playerHasKey1 = true;
+						this.conversationState = 'END';
+						
+					}
+					else if (this.playerTouchingLeftMonster && this.conversationState != 'END') {
+						this.line = this.line + 1;
+						this.conversationState = narrative('leftMonster' + this.line);
+						this.text.text = this.conversationState;
+					}
+				}
+				else {
+					if (this.playerTouchingLeftMonster && this.conversationState == 'END') {
+						this.player.changeState('cutscene');
+						this.dialogBox.alpha = 1;
+						this.text.alpha = 1;
+						this.conversationState = narrative('leftMonster' + this.line);
+						this.text.text = this.conversationState;
+					}
+					else if (this.playerTouchingLeftMonster && this.conversationState != 'END') {
+						this.line = this.line + 1;
+						this.conversationState = narrative('leftMonster' + this.line);
+						this.text.text = this.conversationState;
+					}
+				}
 			}
-			if (this.playerTouchingLeftMonster && this.conversationState != 'END') {
-				this.line = this.line + 1;
-				this.conversationState = narrative('leftMonster' + this.line);
-				this.text.text = this.conversationState;
+			
+			/* --RIGHT MONSTER (Bloodroot)-- */
+			if (bloodrootPleased == false) {
+				if (playerHasMirror) {
+					if (hasMirrorFlag == false) {
+						hasMirrorFlag = true;
+						this.line = 5;
+					}
+				}
+				if (this.playerTouchingRightMonster && this.conversationState == 'END') {
+					this.player.changeState('cutscene');
+					this.dialogBox.alpha = 1;
+					this.text.alpha = 1;
+					this.conversationState = narrative('rightMonster' + this.line);
+					this.text.text = this.conversationState;
+				}
+				if (this.conversationState == narrative('rightMonsterChoice1') || this.conversationState == narrative('rightMonsterChoice2')) {
+					this.player.changeState('hidden');
+					this.game.camera.fade(0xD13030, 500);
+					this.deathTimer.start();
+					this.conversationState = 'END';
+				}
+				else if (this.conversationState == narrative('rightMonsterChoice3')) {
+					bloodrootPleased = true;
+					playerHasMirror = false;
+					this.conversationState = 'END';
+				}
+				else if (this.playerTouchingRightMonster && this.conversationState != 'END') {
+					this.line = this.line + 1;
+					this.conversationState = narrative('rightMonster' + this.line);
+					this.text.text = this.conversationState;
+				}
 			}
-			/* --RIGHT MONSTER-- */
-			if (this.playerTouchingRightMonster && this.conversationState == 'END') {
-				this.player.changeState('cutscene');
-				this.dialogBox.alpha = 1;
-				this.text.alpha = 1;
-				this.conversationState = narrative('rightMonster' + this.line);
-				this.text.text = this.conversationState;
-			}
-			if (this.conversationState == narrative('rightMonsterChoice1') || this.conversationState == narrative('rightMonsterChoice2')) {
-				this.player.changeState('hidden');
-				this.game.camera.fade(0xD13030, 500);
-				this.deathTimer.start();
-				this.conversationState = 'END';
-			}
-			else if (this.playerTouchingRightMonster && this.conversationState != 'END') {
-				this.line = this.line + 1;
-				this.conversationState = narrative('rightMonster' + this.line);
-				this.text.text = this.conversationState;
+
+			/* --Kitchen MONSTER (Chef Arma)-- */
+			if (doneWithChefArma == false) {
+				if (playerHasIngredient) {
+					if (hasIngredientFlag == false) {
+						hasIngredientFlag = true;
+						this.line = 5;
+					}
+				}
+				if (this.playerTouchingKitchenMonster && this.conversationState == 'END') {
+					this.player.changeState('cutscene');
+					this.dialogBox.alpha = 1;
+					this.text.alpha = 1;
+					this.conversationState = narrative('kitchenMonster' + this.line);
+					this.text.text = this.conversationState;
+				}
+				if (this.conversationState == narrative('kitchenMonster7')) {
+					playerHasIngredient = false;
+					game.add.audio('snd_screech1').play('', 0, 0.25, false, false);
+				}
+				else if (this.conversationState == narrative('kitchenMonster8')) {
+						this.player.changeDoorKeyAlpha(1);
+						playerHasKey2 = true;
+						this.conversationState = 'END';
+				}
+				if (this.playerTouchingKitchenMonster && this.conversationState != 'END') {
+					this.line = this.line + 1;
+					this.conversationState = narrative('kitchenMonster' + this.line);
+					this.text.text = this.conversationState;
+				}
 			}
 		};
 
@@ -199,6 +301,7 @@ Level2.prototype = {
 		var TouchingDoor1 = game.physics.arcade.overlap(this.player, this.door1);
 		var TouchingDoor2 = game.physics.arcade.overlap(this.player, this.door2);
 		var TouchingExit = game.physics.arcade.overlap(this.player, this.exit);
+		var touchedKitchenWall = game.physics.arcade.collide(this.player, this.kitchenBound);
 		game.physics.arcade.collide(this.player, this.bounds);
 
 
@@ -220,24 +323,68 @@ Level2.prototype = {
 				this.text.text = this.conversationState;
 			}
 		}
+		if (this.conversationState == narrative('rightMonster6')) {
+			if (controls.num1.justDown) {
+				this.conversationState = narrative('rightMonsterChoice3');
+				this.text.text = this.conversationState;
+			}
+			if (controls.num2.justDown) {
+				this.conversationState = narrative('rightMonsterChoice2');
+				this.text.text = this.conversationState;
+			}
+		}
 				
-
-		if(this.key1==true && mirror==true){
-		this.bound.body.immovable = false;
+		if (playerHasMirror) {
+			this.player.changeMirrorAlpha(1);
+		} else {
+			this.player.changeMirrorAlpha(0);
+		}
+		if (playerHasEyeballs) {
+			this.player.changeEyeballsAlpha(1);
+		}
+		if (playerHasMandrake) {
+			this.player.changeEyeballsAlpha(1);
+		}
+		if (playerHasHeart) {
+			this.player.changeEyeballsAlpha(1);
+		}
+		if (playerHasIngredient == false) {
+			this.player.changeEyeballsAlpha(0);
+			this.player.changeMandrakeAlpha(0);
+			this.player.changeEyeballsAlpha(0);
 		}
 
 
-		if(controls.space.justDown && TouchingDoor1){
+		if (playerHasKey1) {
+			doneWithNoLegs = true;
+		}
+		if (playerHasKey2) {
+			doneWithChefArma = true;
+		}
+		if (playerHasKey1 && touchedKitchenWall) {
 			game.add.audio('snd_door').play('', 0, 0.05, false, false);
-			game.state.start('Sub1');
+			this.player.changeDoorKeyAlpha(0);
+			this.kitchenBound.kill();
 		}
-		
-		if(TouchingDoor2&&controls.space.isDown){
-			game.state.start('Sub2');
+
+		if (playerHasKey1 == false) {
+			if(controls.space.justDown && TouchingDoor1){
+				game.add.audio('snd_door').play('', 0, 0.05, false, false);
+				game.state.start('Sub1');
+			}
+		}	
+		if (playerHasKey2 == false) {
+			if(controls.space.justDown && TouchingDoor2){
+				game.state.start('Sub2');
+			}
 		}
-	
-		if(TouchingExit&&key2==true){
-			game.state.start('Level3');
+
+		if(playerHasKey2){
+			if (controls.space.isDown && TouchingExit) {
+				game.sound.stopAll();
+				game.add.audio('snd_door').play('', 0, 0.05, false, false);
+				game.state.start('Stairs3');
+			}
 		}
 
 		/* --GUI & Effects Positioning-- */
@@ -247,8 +394,6 @@ Level2.prototype = {
 		this.filter.y = game.camera.y;
 		this.dialogBox.x = game.camera.x + (game.camera.width/2 - this.dialogBox.width/2);
 		this.dialogBox.y = game.camera.y + (game.world.height - this.dialogBox.height);
-		//this.journal.x = game.camera.x + (game.camera.width/2 - this.journal.width/2);
-		//this.journal.y = this.dialogBox.y - this.journal.height;
 		this.text.x = this.dialogBox.x + 32;
 		this.text.y = this.dialogBox.y + 32;
 		this.border.bringToTop();

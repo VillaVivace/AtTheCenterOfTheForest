@@ -24,6 +24,7 @@ game.state.add('Level2', Level2);
 game.state.add('Stairs2', Stairs2);
 game.state.add('Sub1', Sub1);
 game.state.add('Sub2', Sub2);
+game.state.add('Stairs3', Stairs3);
 game.state.add('Level3', Level3);
 game.state.add('GameOver', GameOver);
 game.state.start('Boot');

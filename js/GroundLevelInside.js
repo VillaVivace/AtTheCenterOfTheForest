@@ -51,6 +51,9 @@ GroundLevelInside.prototype = {
 		this.hidingSpots.create(800, 0, 'obj_curtains');
 		this.diningTable = this.hidingSpots.create(1300, 265, 'obj_diningTableEmpty');
 		this.diningTable.body.setSize(260, 250, 220);
+		this.door = game.add.sprite(200, 0, 'obj_door');		
+		game.physics.enable(this.door);	
+		this.door.scale.x = -1;
 		this.door = this.game.add.sprite(2200, 0, 'obj_door');
 		game.physics.enable(this.door);
 

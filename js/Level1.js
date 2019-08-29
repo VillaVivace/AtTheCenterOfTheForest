@@ -56,6 +56,9 @@ Level1.prototype = {
 		this.curtains.create(3200, 0, 'obj_curtains');
 		this.curtains.create(4000, 0, 'obj_curtains');
 
+		this.door = game.add.sprite(200, 0, 'obj_door');		
+		game.physics.enable(this.door);	
+		this.door.scale.x = -1;
 		this.door = this.game.add.sprite(4600, 0, 'obj_door');
 		game.physics.enable(this.door);
 		this.door.body.immovable = true;

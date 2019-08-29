@@ -64,17 +64,11 @@ Level3.prototype = {
 		// Player
 		this.player = new Player(game, 300, game.world.height - 200, 'spr_player', controls);
 		this.game.add.existing(this.player);
-		
-	}, 
-	update: function() {
-		game.physics.arcade.collide(this.player, this.bounds);
-		game.physics.arcade.collide(this.reflection, this.reflectionbounds);
 
-		game.time.events.loop(Phaser.Timer.SECOND, scare, this);
-
+		// Make the background change every 3 second
+		game.time.events.loop(Phaser.Timer.SECOND*3, scare, this);
 		function scare() {
-            var go = Math.random();
-			if(this.stageBkg2.alpha == 0 && go > .8){
+			if(this.stageBkg2.alpha == 0){
 				this.stageBkg2.alpha = 1;
 				return;
 			}else{
@@ -82,6 +76,11 @@ Level3.prototype = {
 				return;
 			}
 		}
+		
+	}, 
+	update: function() {
+		game.physics.arcade.collide(this.player, this.bounds);
+		game.physics.arcade.collide(this.reflection, this.reflectionbounds);
 
 		var touchedDoor = game.physics.arcade.overlap(this.player, this.door);
 

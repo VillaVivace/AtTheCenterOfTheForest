@@ -82,5 +82,35 @@ Level3.prototype = {
 				return;
 			}
 		}
+
+		var touchedDoor = game.physics.arcade.overlap(this.player, this.door);
+
+		if (controls.space.isDown && touchedDoor) {
+			game.sound.stopAll();
+			game.add.audio('snd_door').play('', 0, 0.05, false, false);
+			game.state.start('credits');
+		}
+	}
+}
+
+var credits = function(game){
+	this.credits;
+
+};
+
+credits.prototype = {
+	create: function(){
+		game.world.setBounds(0, 0, 800, 600);
+		game.stage.backgroundColor = '#000000';
+
+		var style1 = { font: "32px Nothing You Could Do", fill: "#ffffff", boundsAlignH: "center", boundsAlignV: "middle"};
+		var style2 = { font: "16px Nothing You Could Do", fill: "#ffffff", boundsAlignH: "center", boundsAlignV: "middle"};
+		this.credits = game.add.text(0, 0, "Credits", style1);
+		this.credits.setTextBounds(0, game.world.height/4, game.world.width, 32);
+		this.credits = game.add.text(0, 0, "-Art- \n Crystal Yu \n\n -Programming-" + 
+		"\n Dominic Villa \n Noah Lu \n\n - Sound- \n Dominic Villa \n\n" +
+		"-Level Design- \n Noah Lu", style2);
+		this.credits.setTextBounds(0, game.world.height/2 + 40, game.world.width, 16);
+
 	}
 }

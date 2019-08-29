@@ -44,7 +44,7 @@ MainMenu.prototype = {
 		};
 		var goToLoadStage = function() {
 			game.sound.stopAll();
-			game.state.start('Level3', true, false, 200, game.world.height - 200, false);
+			game.state.start('level', true, false, 200, game.world.height - 200, false);
 		};
 		var playUp = function() {
 			this.game.camera.fade(0x000000, 1000);

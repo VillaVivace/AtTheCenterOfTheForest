@@ -1,4 +1,5 @@
 var mirror=false;
+
 var Sub1 = function(game) {
 	this.player;
 	this.border;
@@ -11,8 +12,8 @@ var Sub1 = function(game) {
 	this.handMirror;
 	this.bookcase;
 	this.crates;
-
 };
+
 Sub1.prototype = {
 	preload: function() {
 		// Anything to preload during the Play state
@@ -79,7 +80,6 @@ Sub1.prototype = {
 	},
 	update: function() {
 		// Run the 'Play' state's game loop
-		console.log(mirror);
 		/* --Collisions-- */
 		var isTouchingTable = game.physics.arcade.overlap(this.player, this.tables);
 		var touchedDoor = game.physics.arcade.overlap(this.player, this.door);
@@ -89,16 +89,15 @@ Sub1.prototype = {
 
 		/* --Interaction-- */
 		if (touchedDoor) {
+			game.sound.stopAll();
 			game.add.audio('snd_door').play('', 0, 0.05, false, false);
 			game.state.start('Level2');
 		}
-
-		/*if(touchMirror&&controls.space.isDown){
-			mirror=true;
+		
+		if(isTouchingTable && controls.space.isDown){
+			game.world.bringToTop(this.tables);
+			this.player.changeState('hidden');
 		}
-		if (mirror == true) {
-			this.handMirror.alpha=0;
-		}*/
 
 		/* --GUI & Effects Positioning-- */
 		this.border.x = game.camera.x - 16; // We want the GUI and FX to align with the camera, not just a world position

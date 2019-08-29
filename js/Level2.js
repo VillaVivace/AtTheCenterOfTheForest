@@ -73,7 +73,7 @@ Level2.prototype = {
 		if (this.songIsPlaying == null) {
 			this.songIsPlaying = false;
 		}
-		this.song = game.add.audio('snd_anxiety');
+		this.song = game.add.audio('snd_level2');
 		if (this.songIsPlaying == false) {
 			this.song.play('', 0, 0.5, true);
 		}

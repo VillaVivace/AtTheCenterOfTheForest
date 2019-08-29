@@ -12,13 +12,13 @@ MainMenu.prototype = {
 		
 	},
 	create: function() {
+		console.log('MainMenu: create');
+		
+		//audio
 		game.sound.stopAll();
 		titleAudio = game.add.audio('snd_title');
 		titleAudio.play('', 0, 0.05, true, true);
-		
-		console.log('MainMenu: create');
 		game.camera.flash(0x000000, 1000);
-		
 		titleAudio.fadeTo(2000, 0.25);
 
 		// Add in title image
@@ -26,12 +26,13 @@ MainMenu.prototype = {
 		this.titleScreen.anchor.set(0, 0);
 		this.titleScreen.animations.add('title', Phaser.Animation.generateFrameNames('titleScreen', 0, 19), 10, true);
 		this.titleScreen.animations.play('title');
+		
 		// Add in load/play buttons
 		this.playButton = game.add.button(450, 450, 'gui_icons', null, this, 
 							'playHover', 'play', 'playHover');
 		this.loadButton = game.add.button(650, 450, 'gui_icons', null, this, 
 							'loadHover', 'load', 'loadHover');	
-							
+		//save/load system					
 		var level = localStorage.getItem('level');
 		if (level === null) { 
 			localStorage.setItem('level', 'GroundLevelOutside');

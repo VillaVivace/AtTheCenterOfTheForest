@@ -111,6 +111,10 @@ credits.prototype = {
 		"\n Dominic Villa \n Noah Lu \n\n - Sound- \n Dominic Villa \n\n" +
 		"-Level Design- \n Noah Lu", style2);
 		this.credits.setTextBounds(0, game.world.height/2 + 40, game.world.width, 16);
-
+	},
+	update: function(){
+		if (controls.space.justDown) {
+			game.state.start('MainMenu');
+		}
 	}
 }

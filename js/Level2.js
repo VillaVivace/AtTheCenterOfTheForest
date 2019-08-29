@@ -1,22 +1,21 @@
 var Level2 = function(game) {
 	this.player;
-	this.kitchen;
-	this.right;
-	this.left;
+	this.playerX;
+	this.playerY;
+	this.kitchenMonster;
+	this.rightMonster;
+	this.leftMonster;
 
 	this.border;
 	this.filter;
-	this.dialogBox1;
-	this.dialogBox2;
-	this.dialogBox3;
+	this.dialogBox;
+	this.text;
+	this.showDialogBox = false;
 	this.cutsceneTriggered = false;
-	this.text1;
-	this.text2;
-	this.text3;
+	this.conversationState;
+	this.line;
 	this.bounds;
 	this.kitchenwall;
-
-	this.blinktime=1;
 
 	this.diningtables;
 	this.chandalier;
@@ -30,8 +29,19 @@ var Level2 = function(game) {
 	this.key2=false;
 	this.key11;
 
+	this.playerTouchingKitchenMonster;
+	this.playerTouchingRightMonster;
+	this.playerTouchingLeftMonster;
+
+	this.songIsPlaying;
 };
 Level2.prototype = {
+	init: function(playerX, playerY, songPlaying) {
+		this.playerX = playerX;
+		this.playerY = playerY;
+		this.songIsPlaying = songPlaying;
+	},
+
 	preload: function() {
 	this.game.load.image('key', 'assets/img/keyIcon.png');	
 		// Anything to preload during the Play state
@@ -42,11 +52,18 @@ Level2.prototype = {
 		console.log('Level2: create');
 		localStorage.setItem('level', 'Level2');
 
+		game.camera.flash(0x000000, 1500);
+
 		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelShort');
 		game.world.setBounds(0, 0, 2400, 600);
 
-		game.sound.stopAll();
-		game.add.audio('snd_anxiety').play('', 0, 0.5, true);
+		if (this.songIsPlaying == null) {
+			this.songIsPlaying = false;
+		}
+		this.song = game.add.audio('snd_anxiety');
+		if (this.songIsPlaying == false) {
+			this.song.play('', 0, 0.5, true);
+		}
 		
 		/* --Objects & Furniture-- */
 		this.bounds = game.add.group();
@@ -59,16 +76,18 @@ Level2.prototype = {
 		this.bound = this.bounds.create(1650, 0, 'obj_bounds');
 		this.bound.body.immovable = true;				
 		//monster 1
-		this.right = game.add.sprite(1180, game.world.height-250, 'spr_right');
-		game.physics.enable(this.right);
-		this.right.anchor.set(0.5, 0.5);
-		this.right.body.setSize(150, 300, 50, 50 );	
+		this.rightMonster = game.add.sprite(1180, game.world.height-250, 'spr_right');
+		game.physics.enable(this.rightMonster);
+		this.rightMonster.anchor.set(0.5, 0.5);
+		this.rightMonster.body.setSize(150, 300, 50, 50 );
+		this.rightMonster.frame = 1;
 		
 		//monster 2
-		this.left = game.add.sprite(600, game.world.height-250, 'spr_left');
-		game.physics.enable(this.left);
-		this.left.anchor.set(0.5, 0.5);
-		this.left.body.setSize(150, 300, 0, 50 );	
+		this.leftMonster = game.add.sprite(600, game.world.height-250, 'spr_left');
+		game.physics.enable(this.leftMonster);
+		this.leftMonster.anchor.set(0.5, 0.5);
+		this.leftMonster.body.setSize(150, 300, 0, 50 );
+		this.leftMonster.frame = 1;
 
 		//tables
 		this.diningtables = game.add.group();
@@ -93,8 +112,6 @@ Level2.prototype = {
 		this.kitchenwall = game.add.sprite(1650, 0, 'wall');
 		this.kitchenwall.enableBody = true;
 
-	
-
 		//chandaliers
 		this.chandalier = game.add.sprite(825, 0, 'obj_chandalier');
 		this.chandalier.animations.add('anima', Phaser.Animation.generateFrameNames('chandalier', 1, 3), 2, true);
@@ -102,12 +119,16 @@ Level2.prototype = {
 
 		
 		//kitchen monster
-		this.kitchen = game.add.sprite(2150, game.world.height-200, 'spr_kitchen');
-		game.physics.enable(this.kitchen);
-		this.kitchen.anchor.set(0.5, 0.5);
+		this.kitchenMonster = game.add.sprite(2150, game.world.height-200, 'spr_kitchen');
+		game.physics.enable(this.kitchenMonster);
+		this.kitchenMonster.anchor.set(0.5, 0.5);
 		
 		//player
-		this.player = new Player(game, 200, game.world.height - 200, 'spr_player', controls);
+		if (this.playerX == null && this.player == null) {
+			this.playerX = 200;
+			this.playerY = game.world.height - 200;
+		}
+		this.player = new Player(game, this.playerX, this.playerY, 'spr_player', controls);
 		this.game.add.existing(this.player);
 		
 		/* --GUI & Effects-- */
@@ -115,88 +136,99 @@ Level2.prototype = {
 		this.filter.scale.setTo(1, 1);
 		this.border = game.add.sprite(0, 0, 'gui_border');
 		this.border.scale.setTo(1, 1);
-		game.world.bringToTop(this.border);
-
-		var textStyle1= { font: "32px Times New Roman", fill: "#ffffff"}
-		this.dialogBox1 = game.add.sprite(400, game.world.height-200, 'gui_dialogBox');
-		this.dialogBox1.scale.setTo(0.5, 1);
-		this.dialogBox1.alpha = 0;
-		this.text1 = this.game.add.text(450, 450, narrative("L2_1"), textStyle1);
-		this.text1.alpha = 0;
-
-		this.dialogBox2 = game.add.sprite(980, game.world.height-200, 'gui_dialogBox');
-		this.dialogBox2.scale.setTo(0.5, 1);
-		this.dialogBox2.alpha = 0;
-		this.text2 = this.game.add.text(1000, 450, narrative("L2_2"), textStyle1);
-		this.text2.alpha = 0;
-
-		this.dialogBox3 = game.add.sprite(1500, game.world.height-200, 'gui_dialogBox');
-		this.dialogBox3.scale.setTo(0.5, 1);
-		this.dialogBox3.alpha = 0;
-
-    	game.time.events.loop(3000, blink, this);
+		this.dialogBox = game.add.sprite(0, 0, 'gui_dialogBox');
+		this.dialogBox.alpha = 0;
+		var textStyle = {font: 'Handlee', fontSize: '18px', fill: '#ffffff' }
+		this.text = this.game.add.text(0, 0, '', textStyle);
+		this.text.alpha = 0;
 		
-		
+		this.conversationState = 'END';
+		this.line = 1;
+		this.conversationManager = function() {
+			/* --LEFT MONSTER-- */
+			if (this.playerTouchingLeftMonster && this.conversationState == 'END') {
+				this.player.changeState('cutscene');
+				this.dialogBox.alpha = 1;
+				this.text.alpha = 1;
+				this.conversationState = narrative('leftMonster' + this.line);
+				this.text.text = this.conversationState;
+			}
+			if (this.playerTouchingLeftMonster && this.conversationState != 'END') {
+				this.line = this.line + 1;
+				this.conversationState = narrative('leftMonster' + this.line);
+				this.text.text = this.conversationState;
+			}
+			/* --RIGHT MONSTER-- */
+			if (this.playerTouchingRightMonster && this.conversationState == 'END') {
+				this.player.changeState('cutscene');
+				this.dialogBox.alpha = 1;
+				this.text.alpha = 1;
+				this.conversationState = narrative('rightMonster' + this.line);
+				this.text.text = this.conversationState;
+			}
+			if (this.conversationState == narrative('rightMonsterChoice1') || this.conversationState == narrative('rightMonsterChoice2')) {
+				this.player.changeState('hidden');
+				this.game.camera.fade(0xD13030, 500);
+				this.deathTimer.start();
+				this.conversationState = 'END';
+			}
+			else if (this.playerTouchingRightMonster && this.conversationState != 'END') {
+				this.line = this.line + 1;
+				this.conversationState = narrative('rightMonster' + this.line);
+				this.text.text = this.conversationState;
+			}
+		};
+
+		controls.space.onDown.add(this.conversationManager, this);
+
+		this.death = function() {
+			game.state.start('GameOver');
+		};
+	
+		this.deathTimer = game.time.create(false);
+    	this.deathTimer.add(500, this.death, this);
 	},
 	update: function() {
 		// Run the 'Play' state's game loop
 
 		/* --Collisions-- */
 		var isTouchingTable = game.physics.arcade.overlap(this.player, this.tables);
-		var kitchenTouchingPlayer = game.physics.arcade.overlap(this.kitchen, this.player);
-		var rightTouch = game.physics.arcade.overlap(this.right, this.player);
-		var leftTouch = game.physics.arcade.overlap(this.left, this.player);
+		this.playerTouchingKitchenMonster = game.physics.arcade.overlap(this.kitchenMonster, this.player);
+		this.playerTouchingRightMonster = game.physics.arcade.overlap(this.rightMonster, this.player);
+		this.playerTouchingLeftMonster = game.physics.arcade.overlap(this.leftMonster, this.player);
 		var TouchingDoor1 = game.physics.arcade.overlap(this.player, this.door1);
 		var TouchingDoor2 = game.physics.arcade.overlap(this.player, this.door2);
 		var TouchingExit = game.physics.arcade.overlap(this.player, this.exit);
-		var TouchingKey1 = game.physics.arcade.overlap(this.player, this.key11);
 		game.physics.arcade.collide(this.player, this.bounds);
 
 
-		/* --Interaction-- */
-		if(this.blinktime%2!==0){ 
-			if(leftTouch && controls.space.isDown){
-			this.dialogBox1.alpha = 1;
-			this.text1.alpha = 1;
-			}
-		
-		if(rightTouch&& controls.space.isDown){
-			this.dialogBox2.alpha = 1;
-			this.text2.alpha = 1;	
-			}
-		if(kitchenTouchingPlayer&& controls.space.isDown){
-			this.dialogBox3.alpha = 1;	
-				}
+		/* --Dialog Interactions-- */
+		if (this.conversationState == 'END') {
+			this.line = 1;
+			this.dialogBox.alpha = 0;
+			this.text.alpha = 0;
+			this.player.changeState('normal');
 		}
-		
-		if(this.dialogBox2.alpha == 1){
-			if(mirror==false){
-				if(controls.up.isDown||controls.down.isDown){
-				game.state.start('GameOver');
+		/* --RIGHT MONSTER CHOICES-- */
+		if (this.conversationState == narrative('rightMonster2')) {
+			if (controls.num1.justDown) {
+				this.conversationState = narrative('rightMonsterChoice1');
+				this.text.text = this.conversationState;
 			}
-		}else if(mirror==true){
-				if(controls.up.isDown){
-				this.key1=true
-				this.key11.alpha = 1;
-			}}
+			if (controls.num2.justDown) {
+				this.conversationState = narrative('rightMonsterChoice2');
+				this.text.text = this.conversationState;
+			}
 		}
-		
-		if(this.key11.alpha == 1){
-			if(controls.space.isDown){
-				this.key11.alpha = 0;
-			}
-		}			
+				
 
 		if(this.key1==true && mirror==true){
 		this.bound.body.immovable = false;
 		}
 
-		if (this.blinktime%2==0){
-		 if(kitchenTouchingPlayer||rightTouch||leftTouch) {
-			//game.state.start('GameOver');
-		} }
 
-		if(TouchingDoor1&&controls.space.isDown){
+		if(controls.space.justDown && TouchingDoor1){
+			game.add.audio('snd_door').play('', 0, 0.05, false, false);
 			game.state.start('Sub1');
 		}
 		
@@ -207,34 +239,22 @@ Level2.prototype = {
 		if(TouchingExit&&key2==true){
 			game.state.start('Level3');
 		}
-		
-		
-		if(this.blinktime%2==0){
-		this.kitchen.frame = 1;
-		this.right.frame = 1;
-		this.left.frame = 1;
-		this.dialogBox1.alpha = 0;
-		this.dialogBox2.alpha = 0;
-		this.dialogBox3.alpha = 0;
-		this.text1.alpha = 0;
-		this.text2.alpha = 0;			
-		}else {
-		this.kitchen.frame = 0;
-		this.right.frame = 0;
-		this.left.frame = 0;
-		}		
-		
+
 		/* --GUI & Effects Positioning-- */
 		this.border.x = game.camera.x - 16; // We want the GUI and FX to align with the camera, not just a world position
 		this.border.y = game.camera.y;
 		this.filter.x = game.camera.x - 16;
 		this.filter.y = game.camera.y;
+		this.dialogBox.x = game.camera.x + (game.camera.width/2 - this.dialogBox.width/2);
+		this.dialogBox.y = game.camera.y + (game.world.height - this.dialogBox.height);
+		//this.journal.x = game.camera.x + (game.camera.width/2 - this.journal.width/2);
+		//this.journal.y = this.dialogBox.y - this.journal.height;
+		this.text.x = this.dialogBox.x + 32;
+		this.text.y = this.dialogBox.y + 32;
 		this.border.bringToTop();
-		this.filter.bringToTop();			
+		this.filter.bringToTop();
+		this.dialogBox.bringToTop();
+		this.text.bringToTop();			
 	}	
 }
-		
-	function blink(){
-		this.blinktime++;
-		console.log(this.blinktime);		
-	}
+

@@ -32,9 +32,11 @@ Level1.prototype = {
 		console.log('Level1: create');
 		localStorage.setItem('level', 'Level1');
 
+		game.camera.flash(0x000000, 1500);
+
 		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelLong');
 		game.world.setBounds(0, 0, 4800, 600);
-		game.sound.stopAll();
+		
 		game.add.audio('snd_level1').play('', 0, 0.5, true);
 
 		/* --Objects & Furniture-- */
@@ -78,13 +80,13 @@ Level1.prototype = {
 		this.eyeLogo.animations.play('eye');
 		
 		//player
-		this.player = new Player(game, 200, game.world.height - 200, 'spr_player', controls);
+		this.player = new Player(game, 300, game.world.height - 200, 'spr_player', controls);
 		this.game.add.existing(this.player);
 		
-		this.crawler = game.add.sprite(2300, game.world.height-150, 'spr_crawler');
+		this.crawler = game.add.sprite(1000, game.world.height-150, 'spr_crawler');
 		game.physics.enable(this.crawler);
 		this.crawler.anchor.set(0.5, 0.5);
-		this.crawler.body.velocity.x = 300;
+		this.crawler.body.velocity.x = -350;
 		this.crawler.animations.add('walk', Phaser.Animation.generateFrameNames('walk', 1, 4), 7, true);
 		this.crawler.animations.play('walk');
 
@@ -103,7 +105,12 @@ Level1.prototype = {
 		this.text = this.game.add.text(0, 0, narrative("stage2_1"), textStyle);
 		this.text.alpha = 0;
 		
-		
+		this.death = function() {
+			game.state.start('GameOver');
+		};
+	
+		this.deathTimer = game.time.create(false);
+    	this.deathTimer.add(500, this.death, this);
 	},
 	update: function() {
 		
@@ -116,14 +123,16 @@ Level1.prototype = {
 		var playerTouchingEye = game.physics.arcade.overlap(this.player, this.eyes, callMonster, null, this);
 		game.physics.arcade.collide(this.player, this.bounds);
 
-		if (touchedDoor && controls.space.justDown) {
+		if (controls.space.isDown && touchedDoor) {
 			game.sound.stopAll();
 			game.add.audio('snd_door').play('', 0, 0.05, false, false);
 			game.state.start('Stairs2');
 		}
 
 		if (playerTouchingCrawler && this.player.getState() == 'normal') {
-			game.state.start('GameOver');
+			this.player.changeState('hidden');
+			this.game.camera.fade(0xD13030, 500);
+			this.deathTimer.start();
 		}
 		if (isTouchingCurtains && controls.space.isDown) {
 			game.world.bringToTop(this.curtains);
@@ -170,11 +179,11 @@ Level1.prototype = {
 			this.crawler.scale.x = 1;
 		}
 
-		if ((this.crawler.x <= 400 || this.crawler.x >= 4250) && this.crawlerFlipped == false) {
+		if ((this.crawler.x <= 550 || this.crawler.x >= 4250) && this.crawlerFlipped == false) {
 			this.crawlerFlipped = true;
 			this.crawler.body.velocity.x = -(this.crawler.body.velocity.x);
 		}
-		if (this.crawler.x >= 450 && this.crawler.x <= 4200) {
+		if (this.crawler.x >= 550 && this.crawler.x <= 4200) {
 			this.crawlerFlipped = false;
 		}
 		if (crawlerTouchingCurtains) {

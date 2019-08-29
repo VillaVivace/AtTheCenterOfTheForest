@@ -56,6 +56,7 @@ Stairs1.prototype = {
 			}
 		};
 		var toNextLevel = function() {
+			game.sound.stopAll();
 			game.state.start('Level1');
 		};
 		var footstepSound = function() {

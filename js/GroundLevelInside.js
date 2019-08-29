@@ -10,6 +10,8 @@ var GroundLevelInside = function(game) {
 	this.text;
 	this.showJournal;
 	this.bounds;
+	this.touchedTableOnce;
+	this.spaceButton;
 
 	this.timer;
 	this.stepTimer;
@@ -25,6 +27,8 @@ GroundLevelInside.prototype = {
 	},
 	create: function() {
 		console.log('GroundLevelInside: create');
+		this.touchedTableOnce = false;
+
 		localStorage.setItem('level', 'GroundLevelInside');
 
 		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelShort');
@@ -65,7 +69,30 @@ GroundLevelInside.prototype = {
 		this.filter.scale.setTo(1, 1);
 		this.border = game.add.sprite(0, 0, 'gui_border');
 		this.border.scale.setTo(1, 1);
-		game.world.bringToTop(this.border);
+		//game.world.bringToTop(this.border);
+		this.spaceButton = game.add.sprite(this.player.centerX, this.player.y - 128, 'gui_icons', 'space');
+		this.spaceButton.anchor.set(0.5, 0.5);
+		this.spaceButton.alpha = 0;
+
+		this.showActionUI = function(show) {
+			if (show == true) {
+				game.add.tween(this.spaceButton).to( { alpha: 0.75 }, 1000, Phaser.Easing.Sinusoidal.In, true);
+				this.actionUITimer.start();
+			}
+			else {
+				game.add.tween(this.spaceButton).to( { alpha: 0 }, 1000, Phaser.Easing.Sinusoidal.In, true);
+			}
+		};
+
+		this.actionUITimer = game.time.create(false);
+		this.actionUITimer.add(2000, this.showActionUI, this, false);
+		
+		this.death = function() {
+			game.state.start('GameOver');
+		};
+	
+		this.deathTimer = game.time.create(false);
+    	this.deathTimer.add(500, this.death, this);
 	},
 	update: function() {
 		// Run the 'Play' state's game loop
@@ -83,12 +110,18 @@ GroundLevelInside.prototype = {
 			this.player.changeState('hidden');
 		}
 		if (this.player.getState() == 'normal' && slugTouchingPlayer) {
-			game.state.start('GameOver');
+			this.player.changeState('hidden');
+			this.game.camera.fade(0xD13030, 500);
+			this.deathTimer.start();
 		}
-		if (touchedDoor && controls.space.isDown) {
+		if (controls.space.isDown && touchedDoor) {
 			game.sound.stopAll();
 			game.add.audio('snd_door').play('', 0, 0.05, false, false);
 			game.state.start('Stairs1');
+		}
+		if (isTouchingHidingSpots && this.touchedTableOnce == false) {
+			this.touchedTableOnce = true;
+			this.showActionUI(true);
 		}
 
 		/* --Slug Movement-- */
@@ -113,6 +146,7 @@ GroundLevelInside.prototype = {
 		this.border.y = game.camera.y;
 		this.filter.x = game.camera.x - 16;
 		this.filter.y = game.camera.y;
+		this.spaceButton.x = this.player.centerX;
 		this.border.bringToTop();
 		this.filter.bringToTop();
 	}		

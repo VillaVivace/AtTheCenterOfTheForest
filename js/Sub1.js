@@ -25,6 +25,9 @@ Sub1.prototype = {
 	},
 	create: function() {
 		console.log('Sub1: create');
+
+		game.camera.flash(0x000000, 1000);
+
 		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelShort');
 		game.world.setBounds(0, 0, 2400, 600);
 
@@ -33,7 +36,7 @@ Sub1.prototype = {
 		this.bounds = game.add.group();
 		this.bounds.enableBody = true;
 		this.bounds.alpha = 0;
-		this.bound = this.bounds.create(100, 0, 'obj_bounds'); 
+		this.bound = this.bounds.create(118, 0, 'obj_bounds'); 
 		this.bound.body.immovable = true;
 		this.bound = this.bounds.create(2210, 0, 'obj_bounds');
 		this.bound.body.immovable = true;
@@ -88,10 +91,9 @@ Sub1.prototype = {
 
 
 		/* --Interaction-- */
-		if (touchedDoor) {
-			game.sound.stopAll();
+		if (controls.space.justDown && touchedDoor) {
 			game.add.audio('snd_door').play('', 0, 0.05, false, false);
-			game.state.start('Level2');
+			game.state.start('Level2', true, false, 1500, game.world.height - 200, true);
 		}
 		
 		if(isTouchingTable && controls.space.isDown){

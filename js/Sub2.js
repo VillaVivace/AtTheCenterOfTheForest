@@ -27,6 +27,9 @@ Sub2.prototype = {
 	},
 	create: function() {
 		console.log('Sub2: create');
+
+		game.camera.flash(0x000000, 1000);
+
 		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelShort');
 		game.world.setBounds(0, 0, 2400, 600);
 

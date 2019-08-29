@@ -6,6 +6,8 @@ GameOver.prototype = {
 	},
 	create: function() {
 		console.log('Gameover: create');
+		game.camera.flash(0xD13030, 2000);
+
 		this.gameOver = game.add.sprite(game.camera.width/2 - 400, 0, 'bkg_gameOver');
 		this.gameOver.anchor.set(0, 0);
 	}, 

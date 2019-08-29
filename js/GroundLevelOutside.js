@@ -151,7 +151,7 @@ GroundLevelOutside.prototype = {
 			this.touchedDoorOnce = true;
 			this.showActionUI(true);
 		}
-		if (touchedDoor && controls.space.isDown) {
+		if (controls.space.isDown && touchedDoor) {
 			game.sound.stopAll();
 			game.add.audio('snd_door').play('', 0, 0.05, false, false);
 			game.state.start('GroundLevelInside');

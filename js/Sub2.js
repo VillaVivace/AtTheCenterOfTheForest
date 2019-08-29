@@ -107,7 +107,7 @@ Sub2.prototype = {
 
 		
 		this.conversationState = 'END';
-		this.line = 1;
+		this.line = 2;
 		this.conversationManager = function() {
 			if (playerHasIngredient == false) {
 				/* --Shelf 1-- */
@@ -187,7 +187,7 @@ Sub2.prototype = {
 
 		/* --Dialog Interactions-- */
 		if (this.conversationState == 'END') {
-			this.line = 1;
+			this.line = 2;
 			this.dialogBox.alpha = 0;
 			this.text.alpha = 0;
 			this.player.changeState('normal');

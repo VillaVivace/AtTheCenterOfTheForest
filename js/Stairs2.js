@@ -32,7 +32,7 @@ Stairs2.prototype = {
 		this.dialogBox = game.add.sprite(0, 0, 'gui_dialogBox');
 		this.dialogBox.alpha = 0;
 
-		var textStyle = { font: "16px Times New Roman", fill: "#ffffff"}
+		var textStyle = {font: 'Handlee', fontSize: '18px', fill: '#ffffff' }
 		this.text = this.game.add.text(0, 0, narrative("stairs2"), textStyle);
 		this.text.alpha = 0;
 

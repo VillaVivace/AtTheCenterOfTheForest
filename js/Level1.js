@@ -31,6 +31,8 @@ Level1.prototype = {
 	},
 	create: function() {
 		console.log('Level1: create');
+		localStorage.setItem('level', 'Level1');
+
 		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelLong');
 		game.world.setBounds(0, 0, 4800, 600);
 		game.sound.stopAll();

@@ -32,6 +32,9 @@ Boot.prototype = {
 			'right': Phaser.Keyboard.RIGHT,
 			'up': Phaser.Keyboard.UP,
 			'down': Phaser.Keyboard.DOWN,
+			'1': Phaser.Keyboard.ONE,
+			'2': Phaser.Keyboard.TWO,
+			'3': Phaser.Keyboard.THREE
 		});
 
 		var goToLogo = function() {

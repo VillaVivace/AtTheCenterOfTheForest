@@ -43,12 +43,16 @@ Logo.prototype = {
 		this.game.load.audio('snd_footstep2', 'assets/audio/footstep_grass2.mp3');
 		this.game.load.audio('snd_door', 'assets/audio/door_open.mp3');
 		this.game.load.audio('snd_pageTurn', 'assets/audio/pageTurn.mp3');
+		this.game.load.audio('snd_confirm', 'assets/audio/confirm.mp3');
+		this.game.load.audio('snd_screech1', 'assets/audio/screech1.mp3');
+		this.game.load.audio('snd_screech2', 'assets/audio/screech2.mp3');
+		this.game.load.audio('snd_slimy', 'assets/audio/slimy.mp3');
+		this.game.load.audio('snd_warning', 'assets/audio/warning.mp3');
+		this.game.load.audio('snd_whisper', 'assets/audio/whisper.mp3');
+		this.game.load.audio('snd_doorLocked', 'assets/audio/doorLocked.mp3');
 	},
 	create: function() {
 		console.log('Logo: create');
-//		game.sound.stopAll();
-//		titleAudio = game.add.audio('snd_title');
-//		titleAudio.play('', 0, 0.05, true, true);
 
 		this.eyeLogo = this.game.add.sprite(0, game.world.height/4, 'gui_eyeLogo');
 		this.eyeLogo.x = (game.world.centerX - (this.eyeLogo.width/2));
@@ -61,8 +65,8 @@ Logo.prototype = {
 
 		this.transitionTimer = game.time.create(false);
 		this.transitionTimer.add(1000, goToMainMenu, this, true); 
-		var style1 = { font: "32px Times New Roman", fill: "#ffffff", boundsAlignH: "center", boundsAlignV: "middle"};
-		var style2 = { font: "16px Times New Roman", fill: "#ffffff", boundsAlignH: "center", boundsAlignV: "middle"};
+		var style1 = { font: "32px Nothing You Could Do", fill: "#ffffff", boundsAlignH: "center", boundsAlignV: "middle"};
+		var style2 = { font: "16px Nothing You Could Do", fill: "#ffffff", boundsAlignH: "center", boundsAlignV: "middle"};
 		this.logoText = game.add.text(0, 0, "Paper Ghouls", style1);
 		this.logoText.setTextBounds(0, game.world.height/2, game.world.width, 32);
 		this.logoText = game.add.text(0, 0, "-PRESENTS-", style2);

@@ -27,6 +27,8 @@ GroundLevelInside.prototype = {
 	},
 	create: function() {
 		console.log('GroundLevelInside: create');
+		localStorage.setItem('level', 'GroundLevelInside');
+
 		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelShort');
 		game.world.setBounds(0, 0, 2400, 600);
 
@@ -38,7 +40,7 @@ GroundLevelInside.prototype = {
 		this.bounds.alpha = 0;
 		this.bound = this.bounds.create(148, 0, 'obj_bounds'); 
 		this.bound.body.immovable = true;
-		this.bound = this.bounds.create(2210, 0, 'obj_bounds');
+		this.bound = this.bounds.create(2250, 0, 'obj_bounds');
 		this.bound.body.immovable = true;
 		this.tables = game.add.group();
 		this.tables.enableBody = true;
@@ -47,7 +49,7 @@ GroundLevelInside.prototype = {
 		this.door = this.game.add.sprite(2200, 0, 'obj_door');
 		game.physics.enable(this.door);
 
-		this.player = new Player(game, 200, game.world.height - 200, 'spr_player', controls);
+		this.player = new Player(game, 300, game.world.height - 200, 'spr_player', controls);
 		this.game.add.existing(this.player);
 
 		this.slug = game.add.sprite(1300, game.world.height-200, 'spr_slug');
@@ -71,7 +73,7 @@ GroundLevelInside.prototype = {
 		var isTouchingTable = game.physics.arcade.overlap(this.player, this.tables);
 		var slugTouchingTable = game.physics.arcade.overlap(this.slug, this.tables);
 		var slugTouchingPlayer = game.physics.arcade.overlap(this.slug, this.player);
-		var touchedDoor = game.physics.arcade.collide(this.player, this.door);
+		var touchedDoor = game.physics.arcade.overlap(this.player, this.door);
 		game.physics.arcade.collide(this.player, this.bounds);
 
 		/* --Interaction-- */
@@ -82,7 +84,7 @@ GroundLevelInside.prototype = {
 		if (this.player.getState() == 'normal' && slugTouchingPlayer) {
 			game.state.start('GameOver');
 		}
-		if (touchedDoor) {
+		if (touchedDoor && controls.space.isDown) {
 			game.sound.stopAll();
 			game.add.audio('snd_door').play('', 0, 0.05, false, false);
 			game.state.start('Stairs1');

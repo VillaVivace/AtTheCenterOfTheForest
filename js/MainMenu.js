@@ -30,13 +30,20 @@ MainMenu.prototype = {
 		this.playButton = game.add.button(450, 450, 'gui_icons', null, this, 
 							'playHover', 'play', 'playHover');
 		this.loadButton = game.add.button(650, 450, 'gui_icons', null, this, 
-							'loadHover', 'load', 'loadHover');					
+							'loadHover', 'load', 'loadHover');	
+							
+		var level = localStorage.getItem('level');
+		if (level === null) { 
+			localStorage.setItem('level', 'GroundLevelOutside');
+			level = localStorage.getItem('level');
+		}
 
 		var goToStage1 = function() {
 			game.state.start('GroundLevelOutside');
 		};
 		var goToLoadStage = function() {
-			game.state.start('GroundLevelInside');
+			game.sound.stopAll();
+			game.state.start(level);
 		};
 		var playUp = function() {
 			this.game.camera.fade(0x000000, 1000);

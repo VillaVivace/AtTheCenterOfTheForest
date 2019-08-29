@@ -31,13 +31,13 @@ GroundLevelOutside.prototype = {
 
 		game.camera.flash(0x000000, 1000);
 		this.game.scale.setGameSize(1000, 600);
-		this.stageBkg = game.add.sprite(0, 0, 'bkg_intro');
+		this.stageBkg = game.add.sprite(0, 0, 'atlas', 'background_intro');
 		game.world.setBounds(0, 0, 1600, 600);
 
 		game.sound.stopAll();
 
 		/* --Objects-- */
-		this.door = this.game.add.sprite(1300, 0, 'obj_door');
+		this.door = this.game.add.sprite(1300, 0, 'atlas', 'obj_door');
 		game.physics.enable(this.door);
 		//this.door.body.setSize(50, 600, 50);
 		this.door.body.immovable = true;
@@ -45,22 +45,22 @@ GroundLevelOutside.prototype = {
 		this.bounds = game.add.group();
 		this.bounds.enableBody = true;
 		this.bounds.alpha = 0;
-		this.bound = this.bounds.create(1350, 0, 'obj_bounds'); 
+		this.bound = this.bounds.create(1350, 0, 'atlas', 'obj_bounds'); 
 		this.bound.body.immovable = true;
 
 		this.player = new Player(game, 64, game.world.height - 200, 'spr_player', controls);
 		this.game.add.existing(this.player);
 		
 		/* --GUI & Effects-- */
-		this.filter = game.add.sprite(0, 0, 'gui_filter');
+		this.filter = game.add.sprite(0, 0, 'atlas', 'gui_filter');
 		this.filter.scale.setTo(1, 1);
-		this.border = game.add.sprite(0, 0, 'gui_border');
+		this.border = game.add.sprite(0, 0, 'atlas', 'gui_border');
 		this.border.scale.setTo(1, 1);
 		game.world.bringToTop(this.border);
-		this.journal = game.add.sprite(0, 0, 'gui_journal');
+		this.journal = game.add.sprite(0, 0, 'atlas', 'gui_journal');
 		this.journal.scale.setTo(0.75, 0.75);
 		this.journal.alpha = 0;
-		this.dialogBox = game.add.sprite(0, 0, 'gui_dialogBox');
+		this.dialogBox = game.add.sprite(0, 0, 'atlas', 'gui_dialogBox');
 		this.dialogBox.alpha = 0;
 		this.leftArrow = game.add.sprite(game.camera.centerX - 64, game.camera.height - 64, 'gui_icons', 'arrowkey');
 		this.leftArrow.anchor.set(0.5, 0.5);

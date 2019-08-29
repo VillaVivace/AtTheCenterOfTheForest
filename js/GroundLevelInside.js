@@ -31,7 +31,7 @@ GroundLevelInside.prototype = {
 
 		localStorage.setItem('level', 'GroundLevelInside');
 
-		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelShort');
+		this.stageBkg = game.add.sprite(0, 0, 'atlas', 'background_levelShort');
 		game.world.setBounds(0, 0, 2400, 600);
 
 		game.add.audio('snd_anxiety').play('', 0, 0.5, true);
@@ -41,20 +41,20 @@ GroundLevelInside.prototype = {
 		this.bounds = game.add.group();
 		this.bounds.enableBody = true;
 		this.bounds.alpha = 0;
-		this.bound = this.bounds.create(148, 0, 'obj_bounds'); 
+		this.bound = this.bounds.create(148, 0, 'atlas', 'obj_bounds'); 
 		this.bound.body.immovable = true;
-		this.bound = this.bounds.create(2250, 0, 'obj_bounds');
+		this.bound = this.bounds.create(2250, 0, 'atlas', 'obj_bounds');
 		this.bound.body.immovable = true;
 		this.hidingSpots = game.add.group();
 		this.hidingSpots.enableBody = true;
-		this.hidingSpots.create(500, 355, 'obj_table');
-		this.hidingSpots.create(800, 0, 'obj_curtains');
-		this.diningTable = this.hidingSpots.create(1300, 265, 'obj_diningTableEmpty');
+		this.hidingSpots.create(500, 355, 'atlas', 'obj_table');
+		this.hidingSpots.create(800, 0, 'atlas', 'obj_curtains');
+		this.diningTable = this.hidingSpots.create(1300, 265, 'atlas', 'obj_diningTableEmpty');
 		this.diningTable.body.setSize(260, 250, 220);
-		this.door = game.add.sprite(200, 0, 'obj_door');		
+		this.door = game.add.sprite(200, 0, 'atlas', 'obj_door');		
 		game.physics.enable(this.door);	
 		this.door.scale.x = -1;
-		this.door = this.game.add.sprite(2200, 0, 'obj_door');
+		this.door = this.game.add.sprite(2200, 0, 'atlas', 'obj_door');
 		game.physics.enable(this.door);
 
 		this.player = new Player(game, 300, game.world.height - 200, 'spr_player', controls);
@@ -68,9 +68,9 @@ GroundLevelInside.prototype = {
 		this.slug.animations.play('walk');
 		
 		/* --GUI & Effects-- */
-		this.filter = game.add.sprite(0, 0, 'gui_filter');
+		this.filter = game.add.sprite(0, 0, 'atlas', 'gui_filter');
 		this.filter.scale.setTo(1, 1);
-		this.border = game.add.sprite(0, 0, 'gui_border');
+		this.border = game.add.sprite(0, 0, 'atlas', 'gui_border');
 		this.border.scale.setTo(1, 1);
 		//game.world.bringToTop(this.border);
 		this.spaceButton = game.add.sprite(this.player.centerX, this.player.y - 128, 'gui_icons', 'space');

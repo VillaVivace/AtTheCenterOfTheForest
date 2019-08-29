@@ -1,7 +1,6 @@
 var mirror=false;
 var Sub1 = function(game) {
 	this.player;
-	//this.mirror=false;
 	this.border;
 	this.filter;
 	this.bounds;

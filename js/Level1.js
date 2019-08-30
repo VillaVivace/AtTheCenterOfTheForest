@@ -34,7 +34,7 @@ Level1.prototype = {
 
 		game.camera.flash(0x000000, 1500);
 
-		this.stageBkg = game.add.sprite(0, 0, 'bkg_levelLong');
+		this.stageBkg = game.add.sprite(0, 0, 'atlas', 'background_levelLong');
 		game.world.setBounds(0, 0, 4800, 600);
 		
 		game.add.audio('snd_level1').play('', 0, 0.5, true);
@@ -43,23 +43,23 @@ Level1.prototype = {
 		this.bounds = game.add.group();
 		this.bounds.enableBody = true;
 		this.bounds.alpha = 0;
-		this.bound = this.bounds.create(148, 0, 'obj_bounds');
+		this.bound = this.bounds.create(148, 0, 'atlas', 'obj_bounds');
 		this.bound.body.immovable = true;
-		this.bound = this.bounds.create(4650, 0, 'obj_bounds');
+		this.bound = this.bounds.create(4650, 0, 'atlas', 'obj_bounds');
 		this.bound.body.immovable = true;
 		
 		this.curtains = game.add.group();
 		this.curtains.enableBody = true;
-		this.curtains.create(800, 0, 'obj_curtains');
-		this.curtains.create(1600, 0, 'obj_curtains');
-		this.curtains.create(2400, 0, 'obj_curtains');
-		this.curtains.create(3200, 0, 'obj_curtains');
-		this.curtains.create(4000, 0, 'obj_curtains');
+		this.curtains.create(800, 0, 'atlas', 'obj_curtains');
+		this.curtains.create(1600, 0, 'atlas', 'obj_curtains');
+		this.curtains.create(2400, 0, 'atlas', 'obj_curtains');
+		this.curtains.create(3200, 0, 'atlas', 'obj_curtains');
+		this.curtains.create(4000, 0, 'atlas', 'obj_curtains');
 
-		this.door = game.add.sprite(200, 0, 'obj_door');		
+		this.door = game.add.sprite(200, 0, 'atlas', 'obj_door');		
 		game.physics.enable(this.door);	
 		this.door.scale.x = -1;
-		this.door = this.game.add.sprite(4600, 0, 'obj_door');
+		this.door = this.game.add.sprite(4600, 0, 'atlas', 'obj_door');
 		game.physics.enable(this.door);
 		this.door.body.immovable = true;
 		
@@ -94,15 +94,15 @@ Level1.prototype = {
 		this.crawler.animations.play('walk');
 
 		/* --GUI & Effects-- */
-		this.filter = game.add.sprite(0, 0, 'gui_filter');
+		this.filter = game.add.sprite(0, 0, 'atlas', 'gui_filter');
 		this.filter.scale.setTo(1, 1);
-		this.border = game.add.sprite(0, 0, 'gui_border');
+		this.border = game.add.sprite(0, 0, 'atlas', 'gui_border');
 		this.border.scale.setTo(1, 1);
 		game.world.bringToTop(this.border);
-		this.journal = game.add.sprite(0, 0, 'gui_journal');
+		this.journal = game.add.sprite(0, 0, 'atlas', 'gui_journal');
 		this.journal.scale.setTo(0.75, 0.75);
 		this.journal.alpha = 0;
-		this.dialogBox = game.add.sprite(0, 0, 'gui_dialogBox');
+		this.dialogBox = game.add.sprite(0, 0, 'atlas', 'gui_dialogBox');
 		this.dialogBox.alpha = 0;
 		var textStyle = { font: "16px Times New Roman", fill: "#ffffff"}
 		this.text = this.game.add.text(0, 0, narrative("stage2_1"), textStyle);

@@ -21,18 +21,18 @@ Stairs2.prototype = {
 
 		game.camera.flash(0x000000, 1000);
 
-		this.stairs = this.game.add.sprite(0, -800, 'bkg_stairs');
+		this.stairs = this.game.add.sprite(0, -800, 'atlas', 'stairs');
 
 		/* --GUI & Effects-- */
-		this.filter = game.add.sprite(0, 0, 'gui_filter');
+		this.filter = game.add.sprite(0, 0, 'atlas', 'gui_filter');
 		this.filter.scale.setTo(1, 1);
-		this.border = game.add.sprite(0, 0, 'gui_border');
+		this.border = game.add.sprite(0, 0, 'atlas', 'gui_border');
 		this.border.scale.setTo(1, 1);
 		game.world.bringToTop(this.border);
-		this.journal = game.add.sprite(0, 0, 'gui_journal');
+		this.journal = game.add.sprite(0, 0, 'atlas', 'gui_journal');
 		this.journal.scale.setTo(0.75, 0.75);
 		this.journal.alpha = 0;
-		this.dialogBox = game.add.sprite(0, 0, 'gui_dialogBox');
+		this.dialogBox = game.add.sprite(0, 0, 'atlas', 'gui_dialogBox');
 		this.dialogBox.alpha = 0;
 
 		var textStyle = {font: 'Handlee', fontSize: '18px', fill: '#ffffff' }

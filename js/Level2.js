@@ -43,6 +43,8 @@ var Level2 = function(game) {
 	this.kitchenShelf;
 	this.door1;
 	this.door2;
+	this.leftDoor;
+	this.lockSoundTriggered = false;
 	this.kitchendoor;
 	this.exit;
 
@@ -113,9 +115,9 @@ Level2.prototype = {
 		this.bookcases.create(700, 150, 'atlas', 'obj_bookcase');
 		
 		//doors
-		this.door = game.add.sprite(200, 0, 'atlas', 'obj_door');		
-		game.physics.enable(this.door);	
-		this.door.scale.x = -1;
+		this.leftDoor = game.add.sprite(200, 0, 'atlas', 'obj_door');		
+		game.physics.enable(this.leftDoor);	
+		this.leftDoor.scale.x = -1;
 		this.door1 = game.add.sprite(2200, 0, 'atlas', 'obj_door2');		
 		game.physics.enable(this.door1);				
 		this.door2 = game.add.sprite(3600, 0, 'atlas', 'obj_door2');		
@@ -307,6 +309,7 @@ Level2.prototype = {
 		this.playerTouchingKitchenMonster = game.physics.arcade.overlap(this.kitchenMonster, this.player);
 		this.playerTouchingRightMonster = game.physics.arcade.overlap(this.rightMonster, this.player);
 		this.playerTouchingLeftMonster = game.physics.arcade.overlap(this.leftMonster, this.player);
+		var touchedLeftDoor = game.physics.arcade.overlap(this.player, this.leftDoor);
 		var TouchingDoor1 = game.physics.arcade.overlap(this.player, this.door1);
 		var TouchingDoor2 = game.physics.arcade.overlap(this.player, this.door2);
 		var TouchingExit = game.physics.arcade.overlap(this.player, this.exit);
@@ -320,10 +323,33 @@ Level2.prototype = {
 			this.showActionUI(true);
 		}
 
+		if (!touchedLeftDoor && !touchedKitchenWall && !TouchingExit) {
+			this.lockSoundTriggered = false;
+		}
+		if (touchedLeftDoor) {
+			if (this.lockSoundTriggered == false) {
+				this.lockSoundTriggered = true;
+				game.add.audio('snd_doorLocked').play('', 0, 0.2, false, false);
+			}
+		}
+		if (touchedKitchenWall && playerHasKey1 == false) {
+			if (this.lockSoundTriggered == false) {
+				this.lockSoundTriggered = true;
+				game.add.audio('snd_doorLocked').play('', 0, 0.2, false, false);
+			}
+		}
+		if (TouchingExit && playerHasKey2 == false) {
+			if (this.lockSoundTriggered == false) {
+				this.lockSoundTriggered = true;
+				game.add.audio('snd_doorLocked').play('', 0, 0.2, false, false);
+			}
+		}
+
 		/* --Dialog Interactions-- */
 		if (this.conversationState == 'END') {
 			this.line = 1;
 			hasMirrorFlag = false;
+			bloodrootPleasedFlag = false;
 			this.dialogBox.alpha = 0;
 			this.text.alpha = 0;
 			this.player.changeState('normal');

@@ -17,6 +17,8 @@ var GroundLevelInside = function(game) {
 	this.stepTimer;
 
 	this.door;
+	this.leftDoor;
+	this.lockSoundTriggered = false;
 	this.hidingSpots;
 };
 GroundLevelInside.prototype = {
@@ -51,9 +53,9 @@ GroundLevelInside.prototype = {
 		this.hidingSpots.create(800, 0, 'atlas', 'obj_curtains');
 		this.diningTable = this.hidingSpots.create(1300, 265, 'atlas', 'obj_diningTableEmpty');
 		this.diningTable.body.setSize(260, 250, 220);
-		this.door = game.add.sprite(200, 0, 'atlas', 'obj_door');		
-		game.physics.enable(this.door);	
-		this.door.scale.x = -1;
+		this.leftDoor = game.add.sprite(200, 0, 'atlas', 'obj_door');		
+		game.physics.enable(this.leftDoor);	
+		this.leftDoor.scale.x = -1;
 		this.door = this.game.add.sprite(2200, 0, 'atlas', 'obj_door');
 		game.physics.enable(this.door);
 
@@ -105,9 +107,18 @@ GroundLevelInside.prototype = {
 		var slugTouchingHidingSpots = game.physics.arcade.overlap(this.slug, this.hidingSpots);
 		var slugTouchingPlayer = game.physics.arcade.overlap(this.slug, this.player);
 		var touchedDoor = game.physics.arcade.overlap(this.player, this.door);
+		var touchedLeftDoor = game.physics.arcade.overlap(this.player, this.leftDoor);
 		game.physics.arcade.collide(this.player, this.bounds);
 
 		/* --Interaction-- */
+		if (!touchedLeftDoor) {
+			this.lockSoundTriggered = false;
+		}
+		if (touchedLeftDoor && this.lockSoundTriggered == false) {
+			this.lockSoundTriggered = true;
+			game.add.audio('snd_doorLocked').play('', 0, 0.15, false, false);
+		}
+
 		if (isTouchingHidingSpots && controls.space.isDown) {
 			game.world.bringToTop(this.hidingSpots);
 			this.player.changeState('hidden');
@@ -150,6 +161,7 @@ GroundLevelInside.prototype = {
 		this.filter.x = game.camera.x - 16;
 		this.filter.y = game.camera.y;
 		this.spaceButton.x = this.player.centerX;
+		this.spaceButton.bringToTop();
 		this.border.bringToTop();
 		this.filter.bringToTop();
 	}		

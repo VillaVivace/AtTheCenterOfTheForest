@@ -6,11 +6,18 @@ function Player(game, x, y, key, controls) {
 	this.controls = controls;
 	this.state = 'normal';
 	this.direction = 1;
-	this.speed = 250;
+	if (game.state.getCurrentState().key == 'Level3') {
+		this.animations.add('walk', Phaser.Animation.generateFrameNames('walk', 0, 7), 4, true);
+		this.speed = 100;
+	} else {
+		this.animations.add('walk', Phaser.Animation.generateFrameNames('walk', 0, 7), 8, true);
+		this.speed = 250;
+	}
+	
 	/* --Item UI-- */
 	this.mirror = game.add.sprite(32, 32, 'atlas', 'handMirrorIcon');
 	this.mirror.alpha = 0;
-	this.heart = game.add.sprite(32, 32, 'atlas', 'hearIcon');
+	this.heart = game.add.sprite(32, 32, 'atlas', 'heartIcon');
 	this.heart.alpha = 0;
 	this.mandrake = game.add.sprite(32, 32, 'atlas', 'mandrakeIcon');
 	this.mandrake.alpha = 0;
@@ -26,7 +33,7 @@ function Player(game, x, y, key, controls) {
 	this.body.gravity.y = 0;
 	this.anchor.set(0.5, 0.5);
 	this.scale.setTo(this.direction, this.direction);
-	this.animations.add('walk', Phaser.Animation.generateFrameNames('walk', 0, 7), 8, true);
+	
 	this.animations.add('idle', ['still']);
 	this.animations.add('hide', ['crouch']);
 
@@ -44,7 +51,12 @@ function Player(game, x, y, key, controls) {
 		}
 	}
 	this.stepTimer = game.time.create(false);
-	this.stepTimer.loop(500, footstep, this);
+	if (game.state.getCurrentState().key == 'Level3') {
+		this.stepTimer.loop(1000, footstep, this);
+	} else {
+		this.stepTimer.loop(500, footstep, this);
+	}
+	
 	this.stepTimer.start();
 
 	/* --Camera-- */
@@ -61,9 +73,6 @@ Player.prototype.update = function() {
 		
 		switch(this.state) {
   			case 'normal':
-				// if (controls.space.isDown) {
-				// 	console.log(this.x);
-				// }
 				this.alpha = 1;
 				this.body.velocity.x = 0;
 				this.scale.x = this.direction;
@@ -80,11 +89,6 @@ Player.prototype.update = function() {
 				else {
 					this.animations.play('idle');
 				}
-				/* if (controls.shift.isDown) {
-					this.speed = 800;
-				} else {
-					this.speed = 200;
-				} */
 			break;
 			
 			case 'cutscene':
@@ -101,6 +105,21 @@ Player.prototype.update = function() {
 					this.state = 'normal';
 				}
 			break;
+
+			case 'level3':
+				this.alpha = 1;
+				this.body.velocity.x = 0;
+				this.scale.x = this.direction;
+				if (controls.right.isDown) { // Move player right
+					this.animations.play('walk');
+					this.direction = 1;
+					this.body.velocity.x = this.speed;
+				}
+				else {
+					this.animations.play('idle');
+				}
+			break;
+
   			default:
     		
 		}

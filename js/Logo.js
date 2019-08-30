@@ -37,6 +37,7 @@ Logo.prototype = {
 		this.game.load.audio('snd_warning', 'assets/audio/warning.mp3');
 		this.game.load.audio('snd_whisper', 'assets/audio/whisper.mp3');
 		this.game.load.audio('snd_doorLocked', 'assets/audio/doorLocked.mp3');
+		this.game.load.audio('snd_roar', 'assets/audio/roar.mp3');
 	},
 	create: function() {
 		console.log('Logo: create');

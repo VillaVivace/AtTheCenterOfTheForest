@@ -20,6 +20,8 @@ var Level1 = function(game) {
 
 	this.curtains;
 	this.door;
+	this.leftDoor;
+	this.lockSoundTriggered = false;
 };
 
 Level1.prototype = {
@@ -56,9 +58,9 @@ Level1.prototype = {
 		this.curtains.create(3200, 0, 'atlas', 'obj_curtains');
 		this.curtains.create(4000, 0, 'atlas', 'obj_curtains');
 
-		this.door = game.add.sprite(200, 0, 'atlas', 'obj_door');		
-		game.physics.enable(this.door);	
-		this.door.scale.x = -1;
+		this.leftDoor = game.add.sprite(200, 0, 'atlas', 'obj_door');		
+		game.physics.enable(this.leftDoor);	
+		this.leftDoor.scale.x = -1;
 		this.door = this.game.add.sprite(4600, 0, 'atlas', 'obj_door');
 		game.physics.enable(this.door);
 		this.door.body.immovable = true;
@@ -119,12 +121,21 @@ Level1.prototype = {
 		
 		/* --Collisions-- */
 		var touchedDoor = game.physics.arcade.overlap(this.player, this.door);
+		var touchedLeftDoor = game.physics.arcade.overlap(this.player, this.leftDoor);
 		var isTouchingCurtains = game.physics.arcade.overlap(this.player, this.curtains);
 		var crawlerTouchingCurtains = game.physics.arcade.overlap(this.crawler, this.curtains);
 		var crawlerTouchingEye = game.physics.arcade.overlap(this.crawler, this.eyeLogo)		
 		var playerTouchingCrawler = game.physics.arcade.overlap(this.player, this.crawler);
 		var playerTouchingEye = game.physics.arcade.overlap(this.player, this.eyes, callMonster, null, this);
 		game.physics.arcade.collide(this.player, this.bounds);
+
+		if (!touchedLeftDoor) {
+			this.lockSoundTriggered = false;
+		}
+		if (touchedLeftDoor && this.lockSoundTriggered == false) {
+			this.lockSoundTriggered = true;
+			game.add.audio('snd_doorLocked').play('', 0, 0.2, false, false);
+		}
 
 		if (controls.space.isDown && touchedDoor) {
 			game.sound.stopAll();

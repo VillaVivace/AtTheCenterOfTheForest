@@ -159,8 +159,8 @@ Sub1.prototype = {
 		}
 		/* --Bookcase 2 CHOICES-- */
 		if (this.conversationState == narrative('bookcase2_4')) {
-			if (controls.num1.justDown) {
-				this.mirrorUI.alpha = 1;				
+			this.mirrorUI.alpha = 1;	
+			if (controls.num1.justDown) {			
 				this.conversationState = narrative('bookcase2_4Choice1');
 				this.text.text = this.conversationState;
 			}
@@ -168,8 +168,9 @@ Sub1.prototype = {
 				this.conversationState = narrative('bookcase2_5');
 				this.text.text = this.conversationState;
 			}
+		}else{
+			this.mirrorUI.alpha = 0;
 		}
-
 
 		/* --Interaction-- */
 		if (controls.space.justDown && touchedDoor) {

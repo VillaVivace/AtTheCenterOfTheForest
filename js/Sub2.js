@@ -182,8 +182,8 @@ Sub2.prototype = {
 		}
 		/* --Shelf 1 CHOICES-- */
 		if (this.conversationState == narrative('shelf1_4')) {
-			if (controls.num1.justDown) {
-				this.eyeballsUI.alpha = 1;				
+			this.eyeballsUI.alpha = 1;
+			if (controls.num1.justDown) {				
 				this.conversationState = narrative('shelf1_4Choice1');
 				this.text.text = this.conversationState;
 			}
@@ -191,11 +191,13 @@ Sub2.prototype = {
 				this.conversationState = narrative('shelf1_5');
 				this.text.text = this.conversationState;
 			}
+		}else{
+			this.eyeballsUI.alpha = 0;
 		}
 		/* --Shelf 2 CHOICES-- */
 		if (this.conversationState == narrative('shelf2_4')) {
-			if (controls.num1.justDown) {
-				this.mandrakeUI.alpha = 1;				
+			this.mandrakeUI.alpha = 1;
+			if (controls.num1.justDown) {				
 				this.conversationState = narrative('shelf2_4Choice1');
 				this.text.text = this.conversationState;
 			}
@@ -203,11 +205,13 @@ Sub2.prototype = {
 				this.conversationState = narrative('shelf2_5');
 				this.text.text = this.conversationState;
 			}
+		}else{
+			this.mandrakeUI.alpha = 0;
 		}
 		/* --Crate 1 CHOICES-- */
 		if (this.conversationState == narrative('crates1_4')) {
-			if (controls.num1.justDown) {
-				this.heartUI.alpha = 1;				
+			this.heartUI.alpha = 1;	
+			if (controls.num1.justDown) {		
 				this.conversationState = narrative('crates1_4Choice1');
 				this.text.text = this.conversationState;
 			}
@@ -215,6 +219,8 @@ Sub2.prototype = {
 				this.conversationState = narrative('crates1_5');
 				this.text.text = this.conversationState;
 			}
+		}else{
+			this.heartUI.alpha = 0;
 		}
 
 		if (playerHasEyeballs) {

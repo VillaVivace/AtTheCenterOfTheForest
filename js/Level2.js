@@ -34,6 +34,8 @@ var Level2 = function(game) {
 	this.kitchenwall;
 	this.spaceButton;
 	this.touchedMonsterOnce = false;
+	this.showActionUI;
+
 
 	this.tables;
 	this.chandalier;
@@ -409,6 +411,7 @@ Level2.prototype = {
 
 		this.player.bringToTop();
 		this.kitchenwall.bringToTop();
+		this.spaceButton.x = this.player.centerX;
 		/* --GUI & Effects Positioning-- */
 		this.border.x = game.camera.x - 16; // We want the GUI and FX to align with the camera, not just a world position
 		this.border.y = game.camera.y;
